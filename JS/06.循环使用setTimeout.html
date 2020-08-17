@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <ul class="nav">
+        <li>榴莲</li>
+        <li>臭豆腐</li>
+        <li>鲑鱼罐头</li>
+        <li>大猪蹄子</li>
+    </ul>
+    <script>
+        // 法1：forEach
+        const liElements = document.querySelectorAll(".nav li");
+        liElements.forEach(value => {
+            setTimeout(function() {
+                console.log(value.innerHTML);
+            }, 3000)
+        });
+        // 错误示范
+        // const liElements = document.querySelectorAll(".nav li");
+        // for(var i = 0;i < liElements;i ++) {
+        //     setTimeout(function(){
+        //         console.log(liElements[i].innerHTML)
+        //     })
+        // }
+        // for循环执行，导致i变成了4
+        // 法2：使用闭包解决
+        const liElements = document.querySelectorAll(".nav li");
+        for(var i = 0;i < liElements.length;i ++){
+            (function(index) {
+                setTimeout(() => console.log(liElements[index].innerHTML), 3000)
+            })(i)
+        }
+    </script>
+</body>
+</html>

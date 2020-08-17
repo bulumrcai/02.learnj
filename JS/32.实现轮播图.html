@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        ul, li {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .container ul li img {
+            vertical-align: center;
+            width: 500px;
+            height: 500px;
+            z-index: 0;
+        }
+        .container {
+            margin: 0 auto;
+            width: 500px;
+            height: 500px;
+            padding: 20px;
+            background-color: #eaeaea;
+            /* 裁剪溢出的部分 */
+            overflow: hidden;
+            position: relative;
+        }
+        .container ul {
+            /* width: 2600px; */
+            position: absolute;
+            left: 0px;
+            top: 20px;
+            z-index: 2;
+        }
+        .container ul::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+        .container ul li {
+            float: left;
+            margin-left: 20px;
+            width: 500px;
+            height: 500px;
+        }
+        .container .nav {
+            position: absolute;
+            bottom: 30px;
+            /* absolute的居中 */
+            left: 50%;
+            transform: translate(-50%);
+            /* 也可以用js来计算居中 */
+            z-index: 100;
+            /* background-color: #ff0000; */
+        }
+        /* 触发了BFC，父元素不会崩塌 */
+        /* .container .nav::after {
+            content: "";
+            display: block;
+            clear: both;
+        } */
+        .container .nav a{
+            float: left;
+            margin-left: -20px;
+        }
+        .container .nav a img:hover {
+            content: url("../img/point_active.svg");
+            opacity: 0.5;
+            fill: alpha(opacity=50);
+        }
+        .container .nav a img {
+            content: url("../img/point.svg");
+            opacity: 0.5;
+            /* 兼容ie8的透明 */
+            fill: alpha(opacity=50);
+        }
+        .container .nav .active img {
+            content: url("../img/point_active.svg");
+            opacity: 0.5;
+            fill: alpha(opacity=50);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <ul>
+            <li><img src="" alt=""></li>
+            <li><img src="" alt=""></li>
+            <li><img src="" alt=""></li>
+            <li><img src="" alt=""></li>
+            <li><img src="" alt=""></li>
+            <li><img src="" alt=""></li>
+        </ul>
+        <!-- 导航按钮 -->
+        <div class="nav">
+            <!-- 要定位且位于上面，想到使用z-index -->
+            <a class="active" href="javascript:;"><img alt="" width="50px" height="50px"></a>
+            <a href="javascript:;"><img alt="" width="50px" height="50px"></a>
+            <a href="javascript:;"><img alt="" width="50px" height="50px"></a>
+            <a href="javascript:;"><img alt="" width="50px" height="50px"></a>
+            <a href="javascript:;"><img alt="" width="50px" height="50px"></a>
+        </div>
+    </div>
+    <script>
+        window.onload = function() {
+            const imgsElement = document.querySelectorAll('.container ul li img');
+            const ulElement = document.querySelector('.container ul');
+            const asElement = document.querySelectorAll('.container .nav a');
+            
+            const imgUrl = [
+                    '../img/ex1.JPG',
+                    '../img/ex2.JPG',
+                    '../img/ex3.JPG',
+                    '../img/ex4.JPG',
+                    '../img/ex5.JPG',
+                    '../img/ex1.JPG'
+                ]
+            imgsElement.forEach((imgElement, index) => imgElement.src = imgUrl[index])
+            // 当出现元素的属性没法得到时，要考虑到元素是否已经加载完了，一般需要加上window.onload
+            // img只有当图片插入的时候，才能读到对应的宽度和高度
+            const imgWidth = imgsElement[0].clientWidth;
+            ulElement.style.width = imgsElement.length * (imgWidth + 20) + 'px'; 
+            // 每向左移动520px，则会显示下一张
+            autoChange(ulElement, imgsElement.length, asElement);
+            asElement.forEach((aElement,index) => {
+                aElement.onclick = function() {
+                //    ( function(objs){
+                //         objs.forEach(obj => obj.className="");
+                //     })(asElement);
+                    clearActive(asElement);
+                    this.className = 'active';
+                    // ulElement.style.left = -index * 520 + 'px';
+                    // 切换图片，利用平移
+                    // 利用active来实现对应，在赋之前需要清空之前的类
+                    // 实现缓慢切换图片，利用前面的move函数
+                    autoMove(ulElement, 20, -index *520, 'left');
+                }
+            })
+        }
+        // 使用absolute定位的元素进行水平居中
+        // const outer = document.querySelector('.container');
+        // const nav = document.querySelector('.nav');
+        // nav.style.left = (outer.offsetWidth - nav.offsetWidth) / 2 + 'px';
+        // offsetWidth为整一个盒子的宽度，clientWidth不包括边界
+        function getStyle(obj, cssStyle) {
+            if(window.getComputedStyle)
+                return getComputedStyle(obj, null)[cssStyle];
+            else //IE8及以下没有getComputedStyle方法
+                return obj.currentStyle[cssStyle];
+        }
+        function clearObjectInterval(obj) {
+            clearInterval(obj.intervalId);
+            obj.intervalId = undefined;
+        }
+        function autoMove(obj, speed, target, attr, callback=function(){}) {
+            // 清除定时器
+            clearInterval(obj.intervalId)
+
+            if(parseInt(getStyle(obj, attr)) > target)
+                speed = -speed;
+
+            // 定义定时器
+            obj.intervalId = setInterval(function() {
+                let currentPositon = parseInt(getStyle(obj, attr));
+                let nextPosition = currentPositon + speed;
+                obj.style[attr] = speed < 0 ? nextPosition < target ? target + 'px': nextPosition + 'px'
+                                                        : nextPosition > target ? target + 'px': nextPosition + 'px';
+                if(nextPosition === target) {
+                    clearObjectInterval(obj)
+                    callback();
+                }
+            }, 30)     
+        }
+        function clearActive(objs) {
+                objs.forEach(obj => obj.className="");
+            }
+        let index = 1;
+        function autoChange(obj, length, activeObjs) {
+            // 开始一个定时器，定时去切换图片，即调用move
+            setInterval(function() {
+                autoMove(obj, 20, -index *520, 'left',function() {
+                    
+                });
+                clearActive(activeObjs);
+                if(index >= length - 1){
+                    activeObjs[0].className = 'active';
+                }    
+                else
+                    activeObjs[index].className = 'active';
+                index = (index + 1) % length;
+            }, 3000)
+        }
+    </script>
+</body>
+</html>

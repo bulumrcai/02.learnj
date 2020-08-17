@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./CSS/reset.css">
+    <link rel="stylesheet" href="./CSS/base.css">
+</head>
+<body>
+    <div class="search-box">
+        <div class="nav">
+            <span>按照价格查询: </span>
+            <input type="text" class="start"> 
+            -
+            <input type="text" class="end">
+            <button onclick="btn1Click()">搜索</button>
+            <span>按照商品名称查询:</span>
+            <input type="text" class="query">
+            <button onclick="btn2Click()">查询</button>
+        </div>
+        <div>
+            <table class="good-table">
+                <tr>
+                    <td>id</td>
+                    <td>产品名称</td>
+                    <td>价格</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+
+    <script src="./JS/main.js"></script>
+</body>
+</html>

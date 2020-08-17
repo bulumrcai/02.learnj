@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box1 {
+            width: 100px;
+            height: 100px;
+            background-color: #ff0000;
+            position: absolute;
+        }
+        .box2 {
+            width: 100px;
+            height: 100px;
+            background-color: #00ff00;
+            position: absolute;
+            left: 200px;
+            top: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="box1"></div>
+    <div class="box2"></div>
+    <!-- 相同的absolute的层叠现象，后面的覆盖先前的 -->
+    <script>
+        window.onload = function() {
+            let box1 = document.querySelector('.box1');
+            box1.onmousedown = function() {
+                // 不能给box1绑定，因为鼠标会脱离对应的边缘
+                document.onmousemove = function(event) {
+                    event = event || window.event;
+                    const x = event.clientX
+                    const y = event.clientY;
+                    const scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+                    box1.style.left = x + 'px';
+                    box1.style.top = y + scrollTop + 'px';
+                }
+                // box1.onmouseup
+                document.onmouseup = function() {
+                   document.onmousemove = null;
+                   document.onmouseup = null;
+                } 
+            }
+        }
+        /* 问题：
+            1. 当拖拽元素移动到第二个非拖拽元素的位置时，由于层叠的原因会被覆盖。此时松开鼠标，并没有实现元素的位置固定
+             原因：鼠标绑定的是box1，当移动到第二个元素时，松开时触发的是第二个元素mouseup的事件而不是box1，所以无效
+             改box1 -> document
+            2. 改成document要注意取消该事件。(没有存在意义的事件要取消)
+
+*/
+    </script>
+</body>
+</html>

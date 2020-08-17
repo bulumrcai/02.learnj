@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        // 最左最右的换行符会被忽略
+        console.log(parseFloat("  \n .14   "));
+        // 可以使用科学计数法，即指数方法
+        console.log(parseFloat("1.1e+10"));
+        // 特有的无限类型，且+、-号可以表示对应的符号
+        console.log(parseFloat("Infinity"), typeof parseFloat("Infinity"))
+        console.log(parseFloat("-Infinity"), typeof parseFloat("-Infinity"))
+        // 像上述的方法返回
+        console.log(parseFloat("1.1abc"));
+        // 返回NaN
+        console.log(parseFloat("abc"));
+        console.log(parseFloat(undefined));
+        // 返回+0
+        let num = null;
+        console.log(parseFloat(num));
+    </script>
+</body>
+</html>

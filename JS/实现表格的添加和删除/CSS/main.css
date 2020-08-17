@@ -1,0 +1,28 @@
+@charset 'utf-8';
+
+#container .employee{
+    height: 200px;
+    width: 300px;
+    border: 1px solid #000000;
+    text-align: center;
+    margin: 10px auto;
+}
+#container .employee li{
+    text-align: center;
+    margin-bottom: 5px;
+}
+#container .employee button {
+    position: relative;
+    top: 10px;
+}
+
+#container .employee-table table {
+    margin: 0 auto;
+    text-align: center;
+}
+#container .employee-table td, 
+#container .employee-table th {
+    border: 1px solid #000;
+    width: 150px;
+    height: 40px;
+}

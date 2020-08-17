@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        const data = [
+            {
+                id: 1,
+                name: '家电',
+                goods: [
+                    {
+                        id: 11,
+                        gname: "冰箱"
+                    },
+                    {
+                        id: 12,
+                        gname: "洗衣机"
+                    }
+                ]
+            },
+            {
+                id: 2,
+                name: "服饰"
+            }
+        ]
+
+        // 输入id号，返回id号所对应的对象
+        function getID(data, id) {
+            data.forEach(value => {
+                if(value.id === id)
+                    console.log(value) 
+                else
+                {
+                    Object.keys(value).forEach(key => {
+                        // console.log(key)
+                        // console.log(typeof value[key]);
+                        if(typeof value[key] === 'object')
+                            getID(value[key], id);
+                    })
+                }
+            })
+        }
+        id = 11;
+        getID(data, id);
+    </script>
+</body>
+</html>

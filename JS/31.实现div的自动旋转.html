@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box {
+            width: 100px;
+            height: 100px;
+            background-color: #ff0000;
+            position: absolute;
+            top: 40px;
+            left: 0px;
+        }
+
+    </style>
+</head>
+<body>
+    <button class="begin">开始旋转</button>
+    <button class="end">暂停旋转</button>
+    <div class="box"></div>
+    <script>
+        let box = document.querySelector('.box');
+        let btnBegin = document.querySelector('.begin');
+        let btnEnd = document.querySelector('.end');
+        let intervalId;
+        btnBegin.onclick = function() {
+            box.style.left = 0 + 'px';
+            box.style.top = 40 + 'px';
+            clearInterval(intervalId);
+            function rotate() {
+                clearInterval(intervalId)
+                autoMove(box, 10, 800, 'right', () => 
+                autoMove(box, 10, 400, 'buttom', () => 
+                autoMove(box, 10, 0, 'left', () => 
+                autoMove(box, 10, 40, 'top',() => {
+                    intervalId = setInterval(rotate, 30)
+                }
+                ))))
+            }
+            intervalId = setInterval(rotate, 30)
+        }
+        btnEnd.onclick = function() {
+            clearInterval(intervalId);
+            intervalId = undefined;
+        }
+         /*
+            * 作用：以字符串的形式返回元素对象对应的cssStyle
+            * 参数：
+            *       obj:元素对象
+            *       cssStyle:string 要取得的样式
+            * 返回：对象元素样式的字符串表示(:string)
+            * 注意：对应的属性一定要进行初始化，不然会返回auto
+            */
+        function getStyle(obj, cssStyle) {
+            if(window.getComputedStyle)
+                return getComputedStyle(obj, null)[cssStyle];
+            else //IE8及以下没有getComputedStyle方法
+                return obj.currentStyle[cssStyle];
+        }
+        function clearObjectInterval(obj) {
+            clearInterval(obj.intervalId);
+            obj.intervalId = undefined;
+        }
+        /*
+        *  可以执行简单动画的函数
+        *  参数：
+        *       obj: 要执行动画的对象
+        *       speed: 运动的速度
+        *       target:运动的终止目标   
+        *       attr: 要执行运动的属性
+        *       callback:动画执行完后调用的函数，可以利用该性质实现自动旋转等功能
+        */
+        function autoMove(obj, speed, target, attr, callback=function(){}) {
+            // 清除定时器
+            clearInterval(obj.intervalId)
+
+            if(attr === 'left' || attr === 'right') {
+                if(attr === 'left') 
+                    speed = -speed;
+                attr = 'left';
+            }
+            if(attr === 'top' || attr === 'buttom') {
+                if(attr === 'top') 
+                    speed = -speed;
+                attr = 'top';
+            }
+            // 定义定时器
+            obj.intervalId = setInterval(function() {
+                let currentPositon = parseInt(getStyle(obj, attr));
+                let nextPosition = currentPositon + speed;
+                obj.style[attr] = speed < 0 ? nextPosition < target ? target + 'px': nextPosition + 'px'
+                                                        : nextPosition > target ? target + 'px': nextPosition + 'px';
+                if(nextPosition === target) {
+                    clearObjectInterval(obj)
+                    callback();
+                }
+            }, 30)     
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+@charset 'utf-8';
+
+.wrap {
+    width: 1000px;
+    font-size: 12px;
+    margin: 0 auto;
+    border: 1px solid #eaeaea;
+}
+.nav {
+    text-align: center;
+}
+
+.nav .title {
+    background-color: #eaeaea;
+    height: 40px;
+    line-height: 40px;
+}
+/* .nav .title::after {
+    content: "";
+    display: block;
+    clear: both;
+} */
+.nav .title span:first-child {
+    float: left;
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+.nav .title span:nth-child(2){
+    float: right;
+    margin-right: 10px;
+}
+.nav .user {
+    /* text-align: center; */
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+.nav .user li {
+    margin-top: 20px;
+    position: relative;
+}
+.nav .user li label {
+    width: 100px;
+    display: inline-block;
+}
+.nav .user li span {
+    position: absolute;
+    left: 650px;
+}
+/*float会影响布局的原因是：行内级元素会被挤出 */
+.nav button {
+    background-color: #ff0000;
+    color: #ffffff;
+    line-height: 40px;
+    border: none;
+    padding: 0 40px;
+}
+
+.error {
+    color: #df3033;
+}
+
+.success {
+    color: #40b83f;
+}
+

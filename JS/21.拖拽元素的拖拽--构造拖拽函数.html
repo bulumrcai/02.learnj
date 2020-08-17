@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box1 {
+            width: 100px;
+            height: 100px;
+            background-color: #ff0000;
+            position: absolute;
+            /* 相对于body进行定位 */
+        }
+        .box2 {
+            width: 100px;
+            height: 100px;
+            background-color: #00ff00;
+            position: absolute;
+            left: 200px;
+            top: 200px;
+        }
+    </style>
+</head>
+<body>
+    <!--
+        **当我们拖拽一个网页的内容时，浏览器会默认
+          去搜索引擎中搜索内容， 这个时候会导致拖拽功能异常
+        **这是浏览器提供的默认行为
+        ** 如果不希望发生这个行为，可以使用return false取消默认,在响应函数onmousedown后面-->
+        <div class="box1"></div>
+    <div class="box2"></div>
+    <!-- 相同的absolute的层叠现象，后面的覆盖先前的 -->
+    <script>
+        window.onload = function() {
+            let box1 = document.querySelector('.box1');
+            let box2 = document.querySelector('.box2');
+
+            function drag(obj) {
+                obj.onmousedown = function(event) {
+                    // 解决浏览器默认搜索的bug
+                obj.setCapture && obj.setCapture();
+                    // 实现浏览器兼容
+                event = event || window.event;
+                    // 得到相对位置，注意在计算过程中是不用style中的值
+                let offsetX = event.clientX - this.offsetLeft;
+                let offsetY = event.clientY - this.offsetTop;
+                document.onmousemove = function(event) {
+                    let mouseX = event.clientX;
+                    let mouseY = event.clientY;
+                    // 解决下方出现滚动条的问题
+                    let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+                    obj.style.left = mouseX - offsetX + 'px';
+                    obj.style.top = mouseY + scrollTop - offsetY + 'px';
+                }
+                document.onmouseup = function() {
+                    // 对于document的方法，在结束触发时要记得消除；
+                    document.onmousemove = null;
+                    obj.releaseCapture && obj.releaseCapture();
+                    document.onmouseup = null;
+                }
+                return false;
+              }
+            }
+            drag(box1);
+            drag(box2)
+        }
+    </script>
+</body>
+</html>

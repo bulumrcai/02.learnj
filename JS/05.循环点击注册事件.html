@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <ul class="nav">
+        <li>榴莲</li>
+        <li>臭豆腐</li>
+        <li>鲑鱼罐头</li>
+        <li>大猪蹄子</li>
+    </ul>
+
+    <script>
+        // 方法1：使用forEach
+        const liElements = document.querySelectorAll(".nav li");
+        liElements.forEach((value, index) => {
+            value.onclick = function() {
+                alert(index);
+            }
+        })
+       
+        // 错误示范
+        // const liElements = document.querySelectorAll(".nav li");
+        // for(var i = 0;i < liElements.length;i ++) {
+        //     liElements[i].onclick = function() {
+        //         alert(i); 
+        //     }
+        // }
+        // 由于onclick是点击才执行函数，而此时的var i为4，所以会一直输出4
+                // 解决方法1：liElements[i].index = i;
+                //          alert(this.index)
+                // 解决方法2：i用let
+                // 解决方法3：使用闭包
+        // 解决方法3 闭包+立即执行函数
+        const liElements = document.querySelectorAll(".nav li");
+        for(var i = 0;i < liElements.length;i ++){
+            // 利用for循环创建了4个立即执行函数
+            // 立即执行函数为闭包，因为立即执行函数中的函数都可以使用i
+            (function(index){
+                liElements[index].onclick = function() {
+                    alert(index)
+                }
+            })(i)
+        }
+        // 解决了点击事件var i索引号的印象
+    </script>
+</body>
+</html>

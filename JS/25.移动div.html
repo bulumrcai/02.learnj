@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box {
+            width: 50px;
+            height: 50px;
+            background-color: #ff0000;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <div class="box"></div>
+    <script>
+        let step = 5;
+        window.onload = function() {
+            const dir = {
+                38: [0, -1],
+                39: [1, 0],
+                40: [0, 1],
+                37: [-1, 0]
+            }
+            let box = document.querySelector('.box');
+            document.onkeydown = function(event) {
+                if (event.shiftKey && event.keyCode === 38) {
+                    step += 5;
+                    return;
+                }
+                if (event.shiftKey && event.keyCode === 40) {
+                    step = step >= 10 ? step - 5 : 5;
+                    return;
+                }
+                event = event || window.event;
+                // 上：38 右：39 下：40 左：37
+                console.log(box.offsetLeft)
+                box.style.left = box.offsetLeft + step*dir[event.keyCode][0] + 'px';
+                box.style.top = box.offsetTop + step*dir[event.keyCode][1] + 'px';
+            }
+        }
+    </script>
+</body>
+</html>

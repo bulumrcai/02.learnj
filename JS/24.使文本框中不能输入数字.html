@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <input type="text">
+    </div>
+    <script>
+        // 禁止input框输入数字
+        let inputElement = document.querySelector('input');
+        inputElement.onkeydown = function(event) {
+            event = event || window.event;
+            if(event.keyCode >= 48 && event.keyCode <= 57)
+                return false;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        ul, li {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .container ul li img {
+            vertical-align: center;
+            width: 500px;
+            height: 500px;
+            z-index: 0;
+        }
+        .container {
+            margin: 0 auto;
+            width: 500px;
+            height: 500px;
+            padding: 20px;
+            background-color: #eaeaea;
+            /* 裁剪溢出的部分 */
+            overflow: hidden;
+            position: relative;
+        }
+        .container ul {
+            /* width: 2600px; */
+            position: absolute;
+            left: 0px;
+            top: 20px;
+            z-index: 2;
+        }
+        .container ul::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+        .container ul li {
+            float: left;
+            margin-left: 20px;
+            width: 500px;
+            height: 500px;
+        }
+        .container .nav {
+            position: absolute;
+            bottom: 30px;
+            /* absolute的居中 */
+            left: 50%;
+            transform: translate(-50%);
+            /* 也可以用js来计算居中 */
+            z-index: 100;
+            /* background-color: #ff0000; */
+        }
+        /* 触发了BFC，父元素不会崩塌 */
+        /* .container .nav::after {
+            content: "";
+            display: block;
+            clear: both;
+        } */
+        .container .nav a{
+            float: left;
+            margin-left: -20px;
+        }
+        .container .nav a img:hover {
+            content: url("../img/point_active.svg");
+            opacity: 0.5;
+            fill: alpha(opacity=50);
+        }
+        .container .nav a img {
+            content: url("../img/point.svg");
+            opacity: 0.5;
+            /* 兼容ie8的透明 */
+            fill: alpha(opacity=50);
+        }
+        .container .nav .active img {
+            content: url("../img/point_active.svg");
+            opacity: 0.5;
+            fill: alpha(opacity=50);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <ul>
+            <li><img src="" alt=""></li>
+            <li><img src="" alt=""></li>
+            <li><img src="" alt=""></li>
+            <li><img src="" alt=""></li>
+            <li><img src="" alt=""></li>
+            <li><img src="" alt=""></li>
+        </ul>
+        <!-- 导航按钮 -->
+        <div class="nav">
+            <!-- 要定位且位于上面，想到使用z-index -->
+            <a class="active" href="javascript:;"><img alt="" width="50px" height="50px"></a>
+            <a href="javascript:;"><img alt="" width="50px" height="50px"></a>
+            <a href="javascript:;"><img alt="" width="50px" height="50px"></a>
+            <a href="javascript:;"><img alt="" width="50px" height="50px"></a>
+            <a href="javascript:;"><img alt="" width="50px" height="50px"></a>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            const imgUrl = [
+                '../img/ex1.JPG',
+                '../img/ex2.JPG',
+                '../img/ex3.JPG',
+                '../img/ex4.JPG',
+                '../img/ex5.JPG',
+                '../img/ex1.JPG'
+            ]
+            // 插入图片
+            
+            let imgs = document.querySelectorAll('.container ul li img')
+            imgs.forEach((img, index) => img.src = imgUrl[index]);
+            
+            // 调整ul的大小，是对应的li元素能够容纳
+            const length = imgs.length;
+            let ulObject = document.querySelector('.container ul');
+            let imgWidth = imgs[0].offsetWidth;
+            ulObject.style.width = (imgWidth + 20) * length + 'px';
+
+            // 点击a实现切换图片
+            let timer; //轮播图的定时器
+            let aObjects = document.querySelectorAll('.container .nav a');      
+            // 要实现点击对应的点变色步骤
+            //      - 清空所有的点的颜色
+            //      - 使对应的点变色
+            aObjects.forEach((aObject, index) => {
+                aObject.onclick = function() {
+                    // 去除轮播图的定时器
+                    clearInterval(timer)
+                    aObjects.forEach(item => item.className = '');
+                    this.className = 'active';
+                    autoMove(ulObject, 60, -index * 520, 'left',()=>{
+                        changeIndex = index + 1;
+                        autoChange();
+                    });
+                }
+            })
+            let changeIndex = 1;
+            // 实现轮播,即将轮播过程分为多次调用move，每次调用回调函数修改对应的changeIndex即可
+            autoChange();
+            function autoChange() {
+                timer = setInterval(() => {
+                    autoMove(ulObject, 30, -changeIndex * 520, 'left',function() {
+                        aObjects.forEach(item => item.className = '');
+                        if(changeIndex >= length - 1) {
+                            changeIndex = 0;
+                            ulObject.style.left = 0;
+                        }
+                        aObjects[changeIndex].className = 'active';
+                        changeIndex = changeIndex + 1
+                    } )
+                }, 3000)
+            }
+            function getStyle(obj, cssStyle) {
+                if(window.getComputedStyle)
+                    return getComputedStyle(obj, null)[cssStyle];
+                else //IE8及以下没有getComputedStyle方法
+                    return obj.currentStyle[cssStyle];
+            }
+
+            function autoMove(obj, speed, target, attr, callback=function(){}) {
+                // 清除定时器
+                clearInterval(obj.intervalId)
+                // 定义定时器
+                obj.intervalId = setInterval(function() {
+                    let flag = 1;
+                    // console.log(parseInt(getStyle(obj, attr)) > target)
+                    if(parseInt(getStyle(obj, attr)) > target)
+                        flag = -1;
+                    let currentPosition = parseInt(getStyle(obj, attr));
+                    let nextPosition = currentPosition + flag * speed;
+                    if(flag === 1) 
+                        nextPosition = nextPosition > target ? target : nextPosition;
+                    else
+                        nextPosition = nextPosition < target ? target : nextPosition;
+                       
+                    obj.style[attr] = nextPosition + 'px';
+                    if(nextPosition === target) {
+                        clearInterval(obj.intervalId);
+                        obj.intervalId = undefined;
+                        callback();
+                    }
+                
+                }, 30)     
+            }
+
+        }
+    </script>
+    
+</body>
+</html>

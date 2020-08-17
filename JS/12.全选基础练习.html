@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="option">
+        <form action="https://www.baidu.com/s?" method="get" target="_blank">
+            <span>你的爱好运动是?</span>
+                <input type="checkbox" id="all-select"><label for="all-select">全选/全不选</label>
+            <div class="hobbies">
+                <input type="checkbox" id="football" name="wd" value="football"><label for="football">足球</label>
+                <input type="checkbox" id="basketball" name="wd" value="basketball"><label for="basketball">篮球</label>
+                <input type="checkbox" id="badminton" name="wd" value="badminton"><label for="badminton">羽毛球</label>
+                <input type="checkbox" id="ping-pong" name="wd" value="ping-pong"><label for="ping-pong">乒乓球</label>
+            </div>
+            <div class="buttons">
+                <button id="btnSelectAll" type="button">全选</button>
+                <button id="btnSelectNone" type="button">全不选</button>
+                <button id="btnSelectNot" type="button">反选</button>
+                <button type="submit">提交</button>
+            </div>
+        </form>
+    </div>
+    <script>
+        const btnSelectAll = document.querySelector('#option .buttons #btnSelectAll');
+        const btnSelectNone = document.querySelector('#option .buttons #btnSelectNone');
+        const btnSelectNot = document.querySelector('#option .buttons #btnSelectNot');
+        const selectAll = document.querySelector('#option #all-select');
+        const inputsHobbies = document.querySelectorAll('#option .hobbies input');
+        // 思路
+        /*
+            1. 将各个按钮的功能和input选择框单项联系起来
+            2. input选择框单项和各个按钮的功能联系起来
+            3. 总结和提取相应的函数以简化代码
+        */
+        /*
+        *给某一个按钮绑定一个点击事件，用于操作所有的选择框
+        *button: 绑定的按钮
+        *func： 操作选择框内容的函数
+        */ 
+        function btnClick(button, func) {
+            button.onclick = function() {
+                // 对input框进行操作
+                inputsHobbies.forEach(func);
+                // 判断上面的全选框的结果
+                // flag用于判断是不是全选
+                let flag = true;
+                inputsHobbies.forEach(btn => flag = btn.checked && flag);
+                selectAll.checked = flag;
+            }
+        }
+        /*绑定三个按钮以及全选择框以及4个input*/
+        btnClick(btnSelectAll, inputHobbies => inputHobbies.checked = true)
+        btnClick(btnSelectNone, inputHobbies => inputHobbies.checked = false)
+        btnClick(btnSelectNot, inputHobbies => inputHobbies.checked = !inputHobbies.checked)
+        btnClick(selectAll, inputHobbies => inputHobbies.checked = selectAll.checked)
+
+        /*由于不需要对每个input执行函数，所以使用了空的函数*/
+        inputsHobbies.forEach(inputHobbies => btnClick(inputHobbies, ()=>{}))
+        // 箭头函数的this是在定义外函数
+    </script>
+</body>
+</html>

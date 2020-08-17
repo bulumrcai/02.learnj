@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box1 {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background-color: #ff0000;
+            left: 0px;
+            top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <button class="btn1">点击往右走</button>
+    <button class="btn2">点击往左走</button>
+    <button class="btn3">点击往上走</button>
+    <button class="btn4">点击往下走</button>
+    <button class="btn5">增加宽度</button>
+    <button class="btn6">增加高度</button>
+    <button class="stop">暂停</button>
+    <div class="box1"></div>
+    <script>
+        window.onload = function() {
+            /*
+            * 作用：以字符串的形式返回元素对象对应的cssStyle
+            * 参数：
+            *       obj:元素对象
+            *       cssStyle:string 要取得的样式
+            * 返回：对象元素样式的字符串表示(:string)
+            * 注意：对应的属性一定要进行初始化，不然会返回auto
+            */
+            function getStyle(obj, cssStyle) {
+                if(window.getComputedStyle)
+                    return getComputedStyle(obj, null)[cssStyle];
+                else //IE8及以下没有getComputedStyle方法
+                    return obj.currentStyle[cssStyle];
+            }
+            function clearObjectInterval(obj) {
+                clearInterval(obj.intervalId);
+                obj.intervalId = undefined;
+            }
+            let box1 = document.querySelector('.box1');
+            let btn1 = document.querySelector('.btn1');
+            let btn2 = document.querySelector('.btn2');
+            let btn3= document.querySelector('.btn3');
+            let btn4 = document.querySelector('.btn4');
+            let btn5 = document.querySelector('.btn5');
+            let btn6 = document.querySelector('.btn6')
+            let btnStop = document.querySelector('.stop');
+
+            // let intervalId;
+            // 利用在对象中单独定义一个intervalId，从而绑定对象的intervalId,从而可以进行复用
+            // let speed = 10;
+            /*
+            *  可以执行简单动画的函数
+            *  参数：
+            *       obj: 要执行动画的对象
+            *       speed: 运动的速度
+            *       target:运动的终止目标   
+            *       attr: 要执行运动的属性
+            *       callback:动画执行完后调用的函数，可以利用该性质实现自动旋转等功能
+            */
+            function autoMove(obj, speed, target, attr, callback=function(){}) {
+                // 清除定时器
+                clearInterval(obj.intervalId)
+
+                if(attr === 'left' || attr === 'right') {
+                    if(attr === 'left') 
+                        speed = -speed;
+                    attr = 'left';
+                }
+                if(attr === 'top' || attr === 'buttom') {
+                    if(attr === 'top') 
+                        speed = -speed;
+                    attr = 'top';
+                }
+                // 定义定时器
+                obj.intervalId = setInterval(function() {
+                    let currentPositon = parseInt(getStyle(obj, attr));
+                    let nextPosition = currentPositon + speed;
+                    obj.style[attr] = speed < 0 ? nextPosition < target ? target + 'px': nextPosition + 'px'
+                                                         : nextPosition > target ? target + 'px': nextPosition + 'px';
+                    if(nextPosition === target) {
+                        clearObjectInterval(obj)
+                        callback();
+                    }
+                }, 30)
+                
+                
+            }
+            btn1.onclick = function() {
+                autoMove(box1, 10, 800, 'right',function(){alert("到底了")});
+            }
+            btn2.onclick = function() {
+                autoMove(box1, 10, 0, 'left');
+            }
+            btn3.onclick = function() {
+                autoMove(box1, 10, 40, 'top');
+            }
+            btn4.onclick = function() {
+                autoMove(box1, 10, 800, 'buttom');
+            }
+            btn5.onclick = function() {
+                autoMove(box1, 10, 800, 'width');
+            }
+            btn6.onclick = function() {
+                autoMove(box1, 10, 800, 'height');
+            }
+            
+            btnStop.onclick = function() {
+                clearObjectInterval(box1);
+            }
+            
+            // btn1.onclick = function() {
+            //     // 关闭先前的定时器
+            //     clearInterval(intervalId);
+            //     // 打开新的定时器
+            //     intervalId =  setInterval(function() {
+            //         // 若直接使用offsetLeft, offsetTop无法和所要接收的style形成一一对应的关系，所以可以使用getStlye()的方法得到对应的样式
+            //         let currentPosition = parseInt(getStyle(box1, 'left'));
+            //         let nextPosition = currentPosition + speed;
+            //         // box终止的位置
+            //         if(nextPosition > 800)
+            //             nextPosition = 800;
+            //         box1.style.left = nextPosition + 'px';
+            //     }, 30)
+            // }
+            // btn2.onclick = function() {
+            //      // 关闭先前的定时器
+            //     clearInterval(intervalId);
+            //     // 打开新的定时器
+            //     intervalId = setInterval(function() {
+            //         // 若直接使用offsetLeft, offsetTop无法和所要接收的style形成一一对应的关系，所以可以使用getStlye()的方法得到对应的样式
+            //         let currentPosition = parseInt(getStyle(box1, 'left'));
+            //         let nextPosition = currentPosition +(-speed) ;
+            //         // box终止的位置
+            //         if(nextPosition < 0)
+            //             nextPosition = 0;
+            //         box1.style.left = nextPosition + 'px';
+            //     }, 30)
+            // }
+            // 重复的部分有点多，可以提取成一个对象或者函数，注意到函数的共用变量intervalId，可以作为返回值
+            
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box {
+            width: 50px;
+            height: 50px;
+            background-color: #ff0000;
+            position: absolute;
+        }
+    </style>
+</head>
+<body>
+    <div class="box"></div>
+    <br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br>
+    <br><br><br><br><br><br><br><br><br>
+    <script>
+        const box = document.getElementsByClassName('box')[0];
+        // 若只是将鼠标的范围规定在box内，则会造成鼠标向左移动而脱离对应的模块（因为box是左上角跟着鼠标的）
+        document.onmousemove = function(event) {
+            event = event || window.event;
+            // clientX表示的是在当前窗口下鼠标的位置
+            // 而pageX表示的是在当前页面下鼠标的位置
+        //    法1：直接使用pageX/Y但是ie不兼容
+            // const x = event.pageX;
+            // const y = event.pageY;
+            
+        //  法2：获取滚动条的距离加上即可；
+            const scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+            const x = event.clientX;
+            const y = event.clientY + scrollTop;
+            
+            // 注意得到的只是数字
+            box.style.left = x + 'px';
+            box.style.top = y + 'px';
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box {
+            min-height: 50px;
+            height: 100px;
+            width: 100px;
+            background-color: #ff0000;
+        }
+    </style>
+</head>
+<body>
+    <!-- 鼠标向下滚动时，div高变大，向上滚动时变小 -->
+    <div class="box"></div>
+    <script>
+        const box = document.querySelector('.box');
+        
+        function bind(obj, eventName, callback) {
+            if(obj.addEventListener) {
+                obj.addEventListener(obj, eventName, callback);
+            }
+            else {
+                obj.attachEvent(eventName, function() {
+                    callback.call(obj);
+                })
+            }
+        }
+        // onmousewheel中火狐并不支持，只能使用addEventListener进行绑定，且对应的事件名称为'DOMMouseScroll'
+        box.onmousewheel = function (event) {
+            // 火狐中并没有event.wheelDelta属性，只有event.detail；
+            if(event.wheelDelta > 0 || event.detail < 0){
+                box.style.height = box.clientHeight - 10 + 'px';
+            }
+            else {
+                box.style.height = box.clientHeight + 10 + 'px';
+            }
+            // 当触发该响应函数时，取消滑动鼠标滚轮时浏览器滚动条的默认行为
+            event.preventDefault && event.preventDefault();
+            // ie浏览器并不支持这种方式来取消浏览器的默行为
+            return false;
+        }
+        
+        bind(box,'DOMMouseScroll', box.onmousewheel);
+        
+    </script>
+</body>
+</html>

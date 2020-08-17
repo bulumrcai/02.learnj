@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div {
+            width: 100px;
+            height: 100px;
+            background-color: #ff0000;
+        }
+
+        img {
+            width: 500px;
+            height: 500px;
+            float: left;
+        }
+    </style>
+</head>
+<body>
+    <div></div>
+    <img src="../img/ex1.JPG" alt="">
+    <script>
+        let divElement = document.querySelector('div')
+        console.log(divElement.clientWidth)
+        let imgElement = document.querySelector('img')
+        console.log(imgElement.clientWidth)
+    </script>
+</body>
+</html>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="./CSS/reset.css">
+    <link rel="stylesheet" href="./CSS/main.css">
+</head>
+<body>
+    <div id="container">
+        <div class="employee">
+            <h2>添加新员工</h2>
+            <ul>
+                <li>
+                    <label for="name">name:</label>
+                    <input id="name" type="text">
+                </li>
+                <li>
+                    <label for="email">email:</label>
+                    <input id="email" type="text">
+                </li>
+                <li>
+                    <label for="salary">salary:</label>
+                    <input id="salary" type="text">
+                </li>
+            </ul>
+            <button class="add-btn">添加</button>
+        </div>
+        <div class="employee-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Salary</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>bulumrcai</td>
+                        <td>10913@qq.com</td>
+                        <td>12414</td>
+                        <td><button class="delete-btn">删除</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <script src="./JS/main.js"></script>
+</body>
+</html>

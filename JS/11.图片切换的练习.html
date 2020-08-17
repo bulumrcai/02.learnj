@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        /* reset */
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        img {
+            vertical-align: middle;
+        }
+        .container {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="../img/decimal.JPG" width="400px" height="400px" alt="图片示例">
+        <div>
+            <button class="prev">上一张</button>
+            <button class="next">下一张</button>
+            <p>当前第<span class="cur"></span>张/共<span class="total"></span>张</p>
+        </div>
+    </div>
+    <script>
+        
+        window.onload = function() {
+            const imgs = [
+                '../img/decimal.jpg',
+                '../img/equal.jpg',
+                '../img/ex1.jpg',
+                '../img/ex2.jpg'
+            ]
+            let index = 0;
+            // 需要一个来记录初始值，以便计算
+            const btnPrev = document.querySelector('.container .prev');
+            const btnNext = document.querySelector('.container .next');
+            const imgElement = document.querySelector('.container img');
+            const curSpan = document.querySelector('.container .cur');
+            const totalSpan = document.querySelector('.container .total');
+            totalSpan.innerHTML = imgs.length;
+            curSpan.innerHTML = index + 1;
+            btnPrev.onclick = () => {
+                index = (index + imgs.length - 1) % imgs.length;
+                imgElement.src = imgs[index];
+                curSpan.innerHTML = index + 1;
+            }
+            btnNext.onclick = () => {
+                index = (index + 1) % imgs.length;
+                imgElement.src = imgs[index];
+                curSpan.innerHTML = index + 1;
+
+            }
+            
+        }
+    </script>
+</body>
+</html>

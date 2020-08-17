@@ -1,0 +1,60 @@
+
+/* 只是为了文本居中 */
+main h4 {
+    text-align: center;
+}
+.tabsbox {
+    height: 300px;
+    width: 800px;
+    border: 1px solid #ffff00;
+    margin: 0 auto;
+    font-size: 16px;
+}
+.firstnav::after {
+    content: "";
+    display: block;
+    clear: both;
+}
+.firstnav ul, .firstnav ul li{
+    float: left;
+}
+.firstnav ul li {
+    border-right: 1px solid #000000;
+    border-bottom: 1px solid #000000;
+    line-height: 40px;
+    width: 60px;
+    padding: 0 5px 0 5px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 5px;
+}
+.firstnav ul li.liactive {
+    border-bottom: none;
+}
+.firstnav ul li span {
+    /* 强制不换行 */
+    white-space: nowrap; 
+    /* word-break: keep-all; */
+    /* line-break: unset; */
+}
+.firstnav ul li img {
+    width: 10px;
+    height: 10px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.firstnav .tab-add {
+    float: right;
+    position: relative;
+    right: 5px;
+    top: 5px;
+}
+.tabsbox .tabscon section {
+    display: none;
+    margin: 0 10px;
+}
+.tabsbox .tabscon section.conactive {
+    display: block;
+}

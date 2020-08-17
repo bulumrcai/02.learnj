@@ -1,0 +1,25 @@
+@charset "utf-8";
+
+.search-box {
+    text-align: center;
+    padding-top: 20px;
+}
+.search-box .nav input{
+    width: 50px;
+}
+.search-box .nav {
+    padding-bottom: 5px;
+}
+.search-box .good-table {
+    margin: 0 auto;
+    font-size: 16px;
+    
+}
+.search-box .good-table td{
+    border: 1px solid #000000;
+    padding: 5px 10px 5px 10px
+}
+
+.search-box .good-table tr:first-child {
+    font-weight: 700;
+}

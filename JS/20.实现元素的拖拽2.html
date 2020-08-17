@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box1 {
+            width: 100px;
+            height: 100px;
+            background-color: #ff0000;
+            position: absolute;
+            /* 相对于body进行定位 */
+        }
+        .box2 {
+            width: 100px;
+            height: 100px;
+            background-color: #00ff00;
+            position: absolute;
+            left: 200px;
+            top: 200px;
+        }
+    </style>
+</head>
+<body>
+    <div class="box1"></div>
+    <div class="box2"></div>
+    <!-- 相同的absolute的层叠现象，后面的覆盖先前的 -->
+    <script>
+        window.onload = function() {
+            let box1 = document.querySelector('.box1');
+            box1.onmousedown = function(event) {
+                // alert('开始拖拽')
+                // 不能给box1绑定，因为鼠标会脱离对应的边缘
+                // offsetX， offsetY为元素和鼠标之间的相对距离
+                // offsetLeft为定位元素相对于祖先非static的left，且返回一个数值
+                // .style是用于设置元素的位置，进行计算时记得使用元素对象的属性而不是style的属性
+                let offsetX = event.clientX - this.offsetLeft;
+                let offsetY = event.clientY - this.offsetTop;
+
+                document.onmousemove = function(event) {
+                    event = event || window.event;
+                    let x = event.clientX
+                    let y = event.clientY;
+                    let scrollTop = document.body.scrollTop || document.documentElement.scrollTop;
+                    box1.style.left = x - offsetX + 'px';
+                    box1.style.top = y + scrollTop - offsetY + 'px';
+                }
+                // box1.onmouseup
+                document.onmouseup = function() {
+                   document.onmousemove = null;
+                   document.onmouseup = null;
+                } 
+            }
+        }
+    </script>
+</body>
+</html>

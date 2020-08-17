@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 
+        用户名输入合法，则后面提示信息为：用户名合法，并且颜色为绿色
+        不合法，则后面提示信息为用户名不和法，并且显示为红色
+     -->
+     <div class="account">
+        <label for="user">用户名:</label>
+        <input type="text" id="user">
+        <span>请输入用户名</span>
+     </div>
+     
+</body>
+<script>
+    const reg = /^[a-zA-Z0-9_-]{6,16}$/;
+    
+    let userSpan = document.querySelector('.account span')
+    let userInput = document.querySelector('.account #user');
+    userInput.onfocus = function() {
+        userSpan.innerHTML = "请输入用户名";
+        userSpan.style.color = "#000000";
+    }
+    userInput.onblur = function() {
+        // 注意获取输入框获取value的位置 
+        let userName = userInput.value;
+        console.log(userName)
+        if(reg.test(userName)){
+            userSpan.innerHTML = "用户名输入正确";
+            userSpan.style.color = "#00ff00";
+        }
+        else{
+            userSpan.innerHTML = "用户名格式错误";
+            userSpan.style.color = "#ff0000";
+        }
+    }
+
+</script>
+</html>

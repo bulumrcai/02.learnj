@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .wrap {
+            overflow-y: auto;
+            height: 500px;
+            width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- 实现只有滚动条滚动到底部，才能够使用input -->
+    <div class="agreement wrap">
+        <h2>请仔细阅读协议</h2>
+        <br><br><br><br><br><br><br><br>        
+        <br><br><br><br><br><br><br><br>        
+        <br><br><br><br><br><br><br><br>        
+        <br><br><br><br><br><br><br><br>        
+        <br><br><br><br><br><br><br><br>        
+        <br><br><br><br><br><br><br><br>        
+        <br><br><br><br><br><br><br><br>        
+        <br><br><br><br><br><br><br><br>        
+        <br><br><br><br><br><br><br><br>        
+        <br><br><br><br><br><br><br><br>        
+    </div>
+    <div class="wrap">
+        <input type="checkbox" name="agree" id="agree" disabled>
+    <label for="agree">我已经阅读了协议</label>
+    </div>
+    <script>
+        // 当滚动条滚动：是一个事件
+        // onscroll会在滚动条滚动时触发
+        const scrollDiv = document.getElementsByClassName('agreement')[0];
+        scrollDiv.onscroll = function() {
+            const divClientHeight = this.clientHeight;
+            const divScrollHeight = this.scrollHeight;
+            const divScrollTop = this.scrollTop;
+            const inputBtn = document.getElementById('agree');
+            if(divClientHeight === divScrollHeight - divScrollTop)
+                inputBtn.disabled = false;
+            else
+                inputBtn.disabled = true;
+        }
+    </script>
+</body>
+</html>

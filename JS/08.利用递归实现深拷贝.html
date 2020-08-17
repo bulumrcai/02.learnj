@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        function deepCopy_DFS(newobj, oldobj){
+            for(key in oldobj) {
+            // 获取对应的属性值
+            let item = oldobj[key];
+            // 分类
+            // 1， 是否是数组，复杂数据类型
+            // 数组也是属于Object，所以需要放在前面
+            if(item instanceof Array){
+                newobj[key] = [];
+                deepCopy_DFS(newobj[key], item)
+            }
+            // 2. 是否是对象，复杂数据类型
+            else if(item instanceof Object){
+                newobj[key] = {};
+                deepCopy_DFS(newobj[key], item);
+            }
+            // 3. 是否属于基本数据类型，直接赋值
+            else{
+                newobj[key] = item;
+            }
+            }
+        }
+        const obj = {
+        father:{id:{jifie:'hello'}, name:{en:'bulu',ch:"布鲁"}, color: ['red', 'green', 'blue']},
+        mother:{id:{jifie:'hello'}, name:{en:'bulu',ch:"布鲁"}, color: ['red', 'green', 'blue']}
+        }
+        let obj_copy = {}
+        deepCopy_DFS(obj_copy, obj);
+        console.log(obj_copy);
+    </script>
+</body>
+</html>

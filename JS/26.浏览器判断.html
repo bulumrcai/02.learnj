@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        const ua = navigator.userAgent;
+        // i正则表达式忽略大小写
+        if(/firefox/i.test(ua)) 
+            alert("我是火狐");
+        else if(/chrome/i.test(ua))
+            alert("我是chrome")
+        else if(/msie/i.test(ua))
+            alert("我是ie10及以下")
+        else if("ActiveXObject" in window) 
+            console.log("你是ie11")
+
+        // 如果无法通过UserAgent不能判断，可以通过一些浏览器中特有的对象来识别
+        // 不如ActiveXobject
+        if("ActiveXObject" in window) 
+            console.log("你是ie")
+        else
+            console.log("你不是ie")
+    </script>
+</body>
+</html>

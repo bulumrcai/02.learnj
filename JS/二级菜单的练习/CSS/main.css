@@ -1,0 +1,54 @@
+#nav {
+    width: 1000px;
+    height: 84px;
+    margin: 0 auto;
+    background-color: #eaeaea;
+    text-align: center;
+}
+
+#nav ul li>div ul {
+    height: 0px;
+    /* 相当于对应区域不显示 */
+    overflow: hidden;
+}
+
+#nav ul li>div.active ul {
+    /* overflow: visible; */
+    /* height会被内容撑开 */
+    height: auto;
+    color: #eaeaea;
+}
+/* 为了实现动画效果 */
+#nav ul li>div ul a{
+    color: #eaeaea;
+}
+
+#nav ul li{
+    width: 80px;
+    margin: 0 auto;
+    background-color: #eaea;
+}
+
+#nav ul li>div #icon {
+    position: relative;
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-left: 5px solid #000000;
+    border-bottom: 5px solid transparent;
+    border-top: 5px solid transparent;
+    border-right: 5px solid transparent;
+    left: 5px;
+}
+#nav ul li>div.active #icon {
+    position: relative;
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-top: 5px solid #000000;
+    border-bottom: 5px solid transparent;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    top: 2px;
+    left: 3px;
+}

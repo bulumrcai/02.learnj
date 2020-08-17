@@ -1,0 +1,17 @@
+@charset "utf-8";
+
+body {
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+}
+
+input, button{
+    outline: none;
+}
+
+table, tr, td {
+    border-collapse: collapse;
+    padding: 0;
+    margin: 0;
+}

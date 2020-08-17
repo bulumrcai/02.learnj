@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="contrainer">
+        <button class="btn1">按钮1</button>
+        <button class="btn2">按钮2</button>
+        <button class="btn3">按钮3</button>
+        <button class="btn4">按钮4</button>
+    </div>
+
+    <script>
+        // 法1
+        let btn1 = document.querySelector(".contrainer .btn1");
+        btn1.onclick = function() {
+            this.disabled = true;
+            setTimeout(function(){
+                btn1.disabled = false;
+            }, 3000)
+            // 在定时器函数中，this指的是windows对象
+            // function传递参数
+            // 可以是使用全局变量
+        }
+
+        // 法2 使用一个that存储button的this变量
+        let btn2 = document.querySelector(".contrainer .btn2");
+        btn2.onclick = function() {
+            this.disabled = true;
+            let that = this;
+            setTimeout(function(){
+                that.disabled = false;
+            }, 3000)
+            // 使用一个变量来存储this
+        }
+        // 法3 定时器中的函数是没有立即实行的，只是定义而已
+        // 如果想要传入参数，实际上相当于调用了函数
+        // let btn2 = document.querySelector(".contrainer .btn2");
+        // function start(btn) {
+        //     btn.disabled = false;
+        // }
+        // 法4 改变定时函数function的this指向，使其指向btn
+        let btn3 = document.querySelector(".contrainer .btn3");
+        // function start() {
+        //     this.disabled = false;
+        // }
+        // start.bind(btn3);
+        // btn3.onclick = function() {
+        //     this.disabled = true;
+        //     setTimeout(start, 3000)
+        //     // 定时器中的函数不能另外起一个函数
+        // }
+        btn3.onclick = function() {
+            this.disabled = true;
+            setTimeout(function() {
+                this.disabled = false;
+            }.bind(this), 3000)
+        }
+        // 法5：使用箭头函数
+        let btn4 = document.querySelector(".contrainer .btn4");
+        btn4.onclick = function() {
+            this.disabled = true;
+            setTimeout(() => this.disabled=false, 3000)
+        }
+        // 箭头函数this的指向
+
+    </script>
+</body>
+</html>

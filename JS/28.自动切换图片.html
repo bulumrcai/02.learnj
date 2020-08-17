@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            text-align: center;
+        }
+        .box {
+            width: 500px;
+            height: 500px;
+            padding: 20px;
+            background: #eaeaea;
+            margin: 0 auto;
+        }
+        .box img{
+            width: 500px;
+            height: 500px;
+
+        }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <img src="../img/ex1.JPG" alt="图片">
+    </div>
+    <button class="begin">开始图片的切换</button>
+    <button class="end">终止图片的切换</button>
+    <script>
+        window.onload = function() {
+            const imgUrl = [
+                '../img/ex1.JPG',
+                '../img/ex2.JPG',
+                '../img/ex3.JPG',
+                '../img/ex4.JPG',
+                '../img/ex5.JPG',
+                '../img/ex6.JPG',
+                '../img/ex7.JPG',
+                '../img/ex8.JPG'
+            ]
+            let index = 0;
+            function imgChange(img, imgUrl) {
+                img.src = imgUrl[index];
+                index = (index + 1) % imgUrl.length;
+            }
+            const img = document.querySelector('.box img')
+            let id;
+            const btn1 = document.querySelector('button.begin');
+            btn1.onclick = function() {
+                clearInterval(id);
+                id = setInterval(() => {
+                    imgChange(img, imgUrl);
+                }, 1000);
+                // 点击多次之后会越来越快的原因：
+                /*每点击一个按钮，就会添加一个定时器，所以会开很多个定时器，所以切换速度变快了*/
+                // 无法停下来的原因：只能清除最后一个定时器
+                // 解决方案：在同一个元素对象开启一个定时器之前先清除先前的定时器。
+            }
+            const btn2 = document.querySelector('button.end');
+            btn2.onclick = function() {
+                clearInterval(id);
+            }
+        }
+    </script>
+</body>
+</html>

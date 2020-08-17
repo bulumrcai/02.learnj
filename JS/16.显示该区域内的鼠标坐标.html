@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .touch-area {
+            width: 300px;
+            height: 300px;
+            border: 10px solid #000000;
+            margin: 20px auto;
+        }
+        .show-area {
+            width: 300px;
+            height: 20px;
+            text-align: center;
+            border: 1px solid #000000;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="touch-area"></div>
+    <div class="show-area"></div>
+    <script>
+        const touchArea = document.getElementsByClassName('touch-area')[0];
+        const showArea = document.getElementsByClassName('show-area')[0];
+        touchArea.onmousemove = function(event) {
+            const x = event.clientX;
+            const y = event.clientY;
+            showArea.innerHTML = `x = ${x}  y = ${y}`;
+        }
+    </script>
+</body>
+</html>

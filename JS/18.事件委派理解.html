@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #ul {
+            background-color: #ff0000;
+        }
+    </style>
+</head>
+<body>
+    <button id="a-add">增加超链接</button>
+    <ul id="ul">
+        <li><a href="javascript:;" class="link hello">链接1</a></li>
+        <li><a href="javascript:;" class="link">链接2</a></li>
+        <li><a href="javascript:;" class="link">链接3</a></li>
+    </ul>
+    <script>
+        window.onload = function() {
+            let aElements = document.querySelectorAll('#ul li a');
+            function aClick(event) {
+                const reg = /link/;
+                if(reg.test(event.target.className))
+                    alert('点击了链接')
+            }
+            // 为每一链接都增加了超链接
+            // aElements.forEach(aElement => {
+            //     aElement.onclick = aClick;
+            // })
+            // 我们希望只绑定一次事件，即可以应用到多个元素上，即使元素是后来添加的
+            // 我们可以尝试将其绑定到共同的祖先，利用冒泡进行触发
+            const ulElement = document.querySelector('#ul');
+            ul.onclick = aClick;
+            // 造成了只要点击ul的任何区域都能触发事件
+            // 只有点击对应的区域才会触发事件
+            let btn = document.querySelector('#a-add');
+            btn.onclick = function() {
+                let liElement = document.createElement('li');
+                liElement.innerHTML = '<li><a href="javascript:;" class="link">新增超链接</a></li>'
+                const ulElement = document.querySelector('#ul');
+                ul.appendChild(liElement);
+                // 显然，没有给新增的链接绑定对应的事件
+            }
+        }
+
+    </script>
+</body>
+</html>

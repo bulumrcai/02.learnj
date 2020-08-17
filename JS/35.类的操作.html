@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .b1 {
+            width: 100px;
+            height: 100px;
+            background-color: #ff0000;
+        }
+        .b2 {
+            width: 200px;
+            height: 2000px;
+            background-color: #00ff00;
+        }
+    </style>
+</head>
+<body>
+    <div></div>
+    <script>
+        /*
+        *  通过style属性来修改元素的样式，每修改一个样式，浏览器就需要重新渲染一次页面，这样执行的性能是比较差的
+        *  而且当需要修改多个样式的时候，也不太方便
+        */
+        // 我们通过修改class间接修改样式
+        // 我们只需要修改一次，就可以修改多个样式，此时浏览器只需要重新渲染页面一次，性能较高
+        // 并且这种方式可以使表现和行为分离
+        window.onload = function() {
+            /* 给元素添加类
+            *  参数:
+            *      obj:添加class的元素
+            *      cn ：添加class的值
+            */     
+            function addClass(obj ,cn) {
+                // 需要判断包不包括
+                if(!hasClass(obj, cn))
+                    obj.className += " " + cn;
+            }
+            // 法一
+            // 判断一个元素中是否含有指定的类值
+            function hasClass(obj, cn){
+                // 字符串作为正则表达式时，需要用构造函数
+                // \b单词的分隔符
+                const reg = new RegExp('\\b' + cn + '\\b');
+                return reg.test(obj.className);
+            }
+            // 法2：可以使用split()函数分割成数组后，在判断有没有对应的值在数组中
+            // 删除ige元素中指定的类值
+            function removeClass(obj, cn){
+                // 直接替换成空串
+                const reg = new RegExp('\\b' + cn + '\\b');
+                obj.className = obj.className.replace(reg, '');
+            }
+            // toggle:切换类，元素中有该类，则删除，没有则加上
+            // 相当于在类进行切换
+            function toggleClass(obj, cn) {
+                if(hasClass(obj, cn))
+                    removeClass(obj, cn);
+                else    
+                    addClass(obj, cn);
+            }
+        } 
+    </script>
+</body>
+</html>

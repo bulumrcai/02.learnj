@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="container">
+        <input type="text">
+    </div>
+    <button>确认</button>
+    <script>
+        let container = document.querySelector('.container')
+        let button = document.querySelector('button');
+        button.onclick = function() {
+          // 若只是采用text !== ""，则如果用户输入的是一连串空格，则不会提示为空
+            let text = container.querySelector("input").value.trim();
+            if(text !== "")
+                container.innerHTML = text;
+            else
+                alert("内容为空")
+        }
+    </script>
+</body>
+</html>
