@@ -369,6 +369,35 @@
   - [4 语法](#4-语法)
     - [4.1 语句和表达式](#41-语句和表达式)
       - [4.1.1 语句的结果值的隐式返回](#411-语句的结果值的隐式返回)
+  - [5 正则表达式](#5-正则表达式)
+    - [5.1. 正则表达式的定义](#51-正则表达式的定义)
+    - [5.2. 正则表达式的作用](#52-正则表达式的作用)
+    - [5.3. 正则表达式的特殊字符](#53-正则表达式的特殊字符)
+      - [5.3.1. 边界字符 ^ $](#531-边界字符--)
+      - [5.3.2 字符类 []](#532-字符类-)
+      - [5.3.3. 量词符](#533-量词符)
+      - [5.3.4. 预定义类](#534-预定义类)
+    - [5.4. 正则表达式的创建](#54-正则表达式的创建)
+      - [5.4.1. 通过字面量创建(/reg/[flags])](#541-通过字面量创建regflags)
+      - [5.4.2. 通过构造函数创建(new RegExp(reg[, flags]))](#542-通过构造函数创建new-regexpreg-flags)
+      - [5.4.3 正则表达式标识](#543-正则表达式标识)
+    - [5.5. 正则表达式的属性和方法](#55-正则表达式的属性和方法)
+      - [5.5.1 RegExp#dotAll(只读)](#551-regexpdotall只读)
+      - [5.5.2 RegExp#global(只读)](#552-regexpglobal只读)
+      - [5.5.3 RegExp#ignoreCase(只读)](#553-regexpignorecase只读)
+      - [5.5.4 RegExp#multiline(只读)](#554-regexpmultiline只读)
+      - [5.5.5 RegExp#unicode(只读)](#555-regexpunicode只读)
+      - [5.5.6 RegExp#source(只读)](#556-regexpsource只读)
+      - [5.5.7 RegExp#flags(只读)](#557-regexpflags只读)
+      - [5.5.8 RegExp#lastIndex](#558-regexplastindex)
+      - [5.5.9 RegExp#exec(str)](#559-regexpexecstr)
+        - [5.5.9.1 结果数组(result)](#5591-结果数组result)
+        - [5.5.9.2 注意事项](#5592-注意事项)
+        - [5.5.9.3 全局匹配与exec和lastIndex](#5593-全局匹配与exec和lastindex)
+      - [5.5.10 RegExp#test(str)](#5510-regexpteststr)
+      - [5.5.12 RegExp#toString()](#5512-regexptostring)
+    - [5.6. 常用的正则表达式](#56-常用的正则表达式)
+      - [5.6.1. 用户名验证](#561-用户名验证)
 - [五 js的DOM操作](#五-js的dom操作)
   - [1. DOM(document Object Model)](#1-domdocument-object-model)
     - [1.2. DOM树](#12-dom树)
@@ -575,8 +604,51 @@
       - [6.2.6.2. 解决div移动第一个键和第二个键之间的延迟问题（防误触）](#6262-解决div移动第一个键和第二个键之间的延迟问题防误触)
       - [6.2.6.3. 构造一个简单的动画函数](#6263-构造一个简单的动画函数)
       - [6.2.6.4. 轮播图效果的实现](#6264-轮播图效果的实现)
-- [七 js的迭代器](#七-js的迭代器)
-- [八 Promise](#八-promise)
+- [七 js的迭代器（Iterator)](#七-js的迭代器iterator)
+  - [1 迭代器的创建](#1-迭代器的创建)
+    - [1.1 通过Iterator(object[, keyOnly])来构建](#11-通过iteratorobject-keyonly来构建)
+    - [1.2 通过生成器来构建](#12-通过生成器来构建)
+      - [1.2.1 利用内置函数自身的生成器(Symbol.iterator)](#121-利用内置函数自身的生成器symboliterator)
+    - [1.3 自定义构建迭代器](#13-自定义构建迭代器)
+  - [2 迭代器的属性和方法](#2-迭代器的属性和方法)
+    - [2.1 Iterator#next()](#21-iteratornext)
+      - [2.1.1 返回对象的属性](#211-返回对象的属性)
+    - [2.2 for...of...与迭代器](#22-forof与迭代器)
+      - [2.2.1 与for...of等价的代码](#221-与forof等价的代码)
+  - [3 iterable](#3-iterable)
+- [八 生成器(Generator)](#八-生成器generator)
+  - [1 生成器的实质](#1-生成器的实质)
+  - [2 生成器的关键词](#2-生成器的关键词)
+    - [2.1 function *funcName() {}](#21-function-funcname-)
+    - [2.2 yield关键词](#22-yield关键词)
+      - [2.2.1 yield关键词的作用](#221-yield关键词的作用)
+        - [2.2.1.1 使生成器函数在yield所在语句暂停运行](#2211-使生成器函数在yield所在语句暂停运行)
+        - [2.2.1.2 给迭代器返回对象的value赋值为yield后面表达式的返回值](#2212-给迭代器返回对象的value赋值为yield后面表达式的返回值)
+        - [2.2.1.3 接收next函数传入的参数](#2213-接收next函数传入的参数)
+    - [2.3 try...finally](#23-tryfinally)
+  - [3 生成器返回的迭代器返回对象的value赋值](#3-生成器返回的迭代器返回对象的value赋值)
+  - [4 生成器函数的参数](#4-生成器函数的参数)
+    - [4.1 通过函数的参数进行传递](#41-通过函数的参数进行传递)
+    - [4.2 通过next对参数进行传递](#42-通过next对参数进行传递)
+  - [5 生成器的构造](#5-生成器的构造)
+    - [4.1 通过生成器函数构造](#41-通过生成器函数构造)
+    - [4.2 通过生成器表达式构造(匿名)](#42-通过生成器表达式构造匿名)
+    - [4.3 在对象中构造(简便写法)](#43-在对象中构造简便写法)
+    - [4.4 例子](#44-例子)
+  - [6 终止无限循环迭代器](#6-终止无限循环迭代器)
+    - [6.1 无限循环迭代器](#61-无限循环迭代器)
+    - [6.2 终止无限循迭代器的方法](#62-终止无限循迭代器的方法)
+      - [6.2.1 在for...of中调用break](#621-在forof中调用break)
+      - [6.2.2 iterator.return([str])函数的调用](#622-iteratorreturnstr函数的调用)
+  - [7 生成器函数的应用](#7-生成器函数的应用)
+    - [7.1 异步迭代生成器](#71-异步迭代生成器)
+    - [7.2 生成器 + Promise](#72-生成器--promise)
+      - [7.2.1 run函数](#721-run函数)
+      - [7.2.2 例子](#722-例子)
+      - [7.2.3 async和await运用的是这种原理](#723-async和await运用的是这种原理)
+    - [7.3 生成器中的 Promise 并发](#73-生成器中的-promise-并发)
+    - [7.4 生成器委托(后面再进行补充)](#74-生成器委托后面再进行补充)
+- [九 Promise](#九-promise)
   - [1 Promised的基本理解](#1-promised的基本理解)
     - [1.1 promise的理解](#11-promise的理解)
     - [1.2 promise的状态](#12-promise的状态)
@@ -618,7 +690,7 @@
     - [4.3 js的异步执行流程](#43-js的异步执行流程)
   - [5 常见面试题](#5-常见面试题)
     - [5.1 认清楚哪些是异步回调函数,哪些是同步代码](#51-认清楚哪些是异步回调函数哪些是同步代码)
-- [九 axios](#九-axios)
+- [十 axios](#十-axios)
   - [1 http的理解](#1-http的理解)
     - [1.1 http请求交互的基本过程](#11-http请求交互的基本过程)
     - [1.2 http请求报文](#12-http请求报文)
@@ -725,7 +797,55 @@
     - [7.3 axios执行的流程图](#73-axios执行的流程图)
     - [7.4 axios如何把interceptor和request串联起来](#74-axios如何把interceptor和request串联起来)
     - [7.5 axios是如何取消request的请求的](#75-axios是如何取消request的请求的)
-- [十 ES6增加的内容总结](#十-es6增加的内容总结)
+- [十一 JS的模块化](#十一-js的模块化)
+  - [1 模块化](#1-模块化)
+    - [1.1 定义](#11-定义)
+    - [1.2 原因](#12-原因)
+    - [1.3 用script引入多个js文件为什么效率不高](#13-用script引入多个js文件为什么效率不高)
+  - [2 HTML引入js模块的模块化的标准](#2-html引入js模块的模块化的标准)
+    - [2.1 在html中引入JS模块的方法](#21-在html中引入js模块的方法)
+      - [2.1.1 全局function模式（不能实现模块化）](#211-全局function模式不能实现模块化)
+      - [2.1.2 namespace模式（通过对象进行模块化）](#212-namespace模式通过对象进行模块化)
+      - [2.1.3 IIFE模式(将要暴露的内容出入一个对象并变成window的一个属性值)](#213-iife模式将要暴露的内容出入一个对象并变成window的一个属性值)
+      - [2.1.4 IIFE增强模式](#214-iife增强模式)
+  - [3 JS和JS文件之间实现js模块化标准](#3-js和js文件之间实现js模块化标准)
+    - [3.1 commonJS模块化的规范(node.js模块化的标准)](#31-commonjs模块化的规范nodejs模块化的标准)
+      - [3.1.1 commonJS模块化的规范的基本语法](#311-commonjs模块化的规范的基本语法)
+        - [3.1.1.1 暴露语法(只能二选一,不能同时使用)](#3111-暴露语法只能二选一不能同时使用)
+          - [3.1.1.1.1 module.exports = value](#31111-moduleexports--value)
+          - [3.1.1.1.2 exports.xxx = value](#31112-exportsxxx--value)
+        - [3.1.1.2 引入语法](#3112-引入语法)
+          - [3.1.1.2.1 const xxx = require(xxx)](#31121-const-xxx--requirexxx)
+      - [3.1.2 commonJS在服务器端和浏览器端的不同](#312-commonjs在服务器端和浏览器端的不同)
+        - [3.1.2.1 在服务器端（node.js)](#3121-在服务器端nodejs)
+          - [3.1.2.1.1 基于服务器端的模块化过程](#31211-基于服务器端的模块化过程)
+          - [3.1.2.1.2 基于服务器端的模块化的目录结构](#31212-基于服务器端的模块化的目录结构)
+        - [3.1.2.2 在浏览器端](#3122-在浏览器端)
+          - [3.1.2.2.1 基于浏览器端的模块化过程](#31221-基于浏览器端的模块化过程)
+          - [3.1.2.2.2 基于浏览器端的模块化的目录结构](#31222-基于浏览器端的模块化的目录结构)
+    - [3.2 AMD模块化的规范](#32-amd模块化的规范)
+      - [3.2.1 基本语法](#321-基本语法)
+        - [3.2.1.1 暴露用法](#3211-暴露用法)
+          - [3.2.1.1.1 定义没有依赖的模块](#32111-定义没有依赖的模块)
+          - [3.2.1.1.2 定义有依赖的模块](#32112-定义有依赖的模块)
+        - [3.2.1.2 引入使用模块](#3212-引入使用模块)
+          - [3.2.1.2.1 配置模块id与路径的对应](#32121-配置模块id与路径的对应)
+          - [3.2.1.2.2 引入使用模块](#32122-引入使用模块)
+      - [3.2.2 AMD引入模块的基本过程](#322-amd引入模块的基本过程)
+      - [3.2.3 AMD引入模块的目录结构](#323-amd引入模块的目录结构)
+      - [3.2.4 注意事项](#324-注意事项)
+    - [3.3 ES6的模块化](#33-es6的模块化)
+      - [3.3.1 基本语法](#331-基本语法)
+        - [3.3.1.1 暴露模块(export)](#3311-暴露模块export)
+          - [3.3.1.1.1 单独导出变量或者函数](#33111-单独导出变量或者函数)
+          - [3.3.1.1.2 导出一个对象(推荐)](#33112-导出一个对象推荐)
+          - [3.3.1.1.3 export default](#33113-export-default)
+        - [3.3.1.2 导入模块(import)](#3312-导入模块import)
+          - [3.3.1.2.1 普通的导入(使用对象字面量)](#33121-普通的导入使用对象字面量)
+          - [3.3.1.2.2 使用*导入整个模块对象](#33122-使用导入整个模块对象)
+          - [3.3.1.2.3 export default的导入](#33123-export-default的导入)
+      - [3.3.2 注意事项](#332-注意事项)
+- [十二 ES6增加的内容总结](#十二-es6增加的内容总结)
   - [1. 类的新的定义方式](#1-类的新的定义方式)
     - [1.1. class](#11-class)
       - [1.1.1. extends和super](#111-extends和super)
@@ -850,6 +970,105 @@
         - [18.4.1 String#startsWith(str[, index])](#1841-stringstartswithstr-index)
         - [18.4.2 String#endsWith(str[, index])](#1842-stringendswithstr-index)
         - [18.4.3 String#includes(str[, index])](#1843-stringincludesstr-index)
+- [JQuery](#jquery)
+  - [1 了解jQuery](#1-了解jquery)
+  - [2 jQuery的基本方法](#2-jquery的基本方法)
+    - [1 jQuery的入口函数](#1-jquery的入口函数)
+    - [2 jQuery的顶级对象$](#2-jquery的顶级对象)
+        - [2.1 DOM对象和jQuery对象的区别](#21-dom对象和jquery对象的区别)
+        - [2.1.1 DOM对象](#211-dom对象)
+        - [2.1.2 jQuery对象](#212-jquery对象)
+      - [2.2 DOM对象和jQuery对象的相互转化](#22-dom对象和jquery对象的相互转化)
+        - [2.2.1 DOM对象转化为jQuery对象](#221-dom对象转化为jquery对象)
+        - [2.2.2 jQuery转化为DOM对象](#222-jquery转化为dom对象)
+    - [3 jQuery常用API](#3-jquery常用api)
+      - [3.1 jQuery的选择器(获取元素对象)](#31-jquery的选择器获取元素对象)
+      - [3.2 jQuery筛选方法](#32-jquery筛选方法)
+      - [3.3 jQuery是设置样式](#33-jquery是设置样式)
+        - [3.3.1 .css(attr)****](#331-cssattr)
+        - [3.3.2 .css(attr, style)](#332-cssattr-style)
+        - [3.3.3 .css({attr: style...})](#333-cssattr-style)
+      - [3.4 jQuery的动画效果](#34-jquery的动画效果)
+        - [3.4.1 显示隐藏](#341-显示隐藏)
+          - [3.4.1.1 show([speed], [easing], [fn]])](#3411-showspeed-easing-fn)
+          - [3.4.1.2 hide([speed], [easing], [fn])](#3412-hidespeed-easing-fn)
+          - [3.4.1.3 toggle([speed], [easing], [fn])](#3413-togglespeed-easing-fn)
+        - [3.4.2 滑动效果](#342-滑动效果)
+          - [3.4.2.1 slideDown([speed],[easing],[fn])](#3421-slidedownspeedeasingfn)
+          - [3.4.2.2 slideUp([speed],[easing],[fn])](#3422-slideupspeedeasingfn)
+          - [3.4.2.2 slideToggle([speed],[easing],[fn])](#3422-slidetogglespeedeasingfn)
+        - [3.4.3 淡入淡出效果](#343-淡入淡出效果)
+          - [3.4.2.1 fadeIn([speed],[easing],[fn])](#3421-fadeinspeedeasingfn)
+          - [3.4.2.2 fadeout([speed],[easing],[fn])](#3422-fadeoutspeedeasingfn)
+          - [3.4.2.3 fade([speed],[easing],[fn])](#3423-fadespeedeasingfn)
+          - [3.4.2.4 fadeTo([speed], opacity, [easing],[fn])](#3424-fadetospeed-opacity-easingfn)
+          - [3.4.2.5 高亮显示的思路](#3425-高亮显示的思路)
+        - [3.4.3 自定义动画animate](#343-自定义动画animate)
+          - [3.4.3.1 animate(params, [speed], [easing], [fn])](#3431-animateparams-speed-easing-fn)
+          - [3.4.3.2 手风琴效果的实现](#3432-手风琴效果的实现)
+      - [3.5 jQuery的元素固有属性的操作](#35-jquery的元素固有属性的操作)
+        - [3.5.1 获取元素的固有属性](#351-获取元素的固有属性)
+        - [3.5.2 设置元素的固有属性](#352-设置元素的固有属性)
+        - [3.5.3 获取自定义属性](#353-获取自定义属性)
+        - [3.5.4 添加自定义属性](#354-添加自定义属性)
+        - [3.5.5 获取元素内存的属性](#355-获取元素内存的属性)
+        - [3.5.6 在元素内存中添加属性](#356-在元素内存中添加属性)
+        - [3.5.6 全选框的实现](#356-全选框的实现)
+      - [3.6 jQuery的对象元素的内容](#36-jquery的对象元素的内容)
+        - [3.6.1 获取对象元素的内容](#361-获取对象元素的内容)
+        - [3.6.2 修改对象元素的内容](#362-修改对象元素的内容)
+        - [3.6.3 获取对象元素的文本](#363-获取对象元素的文本)
+        - [3.6.4 修改对象元素的文本](#364-修改对象元素的文本)
+        - [3.6.5 获取对象元素的value值](#365-获取对象元素的value值)
+        - [3.6.6 修改对象元素的value值](#366-修改对象元素的value值)
+      - [3.7 jQuery的对象元素的操作](#37-jquery的对象元素的操作)
+        - [3.7.1 元素的遍历](#371-元素的遍历)
+          - [3.7.1.1 each(function(index, domEle) {})](#3711-eachfunctionindex-domele-)
+          - [3.7.1.2 $.each(jqueryObject, function(index, domEle) {})](#3712-eachjqueryobject-functionindex-domele-)
+        - [3.7.2 元素的创建](#372-元素的创建)
+          - [3.7.2.1 $(content)](#3721-content)
+        - [3.7.3 元素的添加](#373-元素的添加)
+          - [3.7.3.1 fatherObject.append(sonObject)](#3731-fatherobjectappendsonobject)
+          - [3.7.3.2 fatherObject.prepend(sonObject)](#3732-fatherobjectprependsonobject)
+          - [3.7.3.3 brotherObject.before(jqueryObject)](#3733-brotherobjectbeforejqueryobject)
+        - [3.7.4 元素的删除](#374-元素的删除)
+          - [3.7.4.1 juqueryObject.remove()](#3741-juqueryobjectremove)
+          - [3.7.4.2 fatherObject.empty()](#3742-fatherobjectempty)
+          - [3.7.4.3 brotherObject.after(jqueryObject)](#3743-brotherobjectafterjqueryobject)
+      - [3.8 jQuery的对象方法总结](#38-jquery的对象方法总结)
+        - [3.8.0 length](#380-length)
+        - [3.8.1 $(this)](#381-this)
+        - [3.8.2 index()](#382-index)
+        - [3.8.3 show()](#383-show)
+        - [3.8.4 hide()](#384-hide)
+        - [3.8.5 addClass(className)](#385-addclassclassname)
+        - [3.8.6 removeClass(className)](#386-removeclassclassname)
+        - [3.8.6 toggleClass(className)](#386-toggleclassclassname)
+        - [3.8.7 hover(inFunc,[outFunc])](#387-hoverinfuncoutfunc)
+      - [3.10 jQuery的常见触发事件](#310-jquery的常见触发事件)
+      - [change(func)](#changefunc)
+    - [4 jQuery的隐式迭代](#4-jquery的隐式迭代)
+- [四 jquery的事件相关的操作](#四-jquery的事件相关的操作)
+  - [1 jquery事件注册](#1-jquery事件注册)
+    - [1.1 单个事件的注册](#11-单个事件的注册)
+      - [1.1.1 jqueryObject.eventName(function() {})](#111-jqueryobjecteventnamefunction-)
+    - [1.2 多个事件的注册](#12-多个事件的注册)
+      - [1.2.1 jqueryObject.once(events, [selector], fn)](#121-jqueryobjectonceevents-selector-fn)
+      - [1.2.2 jqueryObject.on(events, [selector], fn)](#122-jqueryobjectonevents-selector-fn)
+      - [1.2.3 微博发布页(重点关注事件委派的作用)](#123-微博发布页重点关注事件委派的作用)
+  - [2 jquery事件的解绑](#2-jquery事件的解绑)
+    - [2.1 jqueryObject.off()](#21-jqueryobjectoff)
+    - [2.2 jqueryObject.off(eventName, [selector])](#22-jqueryobjectoffeventname-selector)
+  - [3 jquery自动触发事件](#3-jquery自动触发事件)
+    - [3.1 jqueryObject.eventName()](#31-jqueryobjecteventname)
+    - [3.2 jqueryObject.trigger(eventName)](#32-jqueryobjecttriggereventname)
+    - [3.3 jqueryObject.triggerHandler(eventName)](#33-jqueryobjecttriggerhandlereventname)
+  - [3 jquery事件对象](#3-jquery事件对象)
+  - [4 jquery的对象拷贝](#4-jquery的对象拷贝)
+    - [4.1 $.extend([deep], target, ...object)](#41-extenddeep-target-object)
+  - [5 jquery多库共存](#5-jquery多库共存)
+    - [5.1 方法一](#51-方法一)
+    - [5.2 方法二](#52-方法二)
 
 <!-- /TOC -->
 
@@ -4680,6 +4899,339 @@ baz();
     }
     console.log(c)
 ```
+## 5 正则表达式
+### 5.1. 正则表达式的定义
+- 用于匹配字符串中字符组合的模式
+  - 在js中，是对象
+- <font color="red">正则表达式之中不需加引号</font>
+### 5.2. 正则表达式的作用
+- 实现匹配字符串
+- 实现字符串的过滤（替换）
+- 实现字符串的提取
+### 5.3. 正则表达式的特殊字符
+- 特殊字符又称为元字符
+  - 在正则表达式中具有特殊意义的专用符号
+#### 5.3.1. 边界字符 ^ $
+<table>
+  <tr>
+    <td>^</td>
+    <td>表示匹配行首字母</td>
+  </tr>
+  <tr>
+    <td>$</td>
+    <td>表示匹配行尾字母</td>
+  </tr>
+</table>
+
+- ^和$在一起表示精确匹配
+```javascript
+  const reg = /abc/
+```
+- 只需要包含abc就是返回true
+```javascript
+  const reg = /^abc/
+```
+- 必须以abc开头
+```javascript
+  const reg = /abc$/
+```
+- 必须以abc结尾
+```javascript
+  const reg = /^abc$/
+```
+- 精确匹配，要求必须是abc字符才符合规范
+#### 5.3.2 字符类 []
+<table>
+  <tr>
+    <td>[]</td>
+    <td>表示可选内容</td>
+  </tr>
+  <tr>
+    <td>[a-b]</td>
+    <td>[a,b]的可选范围</td>
+  </tr>
+  <tr>
+    <td>[a-bc-d]</td>
+    <td>字符组合，表示[a,b],[c,d]都是可选范围</td>
+  </tr>
+  <tr>
+    <td>[^]</td>
+    <td>表示可选内容取反，注意和边界符区分开来</td>
+  </tr>
+</table>
+
+- 字符组合类似于并集表达式
+```javascript
+  const reg = /[abc]/
+```
+- 只要包含有a,包含有b,包含有c都返回true
+```javascript
+  const reg = /^[abc]$/
+```
+- 只要是a或者b或者c都返回true
+
+```javascript
+  const reg = /^[a-z]$/
+```
+- 只有是小写的英文字母才返回true
+
+```javascript
+  const reg = /^[a-zA-Z0-9]$/
+```
+- 表示只有是26个字母以及数字才返回true
+
+#### 5.3.3. 量词符
+- 量词符若没有括号，只是指前面的一位字符的重复
+<table>
+  <tr>
+    <td>a*</td>
+    <td>前面的字符a可以出现0次或者无数次</td>
+  </tr>
+  <tr>
+    <td>a+</td>
+    <td>前面的字符a可以出现1次或者无数次</td>
+  </tr>
+  <tr>
+    <td>a?</td>
+    <td>前面的字符a可以出现0次或者1次</td>
+  </tr>
+  <tr>
+    <td>a{n}</td>
+    <td>前面的a一定要出现n次</td>
+  </tr>
+  <tr>
+    <td>{m, n}</td>
+    <td>前面的内容一定要出现[m,n]次</td>
+  </tr>
+</table>
+
+#### 5.3.4. 预定义类
+- 某些常见模式的简写方式
+
+<table>
+  <tr>
+    <td>\d</td>
+    <td>匹配0-9之间的任意数字，相当于[0-9]</td>
+  </tr>
+  <tr>
+    <td>\D</td>
+    <td>匹配0-9以外的字母，相当于[^0-9]</td>
+  </tr>
+  <tr>
+    <td>\w</td>
+    <td>匹配任意字母，数字和下划线，相当于[a-zA-Z0-9_]</td>
+  </tr>
+  <tr>
+    <td>\W</td>
+    <td>匹配任意字母，数字和下划线以外的字母，相当于[^a-zA-Z0-9_]</td>
+  </tr>
+  <tr>
+    <td>\s</td>
+    <td>匹配空格（包括换行符，制表符和空格符等），相当于[\r\t\n\v\f]</td>
+  </tr>
+  <tr>
+    <td>\S</td>
+    <td>匹配非空字符，相当于[\r\t\n\v\f]</td>
+  </tr>
+</table>
+
+- 座机号码的验证
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 
+        座机号码:
+        两种格式
+            010-12345678
+            0537-1234567
+     -->
+     <script>
+        //  正则符号的或者 |
+        const reg1 = /^\d{3}-\d{8}$ | ^\d{4}-\d{7}$/;
+        
+     </script>
+</body>
+</html>
+```
+### 5.4. 正则表达式的创建
+#### 5.4.1. 通过字面量创建(/reg/[flags])
+- 参数
+  - reg：是一个js的表达式
+  - flags:正则表达式标志
+```javascript
+  const reg = /js表达式/
+```
+#### 5.4.2. 通过构造函数创建(new RegExp(reg[, flags]))
+- <font color="red">new可以省略</font>
+- 参数
+  - reg
+    - string
+    - reg的字面量
+  - flags: 正则表达式标识
+#### 5.4.3 正则表达式标识
+<table>
+  <thead>
+    <tr>
+      <th>标志</th>
+      <th>描述</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>g</td>
+      <td>全局搜索(若没有该标志，正则表达式只是匹配一次)</td>
+    </tr>
+    <tr>
+      <td>i</td>
+      <td>不区分大小写搜索</td>
+    </tr>
+    <tr>
+      <td>m</td>
+      <td>多行搜索</td>
+    </tr>
+    <tr>
+      <td>s</td>
+      <td>允许.匹配换行符</td>
+    </tr>
+    <tr>
+      <td>u</td>
+      <td>使用unicode码的匹配模式</td>
+    </tr>
+    <tr>
+      <td>u</td>
+      <td>执行"粘性"搜索，匹配从目标字符串的当前位置开始</td>
+    </tr>
+  </tbody>
+</table>
+
+### 5.5. 正则表达式的属性和方法
+#### 5.5.1 RegExp#dotAll(只读)
+- 表明正则表达式是否使用"s"修饰符
+#### 5.5.2 RegExp#global(只读)
+- 表明正则表达式是否使用了 "g" 标志
+#### 5.5.3 RegExp#ignoreCase(只读)
+- 表明正则表达式是否使用了 "i" 标志
+#### 5.5.4 RegExp#multiline(只读)
+- 表明正则表达式是否使用了 "m" 标志
+#### 5.5.5 RegExp#unicode(只读)
+- 表明正则表达式是否使用了 "u" 标志
+#### 5.5.6 RegExp#source(只读)
+- 返回一个值为当前正则表达式对象的模式文本的字符串
+```javascript
+  var regex = /fooBar/ig;
+  console.log(regex.source); // "fooBar"，不包含 /.../ 和 "ig"。
+```
+#### 5.5.7 RegExp#flags(只读)
+- 返回正则表达式标志字符串
+  - 以字典序排序（从左到右，即"gimuy"）。
+#### 5.5.8 RegExp#lastIndex
+- 表示实例对象的状态，意思是下一次字符串匹配exec的起始位置（即匹配字符的下一位）
+- 用于全局匹配和exec函数中
+  - 当lastIndex的值等于字符串的长度时，表示匹配已经结束
+```javascript
+  var re = /hi/g;
+  console.log(re.exec("hi ejijfihi")[0]);
+  console.log(re.lastIndex);
+  // hi 2
+  console.log(re.exec("hi ejijfhihi")[0]);
+  console.log(re.lastIndex);
+  // hi 10
+```
+#### 5.5.9 RegExp#exec(str)
+- 在一个指定字符串中执行一个搜索匹配(即只执行一次匹配而不是多次)
+- 返回一个结果数组(类似于对象）或 null
+- 参数
+  - str: 要匹配正则表达式的字符串。
+##### 5.5.9.1 结果数组(result)
+- result[0]: 返回匹配的字符串
+- result[1~n]: 括号中的分组捕获
+- result.input: 返回要匹配的字符串
+- result.index: 返回匹配字符串的起始下标
+##### 5.5.9.2 注意事项
+- 在设置了 global 或 sticky 标志位的情况下（如 /foo/g or /foo/y），对应的实例对象是有状态的
+  - 会将上次成功匹配后的位置记录在 lastIndex 属性中
+    - 可用来对单个字符串中的多次匹配结果进行逐条的遍历（包括捕获到的匹配）
+##### 5.5.9.3 全局匹配与exec和lastIndex
+- lastIndex表示在全局匹配中执行一次exec函数时实例对象的状态
+  - 表示实例对象的状态，意思是下一次字符串匹配exec的起始位置（即匹配字符的下一位）
+```javascript
+  const regex1 = RegExp('foo*', 'g');
+  const str1 = 'table football, foosball';
+  let array1;
+
+  while ((array1 = regex1.exec(str1)) !== null) {
+    console.log(`Found ${array1[0]}. Next starts at ${regex1.lastIndex}.`);
+  }
+  // expected output: "Found foo. Next starts at 9."
+  // expected output: "Found foo. Next starts at 19."
+```
+
+#### 5.5.10 RegExp#test(str)
+- boolean，如果正则表达式与指定的字符匹配，则返回true
+- 参数
+  - str：用来与正则表达式匹配的字符
+#### 5.5.12 RegExp#toString()
+- 返回一个表示该正则表达式的字符串
+  - 覆盖了Object的方法，并不是继承
+### 5.6. 常用的正则表达式
+#### 5.6.1. 用户名验证
+```javascript
+  const reg = /^[a-zA-Z0-9-_]${6,16}/
+```
+- 规定用户只能输入6到16位大小写字母数字-以及下划线
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- 
+        用户名输入合法，则后面提示信息为：用户名合法，并且颜色为绿色
+        不合法，则后面提示信息为用户名不和法，并且显示为红色
+     -->
+     <div class="account">
+        <label for="user">用户名:</label>
+        <input type="text" id="user">
+        <span>请输入用户名</span>
+     </div>
+     
+</body>
+<script>
+    const reg = /^[a-zA-Z0-9_-]{6,16}$/;
+    
+    let userSpan = document.querySelector('.account span')
+    let userInput = document.querySelector('.account #user');
+    userInput.onfocus = function() {
+        userSpan.innerHTML = "请输入用户名";
+        userSpan.style.color = "#000000";
+    }
+    userInput.onblur = function() {
+        // 注意获取输入框获取value的位置 
+        let userName = userInput.value;
+        console.log(userName)
+        if(reg.test(userName)){
+            userSpan.innerHTML = "用户名输入正确";
+            userSpan.style.color = "#00ff00";
+        }
+        else{
+            userSpan.innerHTML = "用户名格式错误";
+            userSpan.style.color = "#ff0000";
+        }
+    }
+
+</script>
+</html>
+```
+
 
 # 五 js的DOM操作
 ## 1. DOM(document Object Model)
@@ -6710,9 +7262,288 @@ function drag(obj) {
 ```
 
 
-# 七 js的迭代器
+# 七 js的迭代器（Iterator)
+## 1 迭代器的创建
+### 1.1 通过Iterator(object[, keyOnly])来构建
+- 参数
+  - object
+    - 对象
+    - 生成器实例
+    - 迭代器实例
+### 1.2 通过生成器来构建
+#### 1.2.1 利用内置函数自身的生成器(Symbol.iterator)
+- Array, String, Object
+```javascript
+  var a = [1,3,5,7,9];
+  var it = a[Symbol.iterator]();
+  it.next().value; // 1
+  it.next().value; // 3
+  it.next().value; // 5 
+```
+### 1.3 自定义构建迭代器
+```javascript
+var something = (function(){
+ var nextVal;
+ return {
+      // for..of循环需要
+    [Symbol.iterator]: function(){ return this; },
+ // 标准迭代器接口方法
+ next: function(){
+    if (nextVal === undefined) {
+        nextVal = 1;
+    }
+    else {
+      nextVal = (3 * nextVal) + 6;
+    }
+    return { done:false, value:nextVal };
+  }
+ };
+})(); 
+```
+## 2 迭代器的属性和方法
+### 2.1 Iterator#next()
+- 返回一个对象，且迭代器本身相后进行一步
+#### 2.1.1 返回对象的属性
+- value：存储上一次暂停的返回值
+- done: 标识迭代器的完成状态
+  - 当done为true时，表示迭代器已经完成了，无法继续调用next函数
+  - 当done为false时，表示迭代器还没有完成，可以继续调用next函数
+### 2.2 for...of...与迭代器
+- for..of 循环在每次迭代中自动调用 next()
+  - 它不会向 next() 传入任何值
+  - 并且会在接收到 done:true 之后自动停止。
+#### 2.2.1 与for...of等价的代码
+```javascript
+  for (
+    var ret;
+    (ret = something.next()) && !ret.done;
+  )  {
+    console.log( ret.value );
+ // 不要死循环！
+    if (ret.value > 500) {
+      break;
+ }
+}
+```
+## 3 iterable
+- iterable 必须支持一个函数，其名称是专门的 ES6 符号值 Symbol.iterator。
+  - 调用这个函数时，它会返回一个迭代器。通常每次调用会返回一个全新的迭代器
+```javascript
+  [Symbol.iterator]: function(){ return this; } 
+```
+```javascript
+  var a = [1,3,5,7,9];
+  var it = a[Symbol.iterator](); 
+```
+# 八 生成器(Generator)
+## 1 生成器的实质
+- 是ES6引入的一种特殊的函数
+- 执行该函数之后，返回一个迭代器
+## 2 生成器的关键词
+### 2.1 function *funcName() {}
+- 用于生成器函数的构建
+### 2.2 yield关键词
+#### 2.2.1 yield关键词的作用
+##### 2.2.1.1 使生成器函数在yield所在语句暂停运行
+- 当迭代器调用next函数时，生成器的代码会在yield所在的语句执行
+##### 2.2.1.2 给迭代器返回对象的value赋值为yield后面表达式的返回值
+- 若yield后面有表达式，给迭代器返回对象的value赋值为yield后面表达式的返回值
+- 若没有表达式，则赋值为undefined
+##### 2.2.1.3 接收next函数传入的参数
+- 当迭代器调用next函数时，会将next函数传入的参数赋值给上一个yield
+### 2.3 try...finally
+- 当生成器返回的迭代器被终止时，会调用finally块内的代码
+## 3 生成器返回的迭代器返回对象的value赋值
+- yield后面表达式的返回值
+- return后面的表达式返回值
+## 4 生成器函数的参数
+### 4.1 通过函数的参数进行传递
+- 像普通函数那样的传递
+### 4.2 通过next对参数进行传递
+- next传递的参数会赋值给上一个yield
+  - 可以将第一个next看作启动器
+## 5 生成器的构造
+- 当通过生成器构造返回多个迭代器时，这些迭代器之间是独立的
+### 4.1 通过生成器函数构造
+```javascript
+  function *foo() {
+    // yield
+  }
+```
+### 4.2 通过生成器表达式构造(匿名)
+```javascript
+  var foo = function *() {
+    // yield
+  }
+```
+### 4.3 在对象中构造(简便写法)
+```javascript
+  var obj = {
+    *foo {
+      // yield
+    }
+  }
+```
+### 4.4 例子
+```javascript
+  function *foo() {
+    var x = yield 2;
+    z++;
+    var y = yield (x * z);
+    console.log( x, y, z );
+  }
+  var z = 1;
+  var it1 = foo();                      // 返回一个迭代器
+  var val1 = it1.next().value;          // 遇到yield终止，并且将yield后面的表达式返回结果赋值迭代器返回对象的value即2
+                                        // val1 = 2
+  val1 = it1.next(20).value;            // val1 = 40
+  /*
+  *   运行的过程：
+  *   将next中传递的参数传递给上一个yield(x = 20)，继续执行代码,遇到yield终止，并且将yield后面的表达式返回结果赋值给迭代器返回对象的value即x * z = 20 * 2 = 40
+  */
+  it1.next( 80 );                       // 20 2 80
+  /*
+  *   运行的过程：
+  *   将next中传递的参数传递给上一个yield(y = 80)，继续执行代码,到最后函数终止
+  */   
+```
+```javascript
+  function *foo() {
+    let i = 0;
+    while(true) {
+      yield i;
+      i += 1;
+    }
+  }
 
-# 八 Promise
+  let iterator = foo();
+  console.log(iterator.next().value);
+  console.log(iterator.next().value);
+  // 0 1 
+```
+```javascript
+
+```
+## 6 终止无限循环迭代器
+### 6.1 无限循环迭代器
+- 当生成器函数返回的迭代器可以无数次调用next函数时，会变成无限循环
+```javascript
+  function *foo() {
+    let i = 1;
+    while(true ) {
+        yield i;
+        i += 10;
+    }
+  }
+  // 该函数可以无数调用
+```
+### 6.2 终止无限循迭代器的方法
+#### 6.2.1 在for...of中调用break
+- 该迭代器会被终止且调用finally块中的代码
+#### 6.2.2 iterator.return([str])函数的调用
+- 该迭代器会被终止且调用finally块中的代码，同时将传入的参数传递给该迭代器返回对象的value
+ 
+## 7 生成器函数的应用
+- 理解多个生成器如何在共享的作用域上并发运行
+### 7.1 异步迭代生成器
+### 7.2 生成器 + Promise
+- 实现用同步代码的写法来实现异步代码
+#### 7.2.1 run函数
+- <font color="red">返回一个Promise，该Promise的value为生成器函数中最后一个yield运行的返回值</font>
+- 接收一个生成器函数以及传入该生成器函数的参数作为参数
+- 要求
+  - 生成器函数中yield的表达式返回一个Promise类型(异步操作)
+- 实现功能的流程
+  - 利用生成器函数返回一个已经初始化的迭代器it
+  - 返回一个完成状态的Promise类型
+    - onResolved函数(handleNext(next))
+      - 若next = it.next(next)返回对象的done为true，则迭代器完成，返回next.value
+      - 若next = it.next(next)返回对象的done为false,则迭代器还没有完成，再次执行handleNext(next)函数
+```javascript
+  function run(gen) {
+    var args = [].slice.call( arguments, 1), it;
+    // 1. 在当前上下文中初始化生成器
+    it = gen.apply( this, args );
+    // 2. 返回一个promise用于生成器完成
+    return Promise.resolve().then( function handleNext(value){
+        // 对下一个yield出的值运行
+      var next = it.next( value );
+      return (function handleResult(next){
+        // 生成器运行完毕了吗？
+        if (next.done) {
+          return next.value;
+        }
+        // 否则继续运行
+        else {
+          return Promise.resolve( next.value ).then(
+        // 成功就恢复异步循环，把决议的值发回生成器
+          handleNext,
+        // 如果value是被拒绝的 promise，
+        // 就把错误传回生成器进行出错处理
+          function handleErr(err) {
+            return Promise.resolve( it.throw( err ) ).then( 
+              handleResult );
+            }
+          );
+        }
+      })(next);
+  } );
+} 
+```
+#### 7.2.2 例子
+```javascript
+
+```
+#### 7.2.3 async和await运用的是这种原理
+### 7.3 生成器中的 Promise 并发
+- 以下代码中r1和r2是依次执行的，但是因为r1和r2并没有实际上的关系，所以可以使用并行
+```javascript
+  function *foo() {
+    var r1 = yield request( "http://some.url.1" );
+    var r2 = yield request( "http://some.url.2" );
+    var r3 = yield request(
+      "http://some.url.3/?v=" + r1 + "," + r2
+  );
+  console.log( r3 );
+  }
+// 使用前面定义的工具run(..)
+  run( foo ); 
+```
+- 可以使用以下的方法继续并行
+```javascript
+  function *foo() {
+ // 让两个请求"并行"
+  var p1 = request( "http://some.url.1" );
+  var p2 = request( "http://some.url.2" );
+  // 等待两个promise都决议
+  var r1 = yield p1;
+  var r2 = yield p2;
+  var r3 = yield request(
+  "http://some.url.3/?v=" + r1 + "," + r2
+  );
+  console.log( r3 );
+} 
+```
+- 使用Promise.all([])实现两个异步的并行
+```javascript
+  function *foo() {
+  // 让两个请求"并行"，并等待两个promise都决议
+  var results = yield Promise.all( [
+  request( "http://some.url.1" ),
+  request( "http://some.url.2" )
+  ] );
+  var r1 = results[0];
+  var r2 = results[1];
+  var r3 = yield request(
+  "http://some.url.3/?v=" + r1 + "," + r2
+  );
+  console.log( r3 );
+  }
+  // 使用前面定义的工具run(..)
+  run( foo ); 
+```
+### 7.4 生成器委托(后面再进行补充)
+# 九 Promise
 ## 1 Promised的基本理解
 ### 1.1 promise的理解
 - 通常情况下, 要实现异步调用的返回, 必须判断异步调用有没有执行结束, 然后通过callback函数来获取数据
@@ -7341,7 +8172,7 @@ console.log('script end');
 ```
 
 
-# 九 axios
+# 十 axios
 ## 1 http的理解
 ### 1.1 http请求交互的基本过程
 - ![理解](./img/axios_ex1.jpg)
@@ -8726,7 +9557,314 @@ CancelToken.source = function source() {
   - 内部会让cancelPromise变为成功，且成功的值为一个cancelPromise
   - 在cancelPromise的成功回调中断请求，并让发请求的promise失败，失败的reason为Cancel对象
 
-# 十 ES6增加的内容总结
+# 十一 JS的模块化
+## 1 模块化
+### 1.1 定义
+- 在js中，一个js就是一个模块
+### 1.2 原因
+- 避免命名冲突（减少命名空间污染）
+- 更好的分离，按需加载
+- 更好的复用性
+- 高可维护性
+### 1.3 用script引入多个js文件为什么效率不高
+```html
+    <script src = "main.js"><script>
+    <script src = "stack.js"><script>
+```
+- 每次加载script标签就要发出一个请求，而且会有顺序的要求，所以不太好
+
+## 2 HTML引入js模块的模块化的标准
+### 2.1 在html中引入JS模块的方法
+- <font color="red">通过script引入的js代码实际上只是将其拼接在html的代码之中</font>
+#### 2.1.1 全局function模式（不能实现模块化）
+- 将全局变量或者全局函数添加到window的属性之中
+  - 缺点：并没有实现js的模块化，因为变量和函数实际上都还在全局作用域之中
+```javascript
+    let msg = "hello_world"
+    function foo(){
+        consolse("foo(): " + msg);
+    }
+```
+- html
+```html
+    <script src="xxx.js"></script>
+    <script>
+        msg = "NBA"
+        foo();
+    </script>
+    <!-- 
+        foo(): NBA
+     -->
+```
+#### 2.1.2 namespace模式（通过对象进行模块化）
+- 用一个对象包裹所要用到的变量和函数，实质是将对象添加为window的属性
+  - 变量虽然通过放入obj实现了模块化，但是并不符合常规的写法
+```javascript
+    let obj = {
+        msg: "hello_world"
+        foo() {
+            consolse("foo(): " +  this.msg);
+        }
+    }
+```
+- html 
+```html
+    <script src="xxx.js"></script>
+    <script>
+        obj.msg = "NBA";
+        obj.foo();
+    </script>
+<!-- 
+        foo(): NBA
+-->
+```
+- 以上两种模式都可以去更改对应msg的值，所以属于包装得不彻底
+#### 2.1.3 IIFE模式(将要暴露的内容出入一个对象并变成window的一个属性值)
+- 通过函数实现变量的局部化
+  - 再通过window属性实现变量局部化的暴露，而且符合常规的写法
+```javascript
+(function(window){
+    let msg = "hello_world"
+    function foo(){
+        consolse("foo(): " + msg);
+    }
+    window.module = {foo}; //常用
+    // 匿名函数是有作用域的，而且由于没有名称，所以无法暴露给window，因此需要这种方式暴露给使用者调用
+})(window)
+```
+- html
+```html
+    <script src="xxx.js"></script>
+    <script>
+        module.foo()
+    </script>
+    <!-- 
+        foo(): hello_world
+    -->
+```
+- 在没有暴露变量或函数时是无法对其进行修改的，因此已经实现了模块化
+- 若想要暴露，需要用window将其暴露
+#### 2.1.4 IIFE增强模式
+- 通过函数实现变量的局部化
+  - 并通过直接像window赋值实现变量的局部化 
+```javascript
+(function(window){
+    let msg = "hello_world"
+    function foo(){
+        consolse("foo(): " + msg);
+    }
+    window.foo = foo; 
+    // 匿名函数是有作用域的，而且由于没有名称，所以无法暴露给window，因此需要这种方式暴露给使用者调用
+})(window)
+```
+- html
+```html
+    <script src="xxx.js"></script>
+    <script>
+       foo()
+    </script>
+    <!-- 
+        foo(): hello_world
+    -->
+```
+## 3 JS和JS文件之间实现js模块化标准
+### 3.1 commonJS模块化的规范(node.js模块化的标准)
+#### 3.1.1 commonJS模块化的规范的基本语法
+##### 3.1.1.1 暴露语法(只能二选一,不能同时使用)
+- 暴露的本质的是暴露exports对象
+- 以下的两种方法只能取其其中一种，并不能全局使用
+###### 3.1.1.1.1 module.exports = value
+- value为任何类型(一般为obj)
+- 实际上是将module.exports的内容进行覆盖
+###### 3.1.1.1.2 exports.xxx = value
+- 实际上是给exports增加属性
+##### 3.1.1.2 引入语法
+###### 3.1.1.2.1 const xxx = require(xxx)
+- 第三方模块为模块名
+- 自定义模块需要为模块的文件路径
+#### 3.1.2 commonJS在服务器端和浏览器端的不同
+##### 3.1.2.1 在服务器端（node.js)
+- 由于服务器端运用的是node.js。所以可以直接调用
+###### 3.1.2.1.1 基于服务器端的模块化过程
+- 第一步：初始化,可以使用
+```
+    npm init
+```
+  - 注意文件名不能有大小写
+- 第二步：定义modules模块，并暴露想要用的函数或者对象
+- 第三步: 组织文件app.js中引入定义的模块
+- 第四步：直接用node执行app.js
+###### 3.1.2.1.2 基于服务器端的模块化的目录结构
+```
+    |- modules
+        |- module1.js
+        |- module2.js
+        |- module3.js
+    |- app.js
+    | package
+```
+##### 3.1.2.2 在浏览器端
+- 在浏览器: 模块需要提前打包进行处理
+  - 浏览器无法认识require
+  - 需要引入模块<font color="red">Browserify</font>
+###### 3.1.2.2.1 基于浏览器端的模块化过程
+- 第一步: 初始化
+  - 引入打包的模块
+```
+    npm init
+    npm install -g browserify
+    npm install --sava-dev browserify
+```
+- 第二步：定义modules模块，并暴露想要用的函数或者对象
+- 第三步: 组织文件app.js中引入定义的模块
+- 第四步: 打包处理js模块
+```
+    browserify ./js/src/app.js -o ./js/dist/bundle.js
+```
+- 第五步：index.html引入bundle.js
+```html
+ <script src="xxxx.js"></script>
+```
+###### 3.1.2.2.2 基于浏览器端的模块化的目录结构
+- 目录结构
+```
+    |- js
+        |- dist
+        |-src
+            |- module1.js
+            |- module2.js
+            |- module3.js
+            |- app.js
+    |- index
+    |- package.json
+```
+
+### 3.2 AMD模块化的规范
+- <font color="red">专门用于浏览器端, 模块加载是异步的</font>
+  - 模块的加载不影响它后面语句的执行，所有依赖这个模块的运行，都定义在一个回调函数中，只有模块加载完成后才会进行调用
+#### 3.2.1 基本语法
+##### 3.2.1.1 暴露用法
+###### 3.2.1.1.1 定义没有依赖的模块
+```javascript
+    define(function() {
+        ...
+        return 模块
+    })
+```
+###### 3.2.1.1.2 定义有依赖的模块
+```javascript
+    define(['module1', 'module2'], function(m1, m2) {
+        ...
+        return {} // 要暴露的变量或者函数
+    })
+    // m1, m2对应两个模块
+```
+##### 3.2.1.2 引入使用模块
+###### 3.2.1.2.1 配置模块id与路径的对应
+```javascript
+  require.config({
+    baseUrl: "xxx",
+    paths: {
+      module1: "path1",
+      module2: "path2"
+    }
+  })
+```
+###### 3.2.1.2.2 引入使用模块
+```javascript
+    require(['module1', 'module2'], function(m1, m2) {
+        // 使用m1, m2
+    })
+```
+#### 3.2.2 AMD引入模块的基本过程
+- 第一步: 下载对应的requirejs.js文件,并在script引入
+```html
+    <script src="./js/lib/requirejs.js"><script>
+```
+- 第二步：自定义模块,并在define函数中进行跑路
+- 第三步： 在main.js中对id和路径进行配置
+- 第四步： 引入模块并且执行
+#### 3.2.3 AMD引入模块的目录结构
+```
+    |- js
+        |- libs
+            |- requirejs.js
+        |- dist
+        |- src
+            |- modules
+                |- module1
+                |- module2
+            |- main.js
+    |- index.html    
+```
+#### 3.2.4 注意事项
+- 使用AMD规范需要引入require.js——第三方编写的脚本根据data-main确认主模块
+- 根据主模块中的require.config({ })函数确定各模块的位置，<font color="red">require.config({ })中各个模块的路径不能加后缀.js</font>
+- 加载模块时里面的内容会运行
+### 3.3 ES6的模块化
+#### 3.3.1 基本语法
+##### 3.3.1.1 暴露模块(export)
+###### 3.3.1.1.1 单独导出变量或者函数
+```javascript
+  export var name = "xxxx"
+  export function foo() {
+    // ...
+  }
+```
+###### 3.3.1.1.2 导出一个对象(推荐)
+```javascript
+  // person.js 
+  const name = 'guo';
+  const age = '18';
+  const addr = '过青年';
+
+  export { name, age, addr };
+```
+- 导出对象的元素进行重命名
+  - 可以使变量暴露多次
+```javascript
+    // person.js 
+  const name = 'guo';
+  const age = '18';
+  export {
+    name as firstName,
+    age as oneAge,
+    age as twoAge
+  }
+
+```
+###### 3.3.1.1.3 export default
+- 默认暴露只能暴露一次，暴露多次，后面的默认暴露覆盖前面的默认暴露
+```javascript
+  // export default var name = 'guo'   错误
+  export default name = 'guo';
+```
+##### 3.3.1.2 导入模块(import)
+- import的导入具有提升效果，所以可以在任意位置导入
+###### 3.3.1.2.1 普通的导入(使用对象字面量)
+- 使用对象的字面量，且要与其变量或函数名意义对应
+```javascript
+  import {var1, var2} from "path/xxx/"
+```
+- 可以使用as来重命名变量名
+```javascript
+  import {var1 as temp1, var2 as temp2} from "path/xxx/"
+```
+###### 3.3.1.2.2 使用*导入整个模块对象
+```javascript
+  import * as [objName] from "path/xxxx"
+```
+###### 3.3.1.2.3 export default的导入
+- 不需要以对象的形式进行导入
+```javascript
+  import aliasName from "path/xxxx"
+```
+#### 3.3.2 注意事项
+- 使用export和export default向外暴露数据，使用import获取数据
+- 使用as重命名，使用*符号整体加载
+- import命令具有提升效果，会提升到整个模块的头部
+- export default以最后一次暴露为准，且暴露的数据加载时，不需要加入{ }号
+# 十二 ES6增加的内容总结
 ## 1. 类的新的定义方式
 ### 1.1. class
 ```javascript
@@ -9912,3 +11050,787 @@ config
     </tr>
   </tbody>
 </table>
+
+# JQuery
+## 1 了解jQuery
+- 是一个javascrpt库
+  - 对原生的javascript的封装，内部是用JavaScript实现的
+- 是一个快速简洁的JavaScript库
+  - 优化了DOM操作，事件处理，动画设计和Ajax交互
+- 优点
+  - 轻量级，核心文件才几十kb，不hi影响加载速度
+  - 跨浏览器兼容，基本兼容了现在主流的浏览器
+  - 链式编程。隐式迭代
+  - 对事件，样式，动画支持，大大简化了DOM操作
+  - 支持插件扩展开放，有着丰富的第三方的插件
+  - 免费，开源
+- <a href="https://jquery.com/">官方网站</a>
+  - ![版本问题](./img/ex1.jpg)
+
+## 2 jQuery的基本方法
+### 1 jQuery的入口函数 
+```javascript
+    // 1. 等待页面加载完毕再调用js代码
+    $(document).ready(function() {
+        $('div').hide()
+    })
+    // 2. 等待页面加载完毕再调用js代码（推荐使用）
+    $(function() {
+        $('div').hide();
+    })
+```
+- 等这DOM结构渲染完毕即可以执行内部代码，不必等到所有外部资源加载完成
+- 相当于原生js中的DOMContentLoaded
+- 不同于原生js中的load事件是等页面文档，外部的js文件，css，图片加载完毕才执行内部代码
+### 2 jQuery的顶级对象$
+- 是一个函数
+- $是jQuery的语法糖
+- $是jQuery的顶级对象，相当于原生javsScript中的window，把元素利用$包装称jQuery对象，就可以调用jQuery方法了
+##### 2.1 DOM对象和jQuery对象的区别
+##### 2.1.1 DOM对象
+- 用原生js获取的元素对象
+- 只能使用DOM对象的属性和方法
+##### 2.1.2 jQuery对象
+- 用jQuery方法获取的对象
+- 利用$对DOM对象包装后产生的对象(伪数组形式存储)
+- 只能使用jQuery方法
+#### 2.2 DOM对象和jQuery对象的相互转化
+##### 2.2.1 DOM对象转化为jQuery对象
+```javascript
+    $(DOM对象)
+```
+##### 2.2.2 jQuery转化为DOM对象
+```javascript
+    $(selector)[index] //index是索引号
+
+    $(selector).get(index) //index是索引号
+```
+### 3 jQuery常用API
+#### 3.1 jQuery的选择器(获取元素对象)
+```javascript
+    $(selector) //里面选择器直接写CSS选择器即可，要记得加引号
+```
+#### 3.2 jQuery筛选方法
+<table> 
+    <thead>
+        <tr>
+            <th>语法</th>
+            <th>用法</th>
+            <th>说明</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>parent()</td>
+            <td>$('li').parent()</td>
+            <td>查找父级</td>
+        </tr>
+        <tr>
+            <td>parents(selector)</td>
+            <td>$('li').parents('.className')</td>
+            <td>返回所有的祖先元素（通过选择器选择可以返回指定的祖先元素）</td>
+        </tr>
+        <tr>
+            <td>children(selector)</td>
+            <td>$('ul').children('li')</td>
+            <td>相当于('ul>li'),最近一级</td>
+        </tr>
+        <tr>
+            <td>find(selector)</td>
+            <td>$('ul').find('li')</td>
+            <td>当于('ul li'),后代选择器</td>
+        </tr>
+        <tr>
+            <td>siblings(selector)</td>
+            <td>$('.first').siblings('li')</td>
+            <td>查找兄弟节点，不包括本身</td>
+        </tr>
+        <tr>
+            <td>nextAll([expr])</td>
+            <td>$('.first').nextAll()</td>
+            <td>查找当前元素之后的同级元素</td>
+        </tr>
+        <tr>
+            <td>prevAll([expr])</td>
+            <td>$('.first').prevAll()</td>
+            <td>查找当前元素之前的同级元素</td>
+        </tr>
+        <tr>
+            <td>hasClass(className)</td>
+            <td>$('li').hasClass('active')</td>
+            <td>查看当前元素是否有某一个类，有则返回true</td>
+        </tr>
+        <tr>
+            <td>eq(index)</td>
+            <td>$('li').eq(2)</td>
+            <td>查看第index的元素对象（相当于$('li:eq(index)')</td>
+        </tr>
+    </tbody>
+</table>
+
+- 1. 重点记住:parent, children, find, siblings, eq这几种方法
+- 2. 练习
+  - 实现上下拉
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        ul, li {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .warp {
+            width: 1000px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        .warp>li {
+            float: left;
+            width: 100px;
+        }
+        .warp>li ul{
+            display: none;
+        }
+    </style>
+    <script src="../jquery/jquery.js"></script>
+</head>
+<body>
+    <ul class="warp">
+        <li>
+            <a href="javascipt:;">新浪</a>
+            <ul>
+                <li>文本1</li>
+                <li>文本2</li>
+                <li>文本3</li>
+            </ul>
+        </li>
+        <li>
+            <a href="javascipt:;">博客</a>
+            <ul>
+                <li>文本1</li>
+                <li>文本2</li>
+                <li>文本3</li>
+            </ul>
+        </li>
+    </ul>
+    <script>
+        $('.warp>li').mouseover(function() {
+            // $(this) jQuery的当前元素，不需要加引号
+            // show()显示元素，hide()隐藏元素
+            $(this).children('ul').show();
+        })
+        $('.warp>li').mouseout(function() {
+            $(this).children('ul').hide();
+        })
+    </script>
+</body>
+</html>
+```
+  - js的排他思想
+    - 想要设置多选一的效果：当前元素设置样式，其他的兄弟元素清除样式
+```javascript
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../jquery/jquery.js"></script>
+</head>
+<body>
+    <button>按钮</button>
+    <button>按钮</button>
+    <button>按钮</button>
+    <button>按钮</button>
+    <button>按钮</button>
+    <button>按钮</button>
+    <button>按钮</button>
+    <button>按钮</button>
+    <script>
+        // 实现点击的按钮为背景变红，其他不变
+        // 隐式迭代 该所有按钮都绑定了click事件
+        $('button').click(function() {
+            $(this).css("background-color", "red");
+            // 其余兄弟去掉背景颜色，隐式迭代
+            $(this).siblings('button').css("background-color", "");
+        })
+    </script>
+</body>
+
+</html>
+```
+#### 3.3 jQuery是设置样式
+##### 3.3.1 .css(attr)****
+- 参数只写属性名，则是返回属性值
+```javascript
+    $(selector)).css(attr) 
+    // 属性必须加上引号
+```
+##### 3.3.2 .css(attr, style)
+- 设置一组样式
+```javascript
+    $(selector).css(attr,style) 
+    // 属性必须加上引号
+```
+##### 3.3.3 .css({attr: style...})
+- 参数可以是对象形式，用于设置样式
+- 如果是复合属性，必须使用驼峰的方法
+```javascript
+    $(selector).css({attr1: style1, attr2: style2}) 
+    // 属性可以不用加上引号
+```
+
+#### 3.4 jQuery的动画效果
+- 1. 问题1：快速点击会造成多个动画执行
+  - 原因：多次点击会造成动画排队的现象
+  - 解决方法：在执行动画前使用stop()函数
+    - 结束上一次动画
+```javascript
+    $(this).stop().动画效果
+```
+##### 3.4.1 显示隐藏
+###### 3.4.1.1 show([speed], [easing], [fn]])
+- 1. 参数省略时，无动画直接显示
+- 2. speed
+  - 三种预定速度之一的字符串('slow', 'normal', 'fast')
+  - 数字（默认单位ms）
+- 3. easing：用来指定切换效果，默认是"swing", 
+  - linear
+  - swing
+- 4. 回调函数，在动画执行的函数，每个元素执行一次
+###### 3.4.1.2 hide([speed], [easing], [fn])
+- 1. 参数省略时，无动画直接隐藏
+- 2. speed
+  - 三种预定速度之一的字符串('slow', 'normal', 'fast')
+  - 数字（默认单位ms）
+- 3. easing：用来指定切换效果，默认是"swing", 
+  - linear
+  - swing
+- 4. 回调函数，在动画执行的函数，每个元素执行一次
+###### 3.4.1.3 toggle([speed], [easing], [fn])
+- 1. 参数省略时，无则显示，有则隐藏
+- 2. speed
+  - 三种预定速度之一的字符串('slow', 'normal', 'fast')
+  - 数字（默认单位ms）
+- 3. easing：用来指定切换效果，默认是"swing", 
+  - linear
+  - swing
+- 4. 回调函数，在动画执行的函数，每个元素执行一次
+##### 3.4.2 滑动效果
+###### 3.4.2.1 slideDown([speed],[easing],[fn])
+- 向下滑动
+###### 3.4.2.2 slideUp([speed],[easing],[fn])
+- 向上滑动
+###### 3.4.2.2 slideToggle([speed],[easing],[fn])
+- 滑动切换
+##### 3.4.3 淡入淡出效果
+###### 3.4.2.1 fadeIn([speed],[easing],[fn])
+- 透明度慢慢改变最后显示（0-1）
+###### 3.4.2.2 fadeout([speed],[easing],[fn])
+- 透明度慢慢改变最后消失fade
+###### 3.4.2.3 fade([speed],[easing],[fn])
+- 淡入淡出进行切换
+###### 3.4.2.4 fadeTo([speed], opacity, [easing],[fn])
+- 渐进到指定的透明度
+- opacity：取值为0-1，必须写
+###### 3.4.2.5 高亮显示的思路
+- 背景设置为黑色，当想要变得不高亮，只需要将透明度变小 
+##### 3.4.3 自定义动画animate
+###### 3.4.3.1 animate(params, [speed], [easing], [fn])
+- 1. params
+  - 想要更改的属性，以对象的形式传递
+  - 必须写
+  - 属性名不用引号，复合属性使用驼峰表示
+- 2. speed
+  - 三种预定速度之一的字符串('slow', 'normal', 'fast')
+  - 数字（默认单位ms）
+- 3. easing：用来指定切换效果，默认是"swing", 
+  - linear
+  - swing
+- 4. 回调函数，在动画执行的函数，每个元素执行一次 
+###### 3.4.3.2 手风琴效果的实现
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../jquery/jquery.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        } 
+        ul, li {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        img {
+            vertical-align: center;
+        }
+        .nav {
+            width: 732px;
+            height: 98px;
+            background-color: #eaeaea;
+            padding: 8px 20px 0px 20px;
+            margin: 0 auto;
+        }
+        .nav li {
+            float: left;
+            padding-top: 20px;
+            margin-right: 10px;
+            position: relative;
+            height: 69px;
+            width: 69px;
+        }
+        .nav li .small {
+            position: absolute;
+            left: 0;
+        }
+        .nav li .large {
+            display: none;
+        }
+        .nav li.active .small {
+            display: none;
+        }
+        .nav li.active .large {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <ul class="nav">
+        <!-- 
+            解决当large图片不显示，small图片使用相对定位脱离标准流导致li的宽度高度变为0的方法
+                    - 方法1：固定li的宽度和高度，给第一个即的宽度赋值为224px，由于动画效果会给width赋值所以不需要给其他赋值
+                    - 方法2：触发
+         -->
+        <li class="active" style="width: 224px;">
+            <a href="javascript:;" class="active">
+                <img src="../img/1.jpg" width="69px" height = '69px' alt="" class="small">
+                <img src="../img/1_large.png" alt="" class="large">
+            </a>
+        </li>
+        <li>
+            <a href="javascript:;" class="active">
+                <img src="../img/1.jpg" width="69px" height = '69px' alt="" class="small">
+                <img src="../img/1_large.png" alt="" class="large">
+            </a>
+        </li>
+        <li>
+            <a href="javascript:;" class="active">
+                <img src="../img/1.jpg" width="69px" height = '69px' alt="" class="small">
+                <img src="../img/1_large.png" alt="" class="large">
+            </a>
+        </li>
+        <li>
+            <a href="javascript:;" class="active">
+                <img src="../img/1.jpg" width="69px" height = '69px' alt="" class="small">
+                <img src="../img/1_large.png" alt="" class="large">
+            </a>
+        </li>
+        <li>
+            <a href="javascript:;" class="active">
+                <img src="../img/1.jpg" width="69px" height = '69px' alt="" class="small">
+                <img src="../img/1_large.png" alt="" class="large">
+            </a>
+        </li>
+        <li>
+            <a href="javascript:;" class="active">
+                <img src="../img/1.jpg" width="69px" height = '69px' alt="" class="small">
+                <img src="../img/1_large.png" alt="" class="large">
+            </a>
+        </li>
+    </ul>
+    <script>
+        $(function() {
+            // 鼠标位于li上，有两步操作：
+            $('.nav li').mouseover(function() {
+                // 1. 当前li的宽度变为224px，同时里面的小图片淡出，大图片淡入
+                $(this).stop().animate({
+                    width: '224px'
+                }, 200).find('.small').stop().fadeOut().siblings('.large').stop().fadeIn();
+                // 2. 其余的兄弟li宽度变为69px，小图片淡入，大图片淡出
+                $(this).siblings('li').stop().animate({
+                    width: '69px'
+                }, 200).find('.small').stop().fadeIn().siblings('.large').stop().fadeOut();
+            })
+        })
+    </script>
+</body>
+</html>
+```
+- 解决当large图片不显示，small图片使用相对定位脱离标准流导致li的宽度高度变为0的方法
+  -  方法1：固定li的宽度和高度，给第一个即的宽度赋值为224px，由于动画效果会给width赋值所以不需要给其他赋值
+#### 3.5 jQuery的元素固有属性的操作
+##### 3.5.1 获取元素的固有属性
+```javascript
+    jqueryObject.prop(attr)
+```
+##### 3.5.2 设置元素的固有属性
+```javascript
+    jqueryObject.prop(attr, style)
+```
+##### 3.5.3 获取自定义属性
+- 无法通过上面的函数获取通过
+```javascript
+    jqueryObject.attr(attr);
+```
+##### 3.5.4 添加自定义属性
+```javascript
+    jqueryObject.attr(attr, style);
+```
+##### 3.5.5 获取元素内存的属性
+- 无法在dom中看到对应的属性
+- 可以获取在h5中对应的属性data-，无需加上data-，返回的是数字型
+```javascript
+    jqueryObject.data(attr);
+```
+##### 3.5.6 在元素内存中添加属性
+```javascript
+    jqueryObject.data(attr, style);
+```
+##### 3.5.6 全选框的实现
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../jquery/jquery.js"></script>
+</head>
+<body>
+    <!-- 
+        1. 点击全选的时候，所有的选项都被选到，当再一次点击全选是，变为全不选
+        2. 当所有的选项都被选到时，全选也被选到
+     -->
+    <div class="nav">
+        <input type="checkbox" name="" id="selectAll1" class="selectAll"><label for="selectAll">全选</label>
+    </div>
+    <div class="items">
+        <input type="checkbox" name="" id="good1"><label for="good1">商品一</label>
+        <input type="checkbox" name="" id="good2"><label for="good2">商品二</label>
+        <input type="checkbox" name="" id="good3"><label for="good3">商品三</label>
+    </div>
+    <div class="footer">
+        <!-- 选择器选择id的时候，由于id是唯一的，所以只会得到一个 -->
+        <input type="checkbox" name="" id="selectAll2" class="selectAll"><label for="selectAll">全选</label>
+    </div>
+    <script>
+        /*
+        $('.nav #selectAll').click(function(){
+            // if($(this).prop('checked')) {
+            //     $('.items input').prop("checked", true);
+            //     $('.footer #selectAll').prop("checked", true);
+            // }
+            // else {
+            //     $('.items input').prop("checked", false);
+            //     $('.footer #selectAll').prop("checked", false);
+            // }
+            // 按钮的值是跟随选定按钮的值的
+            $('.items input').prop("checked", $(this).prop('checked'));
+            $('.footer #selectAll').prop("checked", $(this).prop('checked'));
+        })
+        $('.footer #selectAll').click(function(){
+            $('.items input').prop("checked", $(this).prop('checked'));
+            $('.nav #selectAll').prop("checked", $(this).prop('checked'));
+        })
+        */
+        //法2: 其他同样的按钮也状态相同
+        
+        $('.selectAll').change(function() {
+            $(".items input, .selectAll").prop("checked", $(this).prop("checked"))
+        })
+        $('.items input').change(function() {
+            // :checked可以查看被选中的元素
+            if($(".items input:checked").length === $(".items input").length)
+                $(".selectAll").prop("checked", true);
+            else
+                $(".selectAll").prop("checked", false);
+        })
+    </script>
+</body>
+</html>
+```
+#### 3.6 jQuery的对象元素的内容
+- 参数必须是string类型，返回的也是string类型
+##### 3.6.1 获取对象元素的内容
+- 会输出全部的内容包括标签
+```javascript
+    jqueryObject.html();
+```
+##### 3.6.2 修改对象元素的内容
+```javascript
+    jqueryObject.html(content);
+```
+##### 3.6.3 获取对象元素的文本
+```javascript
+    jqueryObject.text();
+```
+##### 3.6.4 修改对象元素的文本
+```javascript
+    jqueryObject.text(content);
+```
+##### 3.6.5 获取对象元素的value值
+```javascript
+    jqueryObject.val();
+```
+##### 3.6.6 修改对象元素的value值
+```javascript
+    jqueryObject.val(content);
+```
+#### 3.7 jQuery的对象元素的操作
+##### 3.7.1 元素的遍历
+- 虽然有隐式迭代，但是有时后需要对每一个元素做不同的操作
+###### 3.7.1.1 each(function(index, domEle) {})
+```javascript
+    jqueryObject.each(function(index, domEle) {})
+```
+- 注意里面的每一对象是domELe，要是用jquery方法必须先进行转化
+
+###### 3.7.1.2 $.each(jqueryObject, function(index, domEle) {})
+```javascript
+    $.each(jqueryObject, function(index, domEle) {})
+```
+- 拓展：
+  - jqueryObject不仅仅可以是jquery的对象，普通的对象以及数组都是可以进行操作的
+##### 3.7.2 元素的创建
+###### 3.7.2.1 $(content)
+- 创建一个新的元素
+```javascript
+    let jqueryObject = $(content);
+```
+##### 3.7.3 元素的添加
+###### 3.7.3.1 fatherObject.append(sonObject)
+- 内部添加,添加到fatherObject元素的最后位置
+```javascript
+    fatherObject.append(sonObject)
+```
+###### 3.7.3.2 fatherObject.prepend(sonObject)
+- 内部添加,添加到fatherObject元素的最前位置
+```javascript
+    fatherObject.prepend(sonObject)
+```
+###### 3.7.3.3 brotherObject.before(jqueryObject)
+- 外部添加, 添加到当前brotherObject元素的前面一位
+```javascript
+    brotherObject.before(jqueryObject)
+```
+##### 3.7.4 元素的删除
+###### 3.7.4.1 juqueryObject.remove()
+- 自杀
+```javascript
+    juqueryObject.remove()
+```
+###### 3.7.4.2 fatherObject.empty()
+- 删除元素内部的所有子节点
+- 相当于fatherObject.html("");
+```javascript
+    fatherObject.empty()
+```
+###### 3.7.4.3 brotherObject.after(jqueryObject)
+- 外部添加, 添加到当前brotherObject元素的后面一位
+```javascript
+    brotherObject.after(jqueryObject)
+```
+
+#### 3.8 jQuery的对象方法总结
+##### 3.8.0 length
+- 被选择器选中元素的个数
+##### 3.8.1 $(this)
+##### 3.8.2 index() 
+- 获得当前元素的序列
+```javascript
+    $(selector).event(function() {
+        let index = $(this).index();
+    })
+```
+##### 3.8.3 show()
+- 显示该元素对象，并返回当前对象
+##### 3.8.4 hide()
+- 隐藏元素对象，并返回当前对象
+##### 3.8.5 addClass(className)
+- 给对象元素添加类名，并返回当前对象
+  - 注意类名是字符串，所以不用加.
+##### 3.8.6 removeClass(className)
+- 给对象元素删除类名，并返回当前对象
+##### 3.8.6 toggleClass(className) 
+- 切换类，有则加，没有则去掉，并返回当前对象
+##### 3.8.7 hover(inFunc,[outFunc])
+- 1. 切换事件
+- 2. 当有两个参数时
+  - inFunc对应mouseenter事件的触发函数
+  - outFunc对应mouseleave事件的触发函数
+- 3. 当只有一个参数
+  - mouseenter和mouseleave事件触发同一个函数
+#### 3.10 jQuery的常见触发事件
+#### change(func)
+- 当元素对象发生改变是触发func
+### 4 jQuery的隐式迭代
+- 把匹配的所有元素内部及逆行遍历循环，给每一个元素做相同的操作
+
+# 四 jquery的事件相关的操作
+## 1 jquery事件注册
+### 1.1 单个事件的注册
+#### 1.1.1 jqueryObject.eventName(function() {})
+```javascript
+    jqueryObject.eventName(function() {})
+```
+### 1.2 多个事件的注册
+#### 1.2.1 jqueryObject.once(events, [selector], fn)
+- 用法和on类似,但是只是触发一次响应函数
+#### 1.2.2 jqueryObject.on(events, [selector], fn)
+- 1. 参数
+  - events:一个或多个用空格分割的事件类型(以对象形式)
+  - selector: 元素的子元素选择器
+  - fn: 回调函数
+- 2 使用方法
+  - 写法1: events以对象的形式传入
+    - {event1: func1, event2: func2 ...}
+```javascript
+    $('div').on({
+        click: function() {
+            $(this).css("backgroundColor", "purple");
+        },
+        mouseover: function() {
+            $(this).css("backgroundColor", "skyblue");
+        }
+    })
+```
+  - 写法二: 若触发的函数相同时, 可以直接使用字符串加空格的写法
+    - on("event1, event2...", func)
+```javascript
+    $('div').on("mouseover mouseleave", function() {
+        $(this).toggleClass("active");
+    })
+```
+  - 写法三: 利用on实现事件的委派
+    - on("eventName", selector, func)
+      - selector为this对象的触发元素,func的this是指向元素对象的
+```javascript
+    $("ul").on("click", "li", function() {
+        alert(11);
+    })
+```
+- click绑定的是ul元素, 但是触发的对象是ul中的li(由于事件冒泡)
+  - 写法四: 为动态创建的元素绑定动态事件
+    - 利用事件的委派实现对新创建的动态元素绑定响应的事件
+#### 1.2.3 微博发布页(重点关注事件委派的作用)
+- 注意this指针的指向
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        ul, li {
+            list-style: none;
+        }
+        a, textarea {
+            outline: none;
+        }
+        .wrap {
+            width: 600px;
+            margin: 0 auto;
+            background-color: #eaeaea;
+            text-align: center;
+            padding: 30px 0;
+        }
+        .wrap .content li a{
+            float: right;
+        }
+        .wrap .content li {
+            display: none;
+        }
+    </style>
+    <script src="../jquery/jquery.js"></script>
+</head>
+<body>
+    <div class="wrap">
+        <strong>发布微博</strong>
+        <textarea name="" id="input-content" cols="60" rows="20" style ="resize: none"></textarea>
+        <button class="submit">发布</button>
+        <ul class="content"></ul>
+    </div>
+    <script>
+        $(function() {
+            $(".wrap button.submit").click(function() {
+                let content = $(this).siblings("#input-content").val();
+                let liEle = $("<li></li>");
+                liEle.html(content + "<a href='javascript:;'>删除</a>")
+                // 如何实现缓缓下拉显示,可以先把他设置为display: none
+                $(".wrap .content").append(liEle);
+                liEle.stop().slideDown();
+            })
+            // 利用事件委派实现对新加入的元素绑定事件
+            // 若没有使用回调函数,则对应的li并没有真正地被移除
+            $(".wrap .content").on("click", "li a", function() {
+                $(this).parent().slideUp(function() {
+                    $(this).remove();
+                })
+            })
+        })
+    </script>
+</body>
+</html>
+```
+## 2 jquery事件的解绑
+### 2.1 jqueryObject.off()
+- 解绑jqueryObject元素的所有事件
+```javascript
+    jqueryObject.off()
+```
+### 2.2 jqueryObject.off(eventName, [selector])
+- 解绑jqueryObject元素的eventName事件或事件委托
+```javascript
+    jqueryObject.off(eventName, [selector])
+```
+## 3 jquery自动触发事件
+### 3.1 jqueryObject.eventName()
+- 自动触发eventName的事件
+```javascript
+    $("div").click();
+```
+### 3.2 jqueryObject.trigger(eventName)
+- 自动触发eventName的事件
+```javascript
+    $("div").trigger("click");
+```
+### 3.3 jqueryObject.triggerHandler(eventName)
+- 自动触发eventName的事件
+- 不会触发元素的默认行为
+```javascript
+    $("div").triggerHandler("click");
+```
+## 3 jquery事件对象
+- 和js类似
+
+## 4 jquery的对象拷贝
+- 理解浅拷贝和深拷贝, 见js的笔记
+  - 浅拷贝是将被拷贝对象的复杂数据类型中的地址拷贝到目标对象
+### 4.1 $.extend([deep], target, ...object) 
+- 参数
+  - 1. deep如果设置为true, 则为深拷贝, 默认为浅拷贝
+  - 2. target: 要拷贝的目标对象
+  - 3. object: 拷贝的源对象
+
+## 5 jquery多库共存
+- jQuery使用$作为标志符号,和其他js库的$符号产生冲突
+### 5.1 方法一
+- 统一将$符号改为jQuery
+### 5.2 方法二
+- 使用noConflict()()函数
+```javascript
+    let alias = $.noConflict()
+```
+
