@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./jquery_source.js"></script>
+    <!-- <script src="./jquery-3.5.1.slim.js"></script> -->
+</head>
+<body>
+    <div>
+        <button>按钮1</button>
+        <button>按钮2</button>
+    </div>
+    
+    <script>
+        $(function() {
+            function test() {
+                alert("click1");
+                console.log(this.eventsCache)
+            }
+           $("button").on("click",test);
+           $("button").on("click",test);
+           let $new = $("button").clone(true);
+           $new.insertBefore($("button"));
+        })
+        
+    </script>
+</body>
+</html>

@@ -1,1077 +1,3 @@
-<!-- TOC -->
-
-- [零 基础知识](#零-基础知识)
-  - [1. 单词](#1-单词)
-  - [2. 常见的语法名称的术语](#2-常见的语法名称的术语)
-    - [1.2.1. Numeric Literals（数值语法）](#121-numeric-literals数值语法)
-    - [1.2.2. 重点掌握十进制的语法](#122-重点掌握十进制的语法)
-    - [1.2.3. StringNumericLiteral](#123-stringnumericliteral)
-  - [3 typeof, instanceof](#3-typeof-instanceof)
-  - [4. 用于调试的一些函数](#4-用于调试的一些函数)
-    - [4.1. console.log()与console.dir()](#41-consolelog与consoledir)
-  - [5 Object.prototype.toString.call(object)](#5-objectprototypetostringcallobject)
-  - [6 理解这段话](#6-理解这段话)
-  - [7 Object的一些常用函数](#7-object的一些常用函数)
-    - [7.1 Object.prototype.toString](#71-objectprototypetostring)
-    - [7.2 Object.keys(obj)](#72-objectkeysobj)
-    - [7.3 Object.assign()](#73-objectassign)
-  - [8 浮点数双精度的科学计数法](#8-浮点数双精度的科学计数法)
-    - [5.1 将浮点数转化为二进制科学计数法遇到的问题](#51-将浮点数转化为二进制科学计数法遇到的问题)
-    - [5.2 常见的解释原因问题](#52-常见的解释原因问题)
-  - [9 一些js的简单表示](#9-一些js的简单表示)
-  - [10 toString函数的一些易错点](#10-tostring函数的一些易错点)
-  - [11 区别实例对象与函数对象](#11-区别实例对象与函数对象)
-  - [12 看懂数据类型](#12-看懂数据类型)
-  - [13 两种类型的回调函数](#13-两种类型的回调函数)
-    - [2.1 同步回调函数](#21-同步回调函数)
-    - [2.2 异步回调函数](#22-异步回调函数)
-  - [14 js常见的内置类型之Error](#14-js常见的内置类型之error)
-    - [14.1 Error的类型](#141-error的类型)
-      - [14.1.1 ReferenceError](#1411-referenceerror)
-      - [14.1.2 TypeError](#1412-typeerror)
-      - [14.1.3 RangeError](#1413-rangeerror)
-      - [14.1.4 SyntaxError](#1414-syntaxerror)
-    - [14.2 错误处理](#142-错误处理)
-      - [14.2.1 try{执行代码}catch(error){错误处理}](#1421-try执行代码catcherror错误处理)
-      - [14.2.2 throw error](#1422-throw-error)
-    - [14.3 错误对象的属性](#143-错误对象的属性)
-      - [14.3.1 message](#1431-message)
-      - [14.3.2 stack](#1432-stack)
-  - [15 理解apply, call, bind](#15-理解apply-call-bind)
-    - [15.1 func.apply(thisArg, [args])](#151-funcapplythisarg-args)
-      - [15.1.1 理解apply的作用](#1511-理解apply的作用)
-    - [15.2 bind(func1, func2)](#152-bindfunc1-func2)
-      - [2.3.1 源码的理解](#231-源码的理解)
-- [一 javascript的基础认识](#一-javascript的基础认识)
-  - [1. 解释型语言](#1-解释型语言)
-  - [2. 动态类型语言](#2-动态类型语言)
-  - [3. 应用场景](#3-应用场景)
-  - [4. 编写位置](#4-编写位置)
-    - [4.1. 在HTML元素中属性直接执行js代码（不建议）](#41-在html元素中属性直接执行js代码不建议)
-    - [4.2. 书写到script标签中](#42-书写到script标签中)
-    - [4.3. 从外部引入js文件](#43-从外部引入js文件)
-    - [4.4. 注意事项](#44-注意事项)
-  - [5. js代码的注释](#5-js代码的注释)
-  - [6. js的内置数据类型数据类型](#6-js的内置数据类型数据类型)
-  - [7. 变量存储的本质](#7-变量存储的本质)
-    - [7.1 内存的分类](#71-内存的分类)
-    - [7.2 代码运行时，各部分存储的位置](#72-代码运行时各部分存储的位置)
-- [二 js内置数据类型与语法解析](#二-js内置数据类型与语法解析)
-  - [1 js的内置类型](#1-js的内置类型)
-    - [1.1 使用typeof来分辨不同的内置类型](#11-使用typeof来分辨不同的内置类型)
-    - [1.2 基本类型的理解](#12-基本类型的理解)
-      - [1.2.1 undefined](#121-undefined)
-      - [1.2.1.1 undefined和undeclared的区别](#1211-undefined和undeclared的区别)
-    - [1.3 总结](#13-总结)
-  - [2 js的内置值类型](#2-js的内置值类型)
-    - [2.1 js的数组类型(Array)](#21-js的数组类型array)
-      - [2.1.1 类数组转化为数组类型](#211-类数组转化为数组类型)
-      - [2.1.1.1 Array#slice.call(arrayLike)](#2111-arrayslicecallarraylike)
-      - [2.1.1.2 [].slice.call(arrayLike)](#2112-slicecallarraylike)
-      - [2.1.1.3 Array.from(arrayLike[,func]);](#2113-arrayfromarraylikefunc)
-    - [2.2 字符串类型(string)](#22-字符串类型string)
-      - [2.2.1 区分字符串和字符数组](#221-区分字符串和字符数组)
-      - [2.2.2 字符串借用数组类型的函数来实现功能](#222-字符串借用数组类型的函数来实现功能)
-      - [2.2.2.1 Array.prototype.join.call(string, 中间插入的值)](#2221-arrayprototypejoincallstring-中间插入的值)
-        - [2.2.2.2 Array.prototype.map.call(string, func).join("")](#2222-arrayprototypemapcallstring-funcjoin)
-    - [2.3 数字类型(number)](#23-数字类型number)
-      - [2.3.1 数字类型的较小值问题](#231-数字类型的较小值问题)
-        - [2.3.1.1 二进制的误差](#2311-二进制的误差)
-      - [2.3.1.2 Number.EPSILON](#2312-numberepsilon)
-      - [2.3.2 Number常用的属性和方法](#232-number常用的属性和方法)
-        - [2.3.2.1 Number.EPSILON](#2321-numberepsilon)
-        - [2.3.2.2 Number.MAX_SAFE_INTEGER](#2322-numbermax_safe_integer)
-        - [2.3.2.3 Number.MIN_SAFE_INTEGER](#2323-numbermin_safe_integer)
-        - [2.3.2.4 Number#toExponential()](#2324-numbertoexponential)
-        - [2.3.2.5 Number#toFixed(num)](#2325-numbertofixednum)
-        - [2.3.2.6 Number#toPrecision(num)](#2326-numbertoprecisionnum)
-        - [2.3.2.6 Number.isInteger(num)](#2326-numberisintegernum)
-        - [2.3.2.7 Number.isSafeInteger(num)](#2327-numberissafeintegernum)
-      - [2.3.3 实现32为有符号整数](#233-实现32为有符号整数)
-      - [2.3.4 特殊数字(number)](#234-特殊数字number)
-        - [2.3.4.1 不是数字的数字(NaN)](#2341-不是数字的数字nan)
-          - [2.3.4.1.1 NaN与==、===](#23411-nan与)
-          - [2.3.4.1.2 判断一个值是不是NaN的方法 -- Number.isNaN](#23412-判断一个值是不是nan的方法----numberisnan)
-        - [2.3.4.2 无穷数](#2342-无穷数)
-          - [2.3.4.2.1 js中除以0为无穷值](#23421-js中除以0为无穷值)
-          - [2.3.4.2.2 js中当所表示的值超过Number.MAX_VALUE时，为无穷值](#23422-js中当所表示的值超过numbermax_value时为无穷值)
-          - [2.3.4.2.3 js中无穷除以无穷为NaN](#23423-js中无穷除以无穷为nan)
-        - [2.3.4.3 零值(+/-)](#2343-零值-)
-          - [2.3.4.3.1 -0出现的场合](#23431--0出现的场合)
-          - [2.3.4.3.2 常见函数对-0的处理](#23432-常见函数对-0的处理)
-          - [2.3.4.3.3 -0与0之间的大小关系](#23433--0与0之间的大小关系)
-          - [2.3.4.3.4 如何判断数值是-0](#23434-如何判断数值是-0)
-        - [2.3.4.3 特殊等式Object.is(v1, v2)](#2343-特殊等式objectisv1-v2)
-    - [2.4 不是值的值(undefined,null)](#24-不是值的值undefinednull)
-      - [2.4.1 undefined和null的异同](#241-undefined和null的异同)
-      - [2.4.2 作为标识符和变量的undefined](#242-作为标识符和变量的undefined)
-  - [3 数据类型和赋值，引用](#3-数据类型和赋值引用)
-    - [3.1 函数的参数的值传递方式](#31-函数的参数的值传递方式)
-    - [3.2 函数的参数的传递封装对象（对基本类型进行封装）](#32-函数的参数的传递封装对象对基本类型进行封装)
-    - [3.3 总结](#33-总结)
-  - [4 原生函数](#4-原生函数)
-    - [4.1 基本类型的封装对象](#41-基本类型的封装对象)
-    - [4.2 拆封基本类型的封装对象](#42-拆封基本类型的封装对象)
-    - [4.3 原生函数作为构造函数构建对象进行封装](#43-原生函数作为构造函数构建对象进行封装)
-      - [4.3.1 Array作为构造函数](#431-array作为构造函数)
-        - [4.3.1.1 为什么不能只用一个数字作为Array的构造参数](#4311-为什么不能只用一个数字作为array的构造参数)
-      - [4.3.2 RegExp作为构造函数的情况](#432-regexp作为构造函数的情况)
-      - [4.3.3 Date和Error作为构造函数](#433-date和error作为构造函数)
-        - [4.3.3.1 Date用于根据时间创建随机数](#4331-date用于根据时间创建随机数)
-        - [4.3.3.2 Error作为构造函数](#4332-error作为构造函数)
-      - [4.3.4 Symbol作为构造函数](#434-symbol作为构造函数)
-        - [4.3.4.1 Symbol类型作为属性名](#4341-symbol类型作为属性名)
-          - [4.3.4.1.1 访问对象的Symbol属性](#43411-访问对象的symbol属性)
-    - [4.4 Object#toString.call(obj)](#44-objecttostringcallobj)
-    - [4.5 原生函数的原型](#45-原生函数的原型)
-      - [4.5.1 有些原型对象并不一定是对象](#451-有些原型对象并不一定是对象)
-    - [4.6 总结](#46-总结)
-  - [5 类型转换](#5-类型转换)
-    - [5.1 类型转换和强制类型转换](#51-类型转换和强制类型转换)
-    - [5.2 数值，字符串，布尔值之间的类型转化规则](#52-数值字符串布尔值之间的类型转化规则)
-      - [5.2.1 ToString规则](#521-tostring规则)
-        - [5.2.1.1 JSON.stringify(obj)](#5211-jsonstringifyobj)
-        - [5.2.1.1.1 JSON.stringify(obj)针对于对象](#52111-jsonstringifyobj针对于对象)
-      - [5.2.2 ToNumber规则](#522-tonumber规则)
-      - [5.2.3 ToBoolean规则](#523-toboolean规则)
-        - [4.2.3.1 假值](#4231-假值)
-    - [5.3 显式强制类型转换](#53-显式强制类型转换)
-      - [5.3.1 其他类型转换为字符串](#531-其他类型转换为字符串)
-        - [4.3.1.1 String(obj)](#4311-stringobj)
-        - [4.3.1.2 obj.toString()](#4312-objtostring)
-      - [5.3.2 其他类型转换为数值](#532-其他类型转换为数值)
-        - [5.3.2.1 Number(obj)](#5321-numberobj)
-        - [5.3.2.2 obj.toNumber()](#5322-objtonumber)
-        - [5.3.2.3 parseInt(obj, radix), parseFloat(obj)](#5323-parseintobj-radix-parsefloatobj)
-      - [5.3.3 其他类型转换为布尔类型](#533-其他类型转换为布尔类型)
-        - [5.3.3.1 Boolean()](#5331-boolean)
-        - [5.3.3.2 !!](#5332-)
-      - [5.3.4 特殊符号的类型转化](#534-特殊符号的类型转化)
-        - [5.3.4.1 +](#5341-)
-          - [5.3.4.1.1 运用+号进行字符串的转化](#53411-运用号进行字符串的转化)
-        - [5.3.4.2 ~ + 整数](#5342---整数)
-    - [5.4 隐式强制类型转换](#54-隐式强制类型转换)
-      - [5.4.1 常见的隐式转化](#541-常见的隐式转化)
-        - [5.4.1.1 在有运算符+](#5411-在有运算符)
-        - [5.4.1.2 在有运算符-](#5412-在有运算符-)
-        - [5.4.1.3 隐式转化为Boolean类型](#5413-隐式转化为boolean类型)
-        - [5.4.1.4 符号类型的隐式转化](#5414-符号类型的隐式转化)
-    - [5.5 宽松相等和严格相等与隐式转化](#55-宽松相等和严格相等与隐式转化)
-      - [5.5.1 ==隐式类型转化的一般规则](#551-隐式类型转化的一般规则)
-        - [4.5.1.1 字符串和数字的宽松相等](#4511-字符串和数字的宽松相等)
-        - [4.5.1.2 其他类型和布尔类型](#4512-其他类型和布尔类型)
-        - [4.5.1.3 null和undefined的比较](#4513-null和undefined的比较)
-        - [4.5.1.4 对象和非对象的比较](#4514-对象和非对象的比较)
-        - [4.5.1.5 特殊情况](#4515-特殊情况)
-      - [5.5.2 抽象关系比较](#552-抽象关系比较)
-      - [5.5.3 == 使用的注意事项](#553--使用的注意事项)
-    - [5.6 总结](#56-总结)
-- [三 js的基础语法](#三-js的基础语法)
-  - [1. 数组](#1-数组)
-    - [1.1. 创建数组的两种方法](#11-创建数组的两种方法)
-    - [1.2 数组元素的增删改查](#12-数组元素的增删改查)
-      - [1.2.1 数组元素的添加](#121-数组元素的添加)
-      - [1.2.1.1 利用索引直接添加](#1211-利用索引直接添加)
-      - [1.2.1.2 Array#push(...val)](#1212-arraypushval)
-      - [1.2.1.3 Array#unshift(...val)](#1213-arrayunshiftval)
-      - [1.2.1.4 Array#fill(val[start[, end]]);](#1214-arrayfillvalstart-end)
-      - [1.2.2 数组元素的删除](#122-数组元素的删除)
-      - [1.2.1.2 Array#pop()](#1212-arraypop)
-      - [1.2.1.3 Array#unshift()](#1213-arrayunshift)
-      - [1.2.3 数组元素的修改](#123-数组元素的修改)
-      - [1.2.4 数组元素的访问](#124-数组元素的访问)
-        - [1.2.4.1 [index]](#1241-index)
-        - [1.2.4.2 Array#indexOf（val)](#1242-arrayindexofval)
-    - [1.3 数组的常用函数](#13-数组的常用函数)
-      - [1.3.1 Array.length](#131-arraylength)
-      - [1.3.2 Array#join([separator])](#132-arrayjoinseparator)
-      - [1.3.3 Array#toString()](#133-arraytostring)
-      - [1.3.4 Array#slice([begin, [end]])](#134-arrayslicebegin-end)
-          - [1.3.4.1 使用Array#slice将类数组转化为数组](#1341-使用arrayslice将类数组转化为数组)
-      - [1.3.5 Array#splice(start[, deleteCount[, item1[, item2[, ...]]]])](#135-arraysplicestart-deletecount-item1-item2-)
-        - [1.3.5.1 Array#splice的应用](#1351-arraysplice的应用)
-      - [1.3.6 Array#sort([func])](#136-arraysortfunc)
-      - [1.3.7 Array#reverse()](#137-arrayreverse)
-      - [1.3.8 Array#concat(value1[, value2[, ...[, valueN]]])](#138-arrayconcatvalue1-value2--valuen)
-    - [1.4 数组的函数编程](#14-数组的函数编程)
-      - [1.4.1 Array#forEach(callback(currentValue [, index [, array]])[, thisArg])](#141-arrayforeachcallbackcurrentvalue--index--array-thisarg)
-      - [1.4.2 Array#map(callback(currentValue [, index [, array]])[, thisArg])](#142-arraymapcallbackcurrentvalue--index--array-thisarg)
-      - [1.4.3 Array#filter(callback(currentValue [, index [, array]])[, thisArg])](#143-arrayfiltercallbackcurrentvalue--index--array-thisarg)
-      - [1.4.4 Array#some(callback(element[, index[, array]])[, thisArg])](#144-arraysomecallbackelement-index-array-thisarg)
-      - [1.4.5 Array#every(callback(element[, index[, array]])[, thisArg])](#145-arrayeverycallbackelement-index-array-thisarg)
-      - [1.4.6 Array#reduce(callback(accumulator, currentValue[, index[, array]])[, initialValue])](#146-arrayreducecallbackaccumulator-currentvalue-index-array-initialvalue)
-    - [1.5. 遍历数组](#15-遍历数组)
-    - [1.6. 注意事项](#16-注意事项)
-      - [1.6.1. 数组名的赋值](#161-数组名的赋值)
-  - [2. 对象](#2-对象)
-    - [2.1. 面向对象的编程](#21-面向对象的编程)
-      - [2.1.1 面向过程的编程(POP)(Process-oriented programming)](#211-面向过程的编程popprocess-oriented-programming)
-      - [2.1.2. 面向对象编程(OOP)(Oject-oriented programming)](#212-面向对象编程oopoject-oriented-programming)
-    - [2.2. 面向对象编程的思维特点](#22-面向对象编程的思维特点)
-    - [2.3. 对象的基本组成](#23-对象的基本组成)
-      - [2.3.1. 属性](#231-属性)
-      - [2.3.2. 方法](#232-方法)
-    - [2.4 对象](#24-对象)
-      - [2.4.1 对象的定义形式](#241-对象的定义形式)
-      - [2.4.2 对象的分类](#242-对象的分类)
-        - [2.4.2.1 普通对象](#2421-普通对象)
-        - [2.4.2.2 类的实例对象](#2422-类的实例对象)
-      - [2.4.3 对象的属性访问和修改](#243-对象的属性访问和修改)
-        - [2.4.3.1 属性访问](#2431-属性访问)
-        - [2.4.3.2 键值访问](#2432-键值访问)
-      - [2.4.4 理解对象属性访问的默认操作](#244-理解对象属性访问的默认操作)
-        - [2.4.4.1 [[ Get ]](用于属性的访问)](#2441--get-)
-        - [2.4.4.2 [[ Put ]]（用于属性的新增和修改）](#2442--put-用于属性的新增和修改)
-        - [2.4.4.3 如何判断是否具有某个属性](#2443-如何判断是否具有某个属性)
-      - [2.4.5 对象的复制](#245-对象的复制)
-        - [2.4.5.1 浅复制](#2451-浅复制)
-        - [2.4.5.2 深复制](#2452-深复制)
-      - [2.4.6 对象的属性描述符](#246-对象的属性描述符)
-        - [2.4.6.1 对对象属性特性的操作](#2461-对对象属性特性的操作)
-          - [2.4.6.1.1 Object.defineProperty()](#24611-objectdefineproperty)
-        - [2.4.6.2 对象属性的不变性](#2462-对象属性的不变性)
-          - [2.4.6.2.1 对象常量](#24621-对象常量)
-        - [2.4.6.3 对象的不变性](#2463-对象的不变性)
-          - [2.4.6.3.1 Object.preventExtensions(obj)](#24631-objectpreventextensionsobj)
-          - [2.4.6.3.2 Object.seal(obj)](#24632-objectsealobj)
-          - [2.4.6.3.3 Object.freeze(obj)](#24633-objectfreezeobj)
-        - [2.4.6.4 不可枚举属性的问题](#2464-不可枚举属性的问题)
-          - [2.4.6.4.1 obj.propertyIsEnumerable(prop)](#24641-objpropertyisenumerableprop)
-          - [2.4.6.4.2 Object.getPropertySymbols(obj)](#24642-objectgetpropertysymbolsobj)
-      - [2.4.7 对象的遍历](#247-对象的遍历)
-        - [2.4.7.1 Object.keys(obj)](#2471-objectkeysobj)
-        - [2.4.7.2 Object.getOwnPropertyNames(obj)](#2472-objectgetownpropertynamesobj)
-        - [2.4.7.3 for...in...(key)](#2473-forinkey)
-        - [2.4.7.4 for...of...(value)](#2474-forofvalue)
-      - [2.4.8 总结](#248-总结)
-    - [2.5 类](#25-类)
-      - [2.5.1. 类的构造](#251-类的构造)
-        - [2.5.1.1 通过函数构造类（构造函数）](#2511-通过函数构造类构造函数)
-        - [2.5.1.2 通过class构造类](#2512-通过class构造类)
-      - [2.5.2 类的实例对象（通过new构造的对象）](#252-类的实例对象通过new构造的对象)
-        - [2.5.2.1. 类的实例对象的成员类型(实例成员，静态成员)](#2521-类的实例对象的成员类型实例成员静态成员)
-      - [2.5.3 类的实例对象的实质](#253-类的实例对象的实质)
-      - [2.5.4. 类的实例对象的方法查询规则](#254-类的实例对象的方法查询规则)
-      - [2.5.5 类的继承](#255-类的继承)
-        - [2.5.5.1. 原型链](#2551-原型链)
-          - [2.5.5.1.1 实例对象是如何通过原型链来寻找相应的方法?](#25511-实例对象是如何通过原型链来寻找相应的方法)
-        - [2.5.5.2 原型链引起的属性设置和屏蔽](#2552-原型链引起的属性设置和屏蔽)
-          - [2.5.5.2.1 属性屏蔽](#25521-属性屏蔽)
-          - [2.5.5.2.2 属性设置的过程（myObject.prop = value)](#25522-属性设置的过程myobjectprop--value)
-          - [2.5.5.2.3 属性屏蔽和属性设置的易错点--隐式屏蔽](#25523-属性屏蔽和属性设置的易错点--隐式屏蔽)
-        - [2.5.5.3 通过构造函数实现类的继承](#2553-通过构造函数实现类的继承)
-          - [2.5.5.2.1 为什么不能使用Son.prototype.__proto__ = Father.prototype来实现原型链的继承](#25521-为什么不能使用sonprototypeproto--fatherprototype来实现原型链的继承)
-          - [2.5.5.2.2 为什么不能使用Son.prototype = new Father()](#25522-为什么不能使用sonprototype--new-father)
-          - [2.5.5.2.3 为什么不能使用Son.prototype = Father](#25523-为什么不能使用sonprototype--father)
-          - [2.5.5.2.4 如何实现父类静态成员的继承？](#25524-如何实现父类静态成员的继承)
-        - [2.5.5.4 通过class中的extends实现继承](#2554-通过class中的extends实现继承)
-          - [2.5.5.3.1 class中的super对象](#25531-class中的super对象)
-          - [2.5.5.3.2 class中的static函数](#25532-class中的static函数)
-      - [2.5.6 类的基本认识](#256-类的基本认识)
-      - [2.5.7 类的易混点](#257-类的易混点)
-        - [2.5.7.1 类的实例对象和类的关系](#2571-类的实例对象和类的关系)
-          - [2.5.7.1.1 类的实例的本质](#25711-类的实例的本质)
-          - [2.5.7.1.2 原型继承](#25712-原型继承)
-          - [2.5.7.1.3 类的实例对象的不可枚举属性constructor本质](#25713-类的实例对象的不可枚举属性constructor本质)
-        - [2.5.7.2 构造函数的本质](#2572-构造函数的本质)
-        - [2.5.7.3 instanceof判断的实质（对象与函数）](#2573-instanceof判断的实质对象与函数)
-        - [2.5.7.4 判断某个对象是否出现在另一个对象的原型链之中](#2574-判断某个对象是否出现在另一个对象的原型链之中)
-        - [2.5.7.5 获取某个对象的原型链](#2575-获取某个对象的原型链)
-          - [2.5.7.5.1 Object.getPrototypeOf(obj)](#25751-objectgetprototypeofobj)
-          - [2.5.7.5.2 obj.__proto__](#25752-objproto)
-        - [2.5.7.6 总结](#2576-总结)
-      - [2.5.8 注意](#258-注意)
-        - [2.5.8.1 会检查所有在原型链上的属性](#2581-会检查所有在原型链上的属性)
-  - [3 函数](#3-函数)
-    - [3.1. 函数的定义](#31-函数的定义)
-      - [3.1.1. 函数的命名写法（命名函数）](#311-函数的命名写法命名函数)
-      - [3.1.2. 函数的表达式写法（匿名函数）](#312-函数的表达式写法匿名函数)
-    - [3.2. 函数的参数传递](#32-函数的参数传递)
-      - [3.2.1. 形参](#321-形参)
-      - [3.2.2. 实参](#322-实参)
-      - [3.2.3. 形参变量个数和实参变量个数的关系](#323-形参变量个数和实参变量个数的关系)
-        - [3.2.3.1. arguments对象(现在很少用了)](#3231-arguments对象现在很少用了)
-          - [3.2.3.1.1. 特点1](#32311-特点1)
-          - [3.2.3.1.2. 特点2](#32312-特点2)
-          - [3.2.3.1.3. 特点3](#32313-特点3)
-      - [3.2.4. 函数参数的值传递和引用传递](#324-函数参数的值传递和引用传递)
-        - [3.2.4.1. 值传递](#3241-值传递)
-        - [3.2.4.2. 引用传递](#3242-引用传递)
-    - [3.3. 函数的调用](#33-函数的调用)
-      - [3.3.1. 函数的调用栈](#331-函数的调用栈)
-      - [3.3.2. 普通函数的调用](#332-普通函数的调用)
-      - [3.3.3 函数的特殊的调用形式](#333-函数的特殊的调用形式)
-      - [3.3.4. 通过立即调用函数进行调（IIFE）](#334-通过立即调用函数进行调iife)
-        - [3.3.4.1. 函数声明的立即调用函数规范](#3341-函数声明的立即调用函数规范)
-          - [3.2.5.4.2. 函数的表达式写法可以在后面增加参数列表从而实现函数的立即实行](#32542-函数的表达式写法可以在后面增加参数列表从而实现函数的立即实行)
-    - [3.4. 函数的返回值](#34-函数的返回值)
-- [四 JS的知识补充](#四-js的知识补充)
-  - [1 作用域](#1-作用域)
-    - [1.1 理解作用域](#11-理解作用域)
-      - [1.1.1 认识三个对话的部分](#111-认识三个对话的部分)
-      - [1.1.2 对话的过程](#112-对话的过程)
-      - [1.1.3 js引擎查询变量的方法](#113-js引擎查询变量的方法)
-      - [1.1.4 理解变量的访问](#114-理解变量的访问)
-    - [1.2 作用域嵌套](#12-作用域嵌套)
-    - [1.3 总结](#13-总结-1)
-    - [1.4 词法作用域](#14-词法作用域)
-      - [1.4.1 欺骗词法](#141-欺骗词法)
-        - [1.4.1.1 eval()](#1411-eval)
-      - [1.4.2 总结](#142-总结)
-    - [1.5 函数作用域](#15-函数作用域)
-      - [1.5.1 作用1：隐藏内部实现](#151-作用1隐藏内部实现)
-      - [1.5.2 作用2：规避冲突](#152-作用2规避冲突)
-      - [1.5.3 作用3：全局命名空间](#153-作用3全局命名空间)
-      - [1.5.4 函数声明和函数表达式](#154-函数声明和函数表达式)
-      - [1.5.4 立即执行函数表达式](#154-立即执行函数表达式)
-    - [1.6 块作用域](#16-块作用域)
-      - [1.6.1 var声明的变量不具有块级作用域](#161-var声明的变量不具有块级作用域)
-      - [1.6.2 try...catch的err具有块级作用域](#162-trycatch的err具有块级作用域)
-      - [1.6.3 let/const声明的变量具有块级作用域](#163-letconst声明的变量具有块级作用域)
-        - [1.6.3.1 在if语句中](#1631-在if语句中)
-        - [1.6.3.2 垃圾回收中](#1632-垃圾回收中)
-        - [1.6.3.3 let循环](#1633-let循环)
-      - [1.6.4 总结](#164-总结)
-    - [1.7 声明的提升](#17-声明的提升)
-      - [1.7.1 编译器对代码的处理](#171-编译器对代码的处理)
-      - [1.7.2 提升](#172-提升)
-      - [1.7.3 函数声明和变量声明的优先级](#173-函数声明和变量声明的优先级)
-      - [1.7.4 函数声明不具有块级作用域](#174-函数声明不具有块级作用域)
-      - [1.7.5 总结](#175-总结)
-    - [1.8 作用域的闭包](#18-作用域的闭包)
-      - [1.8.1 理解闭包](#181-理解闭包)
-      - [1.8.2 闭包的实质](#182-闭包的实质)
-      - [1.8.3 闭包的通常形式](#183-闭包的通常形式)
-      - [1.8.4 闭包的运用](#184-闭包的运用)
-        - [1.8.4.1 循环和闭包](#1841-循环和闭包)
-        - [1.8.4.2 实现模块](#1842-实现模块)
-      - [1.8.5 总结](#185-总结)
-  - [2 this的理解](#2-this的理解)
-    - [2.1 this的实质](#21-this的实质)
-    - [2.2 确定this所指的对象的方法](#22-确定this所指的对象的方法)
-      - [2.2.1 第一步：寻找调用位置和当前的调用栈](#221-第一步寻找调用位置和当前的调用栈)
-      - [2.2.2 第二步：根据this的绑定规则来确定绑定的对象](#222-第二步根据this的绑定规则来确定绑定的对象)
-        - [2.2.2.1 默认绑定](#2221-默认绑定)
-        - [2.2.2.2 隐式绑定](#2222-隐式绑定)
-          - [2.2.2.2.1 隐式丢失](#22221-隐式丢失)
-        - [2.2.2.3 显示绑定](#2223-显示绑定)
-        - [2.2.2.4 new绑定](#2224-new绑定)
-    - [2.3 this的绑定例外](#23-this的绑定例外)
-      - [2.3.1 被忽略的this](#231-被忽略的this)
-      - [2.3.2 间接引用(包括函数参数的传递)](#232-间接引用包括函数参数的传递)
-      - [2.3.3 软绑定(obj.softBind(..))](#233-软绑定objsoftbind)
-      - [2.3.4 箭头函数](#234-箭头函数)
-    - [2.4 总结](#24-总结)
-  - [3 有关类的三种不同设计模式](#3-有关类的三种不同设计模式)
-    - [3.1 使用构造函数的模式](#31-使用构造函数的模式)
-    - [3.2 使用class模式](#32-使用class模式)
-    - [3.3 使用事件委派的模式](#33-使用事件委派的模式)
-  - [4 语法](#4-语法)
-    - [4.1 语句和表达式](#41-语句和表达式)
-      - [4.1.1 语句的结果值的隐式返回](#411-语句的结果值的隐式返回)
-  - [5 正则表达式](#5-正则表达式)
-    - [5.1. 正则表达式的定义](#51-正则表达式的定义)
-    - [5.2. 正则表达式的作用](#52-正则表达式的作用)
-    - [5.3. 正则表达式的特殊字符](#53-正则表达式的特殊字符)
-      - [5.3.1. 边界字符 ^ $](#531-边界字符--)
-      - [5.3.2 字符类 []](#532-字符类-)
-      - [5.3.3. 量词符](#533-量词符)
-      - [5.3.4. 预定义类](#534-预定义类)
-    - [5.4. 正则表达式的创建](#54-正则表达式的创建)
-      - [5.4.1. 通过字面量创建(/reg/[flags])](#541-通过字面量创建regflags)
-      - [5.4.2. 通过构造函数创建(new RegExp(reg[, flags]))](#542-通过构造函数创建new-regexpreg-flags)
-      - [5.4.3 正则表达式标识](#543-正则表达式标识)
-    - [5.5. 正则表达式的属性和方法](#55-正则表达式的属性和方法)
-      - [5.5.1 RegExp#dotAll(只读)](#551-regexpdotall只读)
-      - [5.5.2 RegExp#global(只读)](#552-regexpglobal只读)
-      - [5.5.3 RegExp#ignoreCase(只读)](#553-regexpignorecase只读)
-      - [5.5.4 RegExp#multiline(只读)](#554-regexpmultiline只读)
-      - [5.5.5 RegExp#unicode(只读)](#555-regexpunicode只读)
-      - [5.5.6 RegExp#source(只读)](#556-regexpsource只读)
-      - [5.5.7 RegExp#flags(只读)](#557-regexpflags只读)
-      - [5.5.8 RegExp#lastIndex](#558-regexplastindex)
-      - [5.5.9 RegExp#exec(str)](#559-regexpexecstr)
-        - [5.5.9.1 结果数组(result)](#5591-结果数组result)
-        - [5.5.9.2 注意事项](#5592-注意事项)
-        - [5.5.9.3 全局匹配与exec和lastIndex](#5593-全局匹配与exec和lastindex)
-      - [5.5.10 RegExp#test(str)](#5510-regexpteststr)
-      - [5.5.12 RegExp#toString()](#5512-regexptostring)
-    - [5.6. 常用的正则表达式](#56-常用的正则表达式)
-      - [5.6.1. 用户名验证](#561-用户名验证)
-- [五 js的DOM操作](#五-js的dom操作)
-  - [1. DOM(document Object Model)](#1-domdocument-object-model)
-    - [1.2. DOM树](#12-dom树)
-    - [1.3. 节点(node)](#13-节点node)
-      - [1.3.1. 节点的分类](#131-节点的分类)
-        - [1.3.1.1. 文档节点(document)](#1311-文档节点document)
-        - [1.3.1.1. 元素节点](#1311-元素节点)
-        - [1.3.1.1. 属性节点](#1311-属性节点)
-        - [1.3.1.1. 文本节点](#1311-文本节点)
-      - [1.3.2. 节点的属性](#132-节点的属性)
-  - [2 DOM方法](#2-dom方法)
-    - [2.1 DOM document属性和方法](#21-dom-document属性和方法)
-      - [2.1.1 document获取元素对象的方法](#211-document获取元素对象的方法)
-        - [2.1.1.1 document.getElementsByClassName(names)](#2111-documentgetelementsbyclassnamenames)
-        - [2.1.1.2 document.getElementsByTagName(tagNames)](#2112-documentgetelementsbytagnametagnames)
-        - [2.1.1.3 document.getElementById(id)](#2113-documentgetelementbyidid)
-        - [2.1.1.4 document.getElementsByName(names)](#2114-documentgetelementsbynamenames)
-        - [2.1.1.5 document.querySelector(cssSelector)](#2115-documentqueryselectorcssselector)
-        - [2.1.1.6 document.querySelectorAll(cssSelector)](#2116-documentqueryselectorallcssselector)
-      - [2.1.2 document常用的属性](#212-document常用的属性)
-        - [2.1.2.1 document.body](#2121-documentbody)
-        - [2.1.2.2 document.all](#2122-documentall)
-        - [2.1.2.3 document.doucumentElement](#2123-documentdoucumentelement)
-      - [2.1.3 doucment与增加元素对象相关的属性](#213-doucment与增加元素对象相关的属性)
-        - [2.1.3.1 document.createElement(tagName)](#2131-documentcreateelementtagname)
-    - [2.2 DOM Element方法](#22-dom-element方法)
-      - [2.2.1 element获取元素对象的方法](#221-element获取元素对象的方法)
-        - [2.2.1.1 element.getElementsByClassName(names)](#2211-elementgetelementsbyclassnamenames)
-        - [2.2.1.2 element.getElementsByTagName(tagNames)](#2212-elementgetelementsbytagnametagnames)
-        - [2.1.1.3 element.querySelector(cssSelector)](#2113-elementqueryselectorcssselector)
-        - [2.1.1.4 element.matches(cssSelector)](#2114-elementmatchescssselector)
-        - [2.1.1.4 element.querySelectorAll(cssSelector)](#2114-elementqueryselectorallcssselector)
-      - [2.2.2 element与父元素对象，子元素对象，兄弟元素对象有关的属性和方法](#222-element与父元素对象子元素对象兄弟元素对象有关的属性和方法)
-        - [2.2.2.1 element.parentNode](#2221-elementparentnode)
-          - [2.2.2.1.1 parentNode.childElementCount](#22211-parentnodechildelementcount)
-          - [2.2.2.1.2 parentNode.children](#22212-parentnodechildren)
-          - [2.2.2.1.3 parentNode.firstElementChild](#22213-parentnodefirstelementchild)
-          - [2.2.2.1.4 parentNode.lastElementChild](#22214-parentnodelastelementchild)
-          - [2.2.2.1.5 parentNode.append(...node)](#22215-parentnodeappendnode)
-          - [2.2.2.1.5 parentNode.prepend(node)](#22215-parentnodeprependnode)
-        - [2.2.2.2 element.childNode](#2222-elementchildnode)
-          - [2.2.2.2.1 childNode.remove()](#22221-childnoderemove)
-        - [2.2.2.3 element.previousElementSibling（只读）](#2223-elementpreviouselementsibling只读)
-        - [2.2.2.4 element.nextElementSibling（只读）](#2224-elementnextelementsibling只读)
-        - [2.2.2.5 element.closest(selectors)](#2225-elementclosestselectors)
-      - [2.2.3 element与增加元素对象相关的属性和方法](#223-element与增加元素对象相关的属性和方法)
-        - [2.2.3.1 parentNode.append(...node)](#2231-parentnodeappendnode)
-        - [2.2.3.2 parentNode.prepend(node)](#2232-parentnodeprependnode)
-        - [2.2.3.3 parentNode.replaceChildren(newChild, oldChild)](#2233-parentnodereplacechildrennewchild-oldchild)
-        - [2.2.3.4 childNode.replaceWith(...node)](#2234-childnodereplacewithnode)
-        - [2.2.3.5 childNode.remove()](#2235-childnoderemove)
-        - [2.2.3.6 element.insertAdjacentElement(position, newElement)](#2236-elementinsertadjacentelementposition-newelement)
-        - [2.2.3.6 element.insertAdjacentHTML(position, text)](#2236-elementinsertadjacenthtmlposition-text)
-      - [2.2.4 element与元素属性相关的属性及方法](#224-element与元素属性相关的属性及方法)
-        - [2.2.4.1 element.nodeName/tagName](#2241-elementnodenametagname)
-        - [2.2.4.2 element.id](#2242-elementid)
-        - [2.2.4.3 element.attributes（只读）](#2243-elementattributes只读)
-        - [2.2.4.4 element.innerHTML](#2244-elementinnerhtml)
-        - [2.2.4.5 element.outerHTML](#2245-elementouterhtml)
-          - [2.2.4.1.1 用于替换当前的元素对象](#22411-用于替换当前的元素对象)
-        - [2.2.4.6 element.innerText](#2246-elementinnertext)
-        - [2.2.4.7 element.className](#2247-elementclassname)
-        - [2.2.4.8 element.classList（只读）](#2248-elementclasslist只读)
-          - [2.2.4.3.1 classList.add(...classValue)](#22431-classlistaddclassvalue)
-          - [2.2.4.3.2 classList.remove(...classValue)](#22432-classlistremoveclassvalue)
-          - [2.2.4.3.3 classList.toggle(classValue)](#22433-classlisttoggleclassvalue)
-        - [2.2.4.9 element.getAttribute(attrName:string)（只读）](#2249-elementgetattributeattrnamestring只读)
-        - [2.2.4.10 element.getAttributeNames()](#22410-elementgetattributenames)
-        - [2.2.4.11 element.hasAttribute(attrName:string)](#22411-elementhasattributeattrnamestring)
-        - [2.2.4.11 element.removeAttribute(attrName:string)](#22411-elementremoveattributeattrnamestring)
-        - [2.2.4.12 element.setAttribute(attrName:string, attrValue:string)](#22412-elementsetattributeattrnamestring-attrvaluestring)
-        - [2.2.4.13 element.toggleAttribute(attrName[, force])](#22413-elementtoggleattributeattrname-force)
-      - [2.2.5 element与样式相关的属性和方法](#225-element与样式相关的属性和方法)
-        - [2.2.5.1 element.client[Height, Width]（只读）](#2251-elementclientheight-width只读)
-        - [2.2.5.2 element.client[Left, Top]（只读）](#2252-elementclientleft-top只读)
-        - [2.2.5.3 element.scroll[Height, Width]（只读）](#2253-elementscrollheight-width只读)
-        - [2.2.5.4 element.scroll[Left, Top]](#2254-elementscrollleft-top)
-        - [2.2.5.5 element.[attName] （获取内联样式属性）](#2255-elementattname-获取内联样式属性)
-          - [2.2.5.5.1 element.value](#22551-elementvalue)
-        - [2.2.5.6 element.style.[attrName]](#2256-elementstyleattrname)
-          - [2.2.5.6.1 element.style.backgroundColor](#22561-elementstylebackgroundcolor)
-        - [2.2.5.7 实现判断滚动条是否到底](#2257-实现判断滚动条是否到底)
-      - [2.2.4.10](#22410)
-    - [2.3 DOM的版本适应的问题](#23-dom的版本适应的问题)
-      - [6.1.2.3. 获取元素节点对象的行内样式属性值](#6123-获取元素节点对象的行内样式属性值)
-        - [6.1.2.3.3. 获取元素节点对象的样式表中的样式](#61233-获取元素节点对象的样式表中的样式)
-          - [6.1.2.3.3.1. 由于兼容性，需要自定义一个函数](#612331-由于兼容性需要自定义一个函数)
-          - [6.1.2.3.3.2. getComputedStyle(elementObject, pseudoElements)](#612332-getcomputedstyleelementobject-pseudoelements)
-          - [6.1.2.3.3.3. objectElement.currentStyle.样式名](#612333-objectelementcurrentstyle样式名)
-        - [6.1.2.4.1. 以父元素为对象的操作](#61241-以父元素为对象的操作)
-          - [6.1.2.4.1.1. document.createElement(tagStr)](#612411-documentcreateelementtagstr)
-          - [6.1.2.4.1.2. document.createTextNode(str)](#612412-documentcreatetextnodestr)
-          - [6.1.2.4.1.3. fatherNodeObject.appendChild(childNodeObject)](#612413-fathernodeobjectappendchildchildnodeobject)
-          - [6.1.2.4.1.4. fatherNodeObject.insertBefore(newchildObject, oldchildObject)](#612414-fathernodeobjectinsertbeforenewchildobject-oldchildobject)
-          - [6.1.2.4.1.5. fatherNodeObject.replaceChild(newchildObject, oldchildObject)](#612415-fathernodeobjectreplacechildnewchildobject-oldchildobject)
-          - [6.1.2.4.1.6. fatherNodeObject.removeChild(childObject)](#612416-fathernodeobjectremovechildchildobject)
-          - [6.1.2.4.1.7. 元素对象的增加的步骤（使用createElement）](#612417-元素对象的增加的步骤使用createelement)
-          - [6.1.2.4.1.8. 使用innerHTML对元素进行增加](#612418-使用innerhtml对元素进行增加)
-          - [6.1.2.4.1.9. 两种方式结合对元素进行添加(推荐)](#612419-两种方式结合对元素进行添加推荐)
-          - [6.1.2.4.1.10. 元素对象的删除的步骤（经常使用的）](#6124110-元素对象的删除的步骤经常使用的)
-  - [3 DOM事件](#3-dom事件)
-    - [3.0 事件的一些基本常识](#30-事件的一些基本常识)
-      - [3.0.1 事件的公共属性和方法](#301-事件的公共属性和方法)
-        - [3.0.1.1 event.target](#3011-eventtarget)
-        - [3.0.1.2 event.currentTarget](#3012-eventcurrenttarget)
-        - [3.0.1.3 event.bubbles](#3013-eventbubbles)
-        - [3.0.1.4 event.cancelable](#3014-eventcancelable)
-        - [3.0.1.5 event.type](#3015-eventtype)
-        - [3.0.1.6 event.stopPropagation()](#3016-eventstoppropagation)
-        - [3.0.1.7 event.preventDefault()](#3017-eventpreventdefault)
-      - [3.0.2 事件与元素的绑定和取消的方法方法](#302-事件与元素的绑定和取消的方法方法)
-        - [3.0.2.0 在内联样式中增加属性on[eventName] = "callback()"](#3020-在内联样式中增加属性oneventname--callback)
-        - [3.0.2.1 element.on[eventName] = function() {}](#3021-elementoneventname--function-)
-        - [3.0.2.2 element.on[eventName] = null](#3022-elementoneventname--null)
-        - [3.0.2.3 element.addEventListener(eventName:string, func, [true || false])](#3023-elementaddeventlistenereventnamestring-func-true--false)
-        - [3.0.2.4 element.removeEventListener(eventName:string, func, [true || false])](#3024-elementremoveeventlistenereventnamestring-func-true--false)
-        - [3.0.2.5 element.attachEvent(on[eventName]:string, func)](#3025-elementattacheventoneventnamestring-func)
-        - [3.0.2.5 通用的事件绑定函数](#3025-通用的事件绑定函数)
-      - [3.0.3 事件的传播](#303-事件的传播)
-        - [3.0.3.1 非冒泡事件](#3031-非冒泡事件)
-        - [3.0.3.2 冒泡事件](#3032-冒泡事件)
-          - [3.0.3.2.1 冒泡事件的传播](#30321-冒泡事件的传播)
-          - [3.0.3.2.2 event.stopPropagation()的应用](#30322-eventstoppropagation的应用)
-          - [3.0.3.2.3 利用冒泡事件实现事件委派](#30323-利用冒泡事件实现事件委派)
-    - [3.1 剪贴版事件（ClipboardEvent）](#31-剪贴版事件clipboardevent)
-      - [3.1.1 剪贴板事件的属性和方法(ClipboardEvent)](#311-剪贴板事件的属性和方法clipboardevent)
-    - [3.2 焦点事件(FocusEvent)](#32-焦点事件focusevent)
-      - [3.2.1 焦点事件的属性和方法(FocusEvent)](#321-焦点事件的属性和方法focusevent)
-    - [3.3 键盘事件](#33-键盘事件)
-      - [3.3.1 键盘事件的属性和方法(KeyboardEvent)](#331-键盘事件的属性和方法keyboardevent)
-    - [3.4 鼠标事件](#34-鼠标事件)
-      - [3.4.1 鼠标事件的属性和方法(MouseEvent)](#341-鼠标事件的属性和方法mouseevent)
-    - [3.5 触摸事件](#35-触摸事件)
-      - [3.4.0 触摸事件的类型](#340-触摸事件的类型)
-      - [3.4.1 触摸事件的属性和方法(TouchEvent)](#341-触摸事件的属性和方法touchevent)
-      - [3.4.2 触摸事件的注意事项](#342-触摸事件的注意事项)
-    - [3.6 滚轮事件（WheelEvent)](#36-滚轮事件wheelevent)
-      - [3.6.1 滚轮事件的属性和方法(WheelEvent)](#361-滚轮事件的属性和方法wheelevent)
-      - [3.6.2 wheel的历史](#362-wheel的历史)
-    - [3.7 事件的一些要学会的应用](#37-事件的一些要学会的应用)
-      - [3.7.1 冒泡事件实现子盒和父盒的颜色变化](#371-冒泡事件实现子盒和父盒的颜色变化)
-        - [3.7.1.1 利用event.stopPropagation()](#3711-利用eventstoppropagation)
-        - [3.7.1.2 利用冒泡事件的出发元素的不同（即event.target的不同）](#3712-利用冒泡事件的出发元素的不同即eventtarget的不同)
-      - [3.7.2 实现全选框](#372-实现全选框)
-      - [3.7.3 实现元素的拖拽](#373-实现元素的拖拽)
-        - [3.7.3.1 拖拽时鼠标位于左上角](#3731-拖拽时鼠标位于左上角)
-        - [3.7.3.2 拖拽位置位于鼠标位置刚开始点击的位置](#3732-拖拽位置位于鼠标位置刚开始点击的位置)
-        - [3.7.3.3 取消浏览器的默认行为造成拖拽的bug](#3733-取消浏览器的默认行为造成拖拽的bug)
-        - [3.7.3.4 总结一个拖拽函数](#3734-总结一个拖拽函数)
-      - [3.7.4 滚轮事件的运用](#374-滚轮事件的运用)
-      - [3.7.5 键盘事件的运用](#375-键盘事件的运用)
-        - [3.7.5.1 实现两个按键的判断](#3751-实现两个按键的判断)
-        - [3.6.7.2 限制input框的输入内容](#3672-限制input框的输入内容)
-        - [3.6.7.3 div元素的移动](#3673-div元素的移动)
-    - [3.8 与事件相关的兼容性问题](#38-与事件相关的兼容性问题)
-      - [3.8.1 获取样式表中属性值的兼容性问题](#381-获取样式表中属性值的兼容性问题)
-      - [3.8.2 event参数的传递](#382-event参数的传递)
-      - [3.8.3 绑定事件的兼容性写法](#383-绑定事件的兼容性写法)
-      - [6.1.3.1. elementObject.clientWidth, elementObject.clientHeight](#6131-elementobjectclientwidth-elementobjectclientheight)
-      - [6.1.3.2. elementObject.offsetWidth, elementObject.offsetHeight](#6132-elementobjectoffsetwidth-elementobjectoffsetheight)
-      - [6.1.3.3. elementObject.offsetParent](#6133-elementobjectoffsetparent)
-      - [6.1.3.4. elementObject.offset[Left,right], elementObject.offset[Top,buttom]](#6134-elementobjectoffsetleftright-elementobjectoffsettopbuttom)
-      - [6.1.3.5. elementObject.scrollWidth, elementObject.scrollHeight](#6135-elementobjectscrollwidth-elementobjectscrollheight)
-      - [6.1.3.6. elementObject.scrollLeft, elementObject.scrollTop](#6136-elementobjectscrollleft-elementobjectscrolltop)
-      - [6.1.3.7. elementObject.scrollHeight, elementObject.scrollTop和elementObject.clientHeight的结合使用](#6137-elementobjectscrollheight-elementobjectscrolltop和elementobjectclientheight的结合使用)
-      - [6.2.6.4. elementObject.onmousewheel](#6264-elementobjectonmousewheel)
-    - [3.8. 文档的加载](#38-文档的加载)
-      - [3.8.1 浏览器加载页面的顺序](#381-浏览器加载页面的顺序)
-      - [3.8.2 onload事件](#382-onload事件)
-- [六 js的BOM操作](#六-js的bom操作)
-  - [6.1. BOM(brower Object Model)](#61-bombrower-object-model)
-  - [6.2. BOM的对象](#62-bom的对象)
-    - [6.2.1. Window](#621-window)
-      - [6.2.1.1. Window方法](#6211-window方法)
-        - [6.2.1.1.1. alert(str)](#62111-alertstr)
-        - [6.2.1.1.2. prompt(str)](#62112-promptstr)
-        - [6.2.1.1.3. comfirm(str)](#62113-comfirmstr)
-        - [6.2.1.1.4. setInterval(callback, time)](#62114-setintervalcallback-time)
-        - [6.2.1.1.5. clearInterval(intervalId)](#62115-clearintervalintervalid)
-        - [6.2.1.1.6. setTimeout(callback, time)](#62116-settimeoutcallback-time)
-        - [6.2.1.1.7. clearTimeout(timeoutId)](#62117-cleartimeouttimeoutid)
-        - [6.2.1.1.8. 延时调用和定时调用的关系](#62118-延时调用和定时调用的关系)
-    - [6.2.2. Navigator](#622-navigator)
-      - [6.2.2.1. Navigator的属性](#6221-navigator的属性)
-        - [7.2.2.1.1. navigator.userAgent](#72211-navigatoruseragent)
-    - [6.2.3. Location](#623-location)
-      - [6.2.3.1. localtion](#6231-localtion)
-        - [7.2.3.1.1. location实现元素对象的类似a标签的属性](#72311-location实现元素对象的类似a标签的属性)
-      - [6.2.3.2. location的属性](#6232-location的属性)
-      - [6.2.3.3. Location的方法](#6233-location的方法)
-        - [6.2.3.3.1. location.assign(URL);](#62331-locationassignurl)
-        - [6.2.3.3.2. location.reload();](#62332-locationreload)
-        - [6.2.3.3.3. location.replace(URL)](#62333-locationreplaceurl)
-    - [6.2.4. History](#624-history)
-      - [6.2.4.1. History的属性](#6241-history的属性)
-        - [6.2.4.1.1. history.length](#62411-historylength)
-      - [6.2.4.2. History的方法](#6242-history的方法)
-        - [6.2.4.2.1. history.back()](#62421-historyback)
-        - [6.2.4.2.2. history.forward()](#62422-historyforward)
-        - [6.2.4.2.3. history.go(n)](#62423-historygon)
-    - [6.2.5. Screen](#625-screen)
-    - [6.2.6. Bom的应用](#626-bom的应用)
-      - [6.2.6.1. 图片切换](#6261-图片切换)
-      - [6.2.6.2. 解决div移动第一个键和第二个键之间的延迟问题（防误触）](#6262-解决div移动第一个键和第二个键之间的延迟问题防误触)
-      - [6.2.6.3. 构造一个简单的动画函数](#6263-构造一个简单的动画函数)
-      - [6.2.6.4. 轮播图效果的实现](#6264-轮播图效果的实现)
-- [七 js的迭代器（Iterator)](#七-js的迭代器iterator)
-  - [1 迭代器的创建](#1-迭代器的创建)
-    - [1.1 通过Iterator(object[, keyOnly])来构建](#11-通过iteratorobject-keyonly来构建)
-    - [1.2 通过生成器来构建](#12-通过生成器来构建)
-      - [1.2.1 利用内置函数自身的生成器(Symbol.iterator)](#121-利用内置函数自身的生成器symboliterator)
-    - [1.3 自定义构建迭代器](#13-自定义构建迭代器)
-  - [2 迭代器的属性和方法](#2-迭代器的属性和方法)
-    - [2.1 Iterator#next()](#21-iteratornext)
-      - [2.1.1 返回对象的属性](#211-返回对象的属性)
-    - [2.2 for...of...与迭代器](#22-forof与迭代器)
-      - [2.2.1 与for...of等价的代码](#221-与forof等价的代码)
-  - [3 iterable](#3-iterable)
-- [八 生成器(Generator)](#八-生成器generator)
-  - [1 生成器的实质](#1-生成器的实质)
-  - [2 生成器的关键词](#2-生成器的关键词)
-    - [2.1 function *funcName() {}](#21-function-funcname-)
-    - [2.2 yield关键词](#22-yield关键词)
-      - [2.2.1 yield关键词的作用](#221-yield关键词的作用)
-        - [2.2.1.1 使生成器函数在yield所在语句暂停运行](#2211-使生成器函数在yield所在语句暂停运行)
-        - [2.2.1.2 给迭代器返回对象的value赋值为yield后面表达式的返回值](#2212-给迭代器返回对象的value赋值为yield后面表达式的返回值)
-        - [2.2.1.3 接收next函数传入的参数](#2213-接收next函数传入的参数)
-    - [2.3 try...finally](#23-tryfinally)
-  - [3 生成器返回的迭代器返回对象的value赋值](#3-生成器返回的迭代器返回对象的value赋值)
-  - [4 生成器函数的参数](#4-生成器函数的参数)
-    - [4.1 通过函数的参数进行传递](#41-通过函数的参数进行传递)
-    - [4.2 通过next对参数进行传递](#42-通过next对参数进行传递)
-  - [5 生成器的构造](#5-生成器的构造)
-    - [4.1 通过生成器函数构造](#41-通过生成器函数构造)
-    - [4.2 通过生成器表达式构造(匿名)](#42-通过生成器表达式构造匿名)
-    - [4.3 在对象中构造(简便写法)](#43-在对象中构造简便写法)
-    - [4.4 例子](#44-例子)
-  - [6 终止无限循环迭代器](#6-终止无限循环迭代器)
-    - [6.1 无限循环迭代器](#61-无限循环迭代器)
-    - [6.2 终止无限循迭代器的方法](#62-终止无限循迭代器的方法)
-      - [6.2.1 在for...of中调用break](#621-在forof中调用break)
-      - [6.2.2 iterator.return([str])函数的调用](#622-iteratorreturnstr函数的调用)
-  - [7 生成器函数的应用](#7-生成器函数的应用)
-    - [7.1 异步迭代生成器](#71-异步迭代生成器)
-    - [7.2 生成器 + Promise](#72-生成器--promise)
-      - [7.2.1 run函数](#721-run函数)
-      - [7.2.2 例子](#722-例子)
-      - [7.2.3 async和await运用的是这种原理](#723-async和await运用的是这种原理)
-    - [7.3 生成器中的 Promise 并发](#73-生成器中的-promise-并发)
-    - [7.4 生成器委托(后面再进行补充)](#74-生成器委托后面再进行补充)
-- [九 Promise](#九-promise)
-  - [1 Promised的基本理解](#1-promised的基本理解)
-    - [1.1 promise的理解](#11-promise的理解)
-    - [1.2 promise的状态](#12-promise的状态)
-    - [1.3. promise的基本使用流程](#13-promise的基本使用流程)
-    - [1.4. 为什么使用promise](#14-为什么使用promise)
-      - [1.4.1 指定回调函数的方式更加灵活](#141-指定回调函数的方式更加灵活)
-      - [1.4.2 支持链式调用,可以解决回调地狱的问题](#142-支持链式调用可以解决回调地狱的问题)
-        - [1.4.2.1 回调地狱](#1421-回调地狱)
-        - [1.4.2.2 利用Promise的链式调用解决回调地狱的问题](#1422-利用promise的链式调用解决回调地狱的问题)
-        - [1.4.2.3 解决回调地狱的最终方案](#1423-解决回调地狱的最终方案)
-    - [1.5 promise的API](#15-promise的api)
-      - [5.1 基本语法](#51-基本语法)
-      - [5.2 函数对象的方法](#52-函数对象的方法)
-        - [5.2.1 Promise.all(iterable))](#521-promisealliterable)
-        - [5.2.2 Promise.race(iterable)](#522-promiseraceiterable)
-        - [5.2.3 Promise.resolve(value)](#523-promiseresolvevalue)
-        - [5.2.4 Promise.reject(reason)](#524-promiserejectreason)
-      - [5.3 实例对象的方法](#53-实例对象的方法)
-        - [5.3.1 Promise.prototype.then(onFulfilled[, onRejected])](#531-promiseprototypethenonfulfilled-onrejected)
-        - [5.3.2 Promise.prototype.catch(onRejected)](#532-promiseprototypecatchonrejected)
-    - [1.6 promise的几个关键问题](#16-promise的几个关键问题)
-      - [1.6.1 如何改变promise的状态](#161-如何改变promise的状态)
-      - [1.6.2 什么时候可以得到数据?](#162-什么时候可以得到数据)
-      - [1.6.3 理解promise中的同步异步](#163-理解promise中的同步异步)
-      - [1.6.4 promise.then()返回新的promise的结果状态由什么决定的](#164-promisethen返回新的promise的结果状态由什么决定的)
-      - [1.6.5 promise如何串联多个异步任务](#165-promise如何串联多个异步任务)
-      - [1.6.6 promise的异常穿透](#166-promise的异常穿透)
-      - [1.6.7 中断promise链](#167-中断promise链)
-  - [2 手写promise](#2-手写promise)
-    - [2.1 定义整体结构](#21-定义整体结构)
-    - [2.2. 定义构造函数](#22-定义构造函数)
-  - [3 async和await使用](#3-async和await使用)
-    - [3.1 async 函数](#31-async-函数)
-    - [3.2 await 表达式](#32-await-表达式)
-    - [3.3 注意](#33-注意)
-  - [4 宏队列和微队列](#4-宏队列和微队列)
-    - [4.1 原理图](#41-原理图)
-    - [4.2 js的异步任务的触发函数什么时候放入了对应的异步执行队列？](#42-js的异步任务的触发函数什么时候放入了对应的异步执行队列)
-    - [4.3 js的异步执行流程](#43-js的异步执行流程)
-  - [5 常见面试题](#5-常见面试题)
-    - [5.1 认清楚哪些是异步回调函数,哪些是同步代码](#51-认清楚哪些是异步回调函数哪些是同步代码)
-- [十 axios](#十-axios)
-  - [1 http的理解](#1-http的理解)
-    - [1.1 http请求交互的基本过程](#11-http请求交互的基本过程)
-    - [1.2 http请求报文](#12-http请求报文)
-      - [1.2.1 请求报文的组成](#121-请求报文的组成)
-        - [1.2.1.1 请求行](#1211-请求行)
-          - [1.1.1.1.1 method(请求方法)](#11111-method请求方法)
-          - [1.1.1.1.2 URL](#11112-url)
-          - [1.1.1.1.3 协议版本](#11113-协议版本)
-        - [1.2.1.2 请求头](#1212-请求头)
-          - [1.2.1.2.1 User-Agent](#12121-user-agent)
-          - [1.2.1.2.2 Accipt](#12122-accipt)
-          - [1.2.1.2.3 Accept-Language](#12123-accept-language)
-          - [1.2.1.2.4 Accept-Encoding](#12124-accept-encoding)
-          - [1.2.1.2.5 Accept-Charset](#12125-accept-charset)
-          - [1.2.1.2.6 Host](#12126-host)
-          - [1.2.1.2.7 connection](#12127-connection)
-          - [1.2.1.2.8 Cookie](#12128-cookie)
-        - [1.2.1.3 空行](#1213-空行)
-        - [1.2.1.4 请求包体](#1214-请求包体)
-      - [1.2.2 请求方法与请求包体Content-type以及axios的config的关系](#122-请求方法与请求包体content-type以及axios的config的关系)
-    - [1.3 http响应报文](#13-http响应报文)
-      - [1.3.1 响应报文的组成](#131-响应报文的组成)
-        - [1.3.1.1 状态行](#1311-状态行)
-          - [1.3.1.1.1 http协议字段](#13111-http协议字段)
-          - [1.3.1.1.2 状态码](#13112-状态码)
-          - [1.3.1.1.3 状态码描述文本](#13113-状态码描述文本)
-        - [1.3.1.2 响应头部](#1312-响应头部)
-          - [1.3.1.2.1 Location](#13121-location)
-          - [1.3.1.2.2 Server](#13122-server)
-          - [1.3.1.2.3 Vary](#13123-vary)
-          - [1.3.1.2.4 Vary](#13124-vary)
-          - [1.3.1.2.5 Connection](#13125-connection)
-        - [1.3.1.3 空行](#1313-空行)
-        - [1.3.1.4 响应包体](#1314-响应包体)
-    - [1.4 基础知识补充](#14-基础知识补充)
-      - [1.4.1 Connection在不同报文中的作用](#141-connection在不同报文中的作用)
-  - [2 服务器提供给客户端的API分类](#2-服务器提供给客户端的api分类)
-    - [2.1 分类依据](#21-分类依据)
-    - [2.2 类型](#22-类型)
-      - [2.2.1 REST API（restful）](#221-rest-apirestful)
-      - [2.2.2 非 REST API(restless)](#222-非-rest-apirestless)
-  - [3 搭建具有REST API的简单服务器用于测试](#3-搭建具有rest-api的简单服务器用于测试)
-  - [4 AJAX编程的基础--XHR](#4-ajax编程的基础--xhr)
-    - [4.1. XHR的基本定义](#41-xhr的基本定义)
-    - [4.2 XHR的基本使用](#42-xhr的基本使用)
-      - [4.2.1 XHR的构造函数](#421-xhr的构造函数)
-      - [4.2.3 XHR实例对象从建立到接收到数据状态以及变化](#423-xhr实例对象从建立到接收到数据状态以及变化)
-      - [4.2.2 XHR实例对象接收数据时事件](#422-xhr实例对象接收数据时事件)
-      - [4.2.3 XHR的属性和方法](#423-xhr的属性和方法)
-        - [4.2.3.1 与接收到响应结果相关的属性](#4231-与接收到响应结果相关的属性)
-          - [4.2.3.1.1 XmlHttpRequest#responseType(只读)](#42311-xmlhttprequestresponsetype只读)
-          - [4.2.3.1.2 XmlHttpRequest#response(只读)](#42312-xmlhttprequestresponse只读)
-          - [4.2.3.1.3 XmlHttpRequest#status / statusText（只读）](#42313-xmlhttprequeststatus--statustext只读)
-          - [4.2.3.1.4 XmlHttpRequest#responseURL(只读)](#42314-xmlhttprequestresponseurl只读)
-          - [4.2.3.1.5 XmlHttpRequest#responseText(只读)](#42315-xmlhttprequestresponsetext只读)
-          - [4.2.3.1.6 XmlHttpRequest#responseXML(只读)](#42316-xmlhttprequestresponsexml只读)
-          - [4.2.3.1.7 XmlHttpRequest#getAllResponseHeaders()](#42317-xmlhttprequestgetallresponseheaders)
-          - [4.2.3.1.8 XmlHttpRequest#getResponseHeader(name)](#42318-xmlhttprequestgetresponseheadername)
-        - [4.2.3.2 与状态相关的属性](#4232-与状态相关的属性)
-          - [4.2.3.2.1 XmlHttpRequest#readyState(只读)](#42321-xmlhttprequestreadystate只读)
-          - [4.2.3.2.2 XmlHttpRequest#onreadystatechange = callback](#42322-xmlhttprequestonreadystatechange--callback)
-        - [4.2.3.3 与请求超时相关的属性和方法](#4233-与请求超时相关的属性和方法)
-          - [4.2.3.3.1 XmlHttpRequest#timeout](#42331-xmlhttprequesttimeout)
-          - [4.2.3.3.2 XmlHttpRequest#ontimeout = callback](#42332-xmlhttprequestontimeout--callback)
-        - [4.2.3.4 特殊的事件触发有关方法](#4234-特殊的事件触发有关方法)
-          - [4.2.3.4.1 XmlHttpRequest#abort()](#42341-xmlhttprequestabort)
-        - [4.2.3.5 发送请求有关的属性和方法](#4235-发送请求有关的属性和方法)
-          - [4.2.3.5.1 XmlHttpRequest#open(method, url[, async[, user[, password]]])](#42351-xmlhttprequestopenmethod-url-async-user-password)
-          - [4.2.3.5.2 XmlHttpRequest#setRequestHeader(headerName, value)](#42352-xmlhttprequestsetrequestheaderheadername-value)
-          - [4.2.3.5.3 XmlHttpRequest#send(body)](#42353-xmlhttprequestsendbody)
-  - [5 利用XHR简单实现axios](#5-利用xhr简单实现axios)
-  - [6 axios的使用](#6-axios的使用)
-    - [6.1 axios的基本定义](#61-axios的基本定义)
-    - [6.2 axios的特征](#62-axios的特征)
-    - [6.3 axios的基本使用](#63-axios的基本使用)
-      - [6.3.0 ajax请求和普通的http请求的区别](#630-ajax请求和普通的http请求的区别)
-      - [6.3.1 axios的config对应的参数和含义](#631-axios的config对应的参数和含义)
-      - [6.3.2 axios发送请求的三种不同方式](#632-axios发送请求的三种不同方式)
-        - [6.3.2.1 将axios视为一个对象去向服务器端发送请求](#6321-将axios视为一个对象去向服务器端发送请求)
-          - [6.3.2.1 axios.get(url[,config])](#6321-axiosgeturlconfig)
-          - [6.3.2.2 axios.post(url ,data)](#6322-axiosposturl-data)
-          - [6.3.2.3 axios.put(url ,data)](#6323-axiosputurl-data)
-        - [6.3.2.2 将axios视为一个函数去向服务器端发送请求](#6322-将axios视为一个函数去向服务器端发送请求)
-          - [6.3.3.1 axios(config)](#6331-axiosconfig)
-        - [6.3.2.3 将axios视为一个构造函数去向服务器端发送请求](#6323-将axios视为一个构造函数去向服务器端发送请求)
-          - [6.3.2.3.1 axios.create(config)](#63231-axioscreateconfig)
-          - [6.3.2.3.2 axios实例的方法](#63232-axios实例的方法)
-      - [6.3.3 axios的全局配置](#633-axios的全局配置)
-        - [6.3.3.1 axios.defaults.configKey = value](#6331-axiosdefaultsconfigkey--value)
-      - [6.3.4 axios的拦截器](#634-axios的拦截器)
-        - [6.3.4.1 axios.interceptors.request.use(func(config) {}, function(error) {})](#6341-axiosinterceptorsrequestusefuncconfig--functionerror-)
-        - [6.3.4.2 axios.interceptors.response.use(func(response) {}, function(error) {})](#6342-axiosinterceptorsresponseusefuncresponse--functionerror-)
-        - [6.3.4.3 拦截器的运行流程](#6343-拦截器的运行流程)
-      - [6.3.5 axios的reponse](#635-axios的reponse)
-      - [6.3.6 axios的取消](#636-axios的取消)
-        - [6.3.6.1 方法1 使用内部的函数](#6361-方法1-使用内部的函数)
-        - [6.3.6.2 方法2：创建一个对象](#6362-方法2创建一个对象)
-        - [6.3.6.3 应用](#6363-应用)
-          - [6.3.6.3.1 用于请求当前的请求](#63631-用于请求当前的请求)
-          - [6.3.6.3.2 用于请求上一个请求](#63632-用于请求上一个请求)
-  - [7 axios源码分析](#7-axios源码分析)
-    - [7.1 axios与Axios的关系](#71-axios与axios的关系)
-    - [7.2 axios与instance的区别](#72-axios与instance的区别)
-    - [7.3 axios执行的流程图](#73-axios执行的流程图)
-    - [7.4 axios如何把interceptor和request串联起来](#74-axios如何把interceptor和request串联起来)
-    - [7.5 axios是如何取消request的请求的](#75-axios是如何取消request的请求的)
-- [十一 JS的模块化](#十一-js的模块化)
-  - [1 模块化](#1-模块化)
-    - [1.1 定义](#11-定义)
-    - [1.2 原因](#12-原因)
-    - [1.3 用script引入多个js文件为什么效率不高](#13-用script引入多个js文件为什么效率不高)
-  - [2 HTML引入js模块的模块化的标准](#2-html引入js模块的模块化的标准)
-    - [2.1 在html中引入JS模块的方法](#21-在html中引入js模块的方法)
-      - [2.1.1 全局function模式（不能实现模块化）](#211-全局function模式不能实现模块化)
-      - [2.1.2 namespace模式（通过对象进行模块化）](#212-namespace模式通过对象进行模块化)
-      - [2.1.3 IIFE模式(将要暴露的内容出入一个对象并变成window的一个属性值)](#213-iife模式将要暴露的内容出入一个对象并变成window的一个属性值)
-      - [2.1.4 IIFE增强模式](#214-iife增强模式)
-  - [3 JS和JS文件之间实现js模块化标准](#3-js和js文件之间实现js模块化标准)
-    - [3.1 commonJS模块化的规范(node.js模块化的标准)](#31-commonjs模块化的规范nodejs模块化的标准)
-      - [3.1.1 commonJS模块化的规范的基本语法](#311-commonjs模块化的规范的基本语法)
-        - [3.1.1.1 暴露语法(只能二选一,不能同时使用)](#3111-暴露语法只能二选一不能同时使用)
-          - [3.1.1.1.1 module.exports = value](#31111-moduleexports--value)
-          - [3.1.1.1.2 exports.xxx = value](#31112-exportsxxx--value)
-        - [3.1.1.2 引入语法](#3112-引入语法)
-          - [3.1.1.2.1 const xxx = require(xxx)](#31121-const-xxx--requirexxx)
-      - [3.1.2 commonJS在服务器端和浏览器端的不同](#312-commonjs在服务器端和浏览器端的不同)
-        - [3.1.2.1 在服务器端（node.js)](#3121-在服务器端nodejs)
-          - [3.1.2.1.1 基于服务器端的模块化过程](#31211-基于服务器端的模块化过程)
-          - [3.1.2.1.2 基于服务器端的模块化的目录结构](#31212-基于服务器端的模块化的目录结构)
-        - [3.1.2.2 在浏览器端](#3122-在浏览器端)
-          - [3.1.2.2.1 基于浏览器端的模块化过程](#31221-基于浏览器端的模块化过程)
-          - [3.1.2.2.2 基于浏览器端的模块化的目录结构](#31222-基于浏览器端的模块化的目录结构)
-    - [3.2 AMD模块化的规范](#32-amd模块化的规范)
-      - [3.2.1 基本语法](#321-基本语法)
-        - [3.2.1.1 暴露用法](#3211-暴露用法)
-          - [3.2.1.1.1 定义没有依赖的模块](#32111-定义没有依赖的模块)
-          - [3.2.1.1.2 定义有依赖的模块](#32112-定义有依赖的模块)
-        - [3.2.1.2 引入使用模块](#3212-引入使用模块)
-          - [3.2.1.2.1 配置模块id与路径的对应](#32121-配置模块id与路径的对应)
-          - [3.2.1.2.2 引入使用模块](#32122-引入使用模块)
-      - [3.2.2 AMD引入模块的基本过程](#322-amd引入模块的基本过程)
-      - [3.2.3 AMD引入模块的目录结构](#323-amd引入模块的目录结构)
-      - [3.2.4 注意事项](#324-注意事项)
-    - [3.3 ES6的模块化](#33-es6的模块化)
-      - [3.3.1 基本语法](#331-基本语法)
-        - [3.3.1.1 暴露模块(export)](#3311-暴露模块export)
-          - [3.3.1.1.1 单独导出变量或者函数](#33111-单独导出变量或者函数)
-          - [3.3.1.1.2 导出一个对象(推荐)](#33112-导出一个对象推荐)
-          - [3.3.1.1.3 export default](#33113-export-default)
-        - [3.3.1.2 导入模块(import)](#3312-导入模块import)
-          - [3.3.1.2.1 普通的导入(使用对象字面量)](#33121-普通的导入使用对象字面量)
-          - [3.3.1.2.2 使用*导入整个模块对象](#33122-使用导入整个模块对象)
-          - [3.3.1.2.3 export default的导入](#33123-export-default的导入)
-      - [3.3.2 注意事项](#332-注意事项)
-- [十二 ES6增加的内容总结](#十二-es6增加的内容总结)
-  - [1. 类的新的定义方式](#1-类的新的定义方式)
-    - [1.1. class](#11-class)
-      - [1.1.1. extends和super](#111-extends和super)
-        - [1.1.1.1 extends](#1111-extends)
-        - [1.1.1.2 super](#1112-super)
-      - [1.1.2 new.target](#112-newtarget)
-      - [1.1.3 static](#113-static)
-  - [2 块级作用域](#2-块级作用域)
-    - [2.1 let](#21-let)
-      - [2.1.1. let 关键字的特点](#211-let-关键字的特点)
-      - [2.1.2 let 关键字与for](#212-let-关键字与for)
-    - [2.2 const](#22-const)
-      - [2.2.1 特点](#221-特点)
-    - [2.3 块级作用域函数(有待查证)](#23-块级作用域函数有待查证)
-  - [3 函数的参数的默认值](#3-函数的参数的默认值)
-  - [4 对象字面量的扩展](#4-对象字面量的扩展)
-    - [4.1 简洁属性(key值和value的变量名相同)](#41-简洁属性key值和value的变量名相同)
-    - [4.2 简洁方法](#42-简洁方法)
-    - [4.3 使用计算属性名](#43-使用计算属性名)
-    - [4.4 关联原型](#44-关联原型)
-    - [4.5 super对象](#45-super对象)
-  - [5 解构赋值](#5-解构赋值)
-    - [5.1 数组解构](#51-数组解构)
-    - [5.2 对象解构](#52-对象解构)
-    - [5.3 解构赋值的两种写法](#53-解构赋值的两种写法)
-      - [5.3.1 用于解构的变量未声明变量未声明](#531-用于解构的变量未声明变量未声明)
-      - [5.3.2 用于解构的变量已经声明(前面无需加声明类型)](#532-用于解构的变量已经声明前面无需加声明类型)
-    - [5.4 用于解构变量的数量](#54-用于解构变量的数量)
-    - [5.5 重复赋值](#55-重复赋值)
-    - [5.6 解构参数（当数组或对象的字面量作为形参）](#56-解构参数当数组或对象的字面量作为形参)
-    - [5.7 用于解构变量的默认值](#57-用于解构变量的默认值)
-      - [5.7.1 解构的默认值和形参的默认值（难点）](#571-解构的默认值和形参的默认值难点)
-    - [5.8 与其他用法的结合应用](#58-与其他用法的结合应用)
-  - [6 展开运算符（...)](#6-展开运算符)
-    - [6.1 ... 用于iteratble前(展开运算符)](#61--用于iteratble前展开运算符)
-    - [6.2 ...用于函数的形参中（剩余参数）](#62-用于函数的形参中剩余参数)
-  - [7 模板字面量](#7-模板字面量)
-    - [7.1 插入字符串字面量](#71-插入字符串字面量)
-    - [7.2. 标签模板字面量](#72-标签模板字面量)
-    - [7.3. raw字符串](#73-raw字符串)
-  - [8  箭头函数](#8-箭头函数)
-    - [8.1 箭头函数的特殊规则](#81-箭头函数的特殊规则)
-      - [8.1.1 只有一个变量](#811-只有一个变量)
-      - [8.1.2. 只有一行代码](#812-只有一行代码)
-    - [8.2 箭头this指向](#82-箭头this指向)
-    - [8.3 箭头函数的应用注意事项](#83-箭头函数的应用注意事项)
-  - [9 for...of...循环](#9-forof循环)
-    - [9.1 for...of和for...in...的区别](#91-forof和forin的区别)
-  - [10 数字字面量的拓展](#10-数字字面量的拓展)
-  - [11 Unicode编码（后面再补充）](#11-unicode编码后面再补充)
-  - [12 符号（symbol）](#12-符号symbol)
-    - [12.1 symbol的创建(自定义)](#121-symbol的创建自定义)
-    - [12.2 symbol常用的方法](#122-symbol常用的方法)
-      - [12.2.1 typeof](#1221-typeof)
-      - [12.2.2 instanceof](#1222-instanceof)
-      - [12.2.3 valueOf](#1223-valueof)
-      - [12.2.4 Symbol#toString](#1224-symboltostring)
-      - [12.2.5 Symbol.for(desc)](#1225-symbolfordesc)
-      - [12.2.6 Symbol.keyFor(symbol)](#1226-symbolkeyforsymbol)
-    - [12.3 符号的应用](#123-符号的应用)
-      - [12.2.3.1 符号的注册](#12231-符号的注册)
-      - [12.2.3.2 作为对象属性的符号](#12232-作为对象属性的符号)
-      - [12.2.3.3 内置符号](#12233-内置符号)
-  - [13 Map数据结构](#13-map数据结构)
-    - [13.1 Map的构造](#131-map的构造)
-    - [13.2 Map的方法](#132-map的方法)
-      - [13.2.1 增删改查](#1321-增删改查)
-        - [13.2.1.1 Map#set(key, value)](#13211-mapsetkey-value)
-        - [13.2.1.2 Map#delete(key)](#13212-mapdeletekey)
-        - [13.2.1.3 Map#clear(key)](#13213-mapclearkey)
-        - [13.2.1.4 Map#has(key)](#13214-maphaskey)
-        - [13.2.1.5 Map#get(key)](#13215-mapgetkey)
-      - [13.2.2 Map#size()](#1322-mapsize)
-      - [13.2.3 Map#entries()](#1323-mapentries)
-      - [13.2.4 Map#values()](#1324-mapvalues)
-      - [13.2.5 Map#keys()](#1325-mapkeys)
-    - [13.3 WeakMap方法](#133-weakmap方法)
-  - [14 Set数据结构](#14-set数据结构)
-    - [14.1. Set的构造](#141-set的构造)
-    - [14.2. Set的方法](#142-set的方法)
-      - [14.2.1 增删改查](#1421-增删改查)
-        - [14.2.1.1 Set#add(key, value)](#14211-setaddkey-value)
-        - [14.2.1.2 Set#delete(key)](#14212-setdeletekey)
-        - [14.2.1.3 Set#clear(key)](#14213-setclearkey)
-        - [14.2.1.4 Set#has(key)](#14214-sethaskey)
-      - [14.2.2 Set#size()](#1422-setsize)
-      - [14.2.3 Set#entries()](#1423-setentries)
-      - [14.2.4 Set#keys()](#1424-setkeys)
-      - [14.2.5 Set#values()](#1425-setvalues)
-  - [15 Array的扩展方法](#15-array的扩展方法)
-    - [15.1. Array.of()](#151-arrayof)
-    - [15.2. Array.from(arraylike,func?)](#152-arrayfromarraylikefunc)
-    - [15.3. Array.from和Array.of对于子类的影响](#153-arrayfrom和arrayof对于子类的影响)
-    - [15.4. Array#copyWithin(target, start[, end])](#154-arraycopywithintarget-start-end)
-    - [15.5. Array#fill(value[, start, end])](#155-arrayfillvalue-start-end)
-    - [15.6. Array#find(func)](#156-arrayfindfunc)
-    - [15.7. Array#findIndex(func)](#157-arrayfindindexfunc)
-    - [15.8. Array#entries()](#158-arrayentries)
-    - [15.9. Array#keys()](#159-arraykeys)
-    - [15.10. Array#values()](#1510-arrayvalues)
-  - [16. Object的扩展方法](#16-object的扩展方法)
-    - [16.1. Object.is()](#161-objectis)
-    - [16.2. Object.getPropertySymbols(obj)](#162-objectgetpropertysymbolsobj)
-    - [16.3. Object.setPrototypeOf(son, father)](#163-objectsetprototypeofson-father)
-    - [16.4. Object.assign(target, ...source)](#164-objectassigntarget-source)
-  - [17. Number的扩展方法](#17-number的扩展方法)
-    - [17.1 Number.EPSILON](#171-numberepsilon)
-    - [17.2 Number.MAX_SAFE_INTEGER](#172-numbermax_safe_integer)
-    - [17.3 Number.MIN_SAFE_INTEGER](#173-numbermin_safe_integer)
-    - [17.4 Number.isNaN(val)](#174-numberisnanval)
-    - [17.5 Number.isFinite(val)](#175-numberisfiniteval)
-    - [17.6 Number.isInteger(val)](#176-numberisintegerval)
-    - [17.7 Number.isSafeInteger(val)](#177-numberissafeintegerval)
-  - [18. String的扩展方法](#18-string的扩展方法)
-    - [18.1 针对Unicode的函数（之后补充）](#181-针对unicode的函数之后补充)
-      - [18.1.1 String.fromCodePoint()](#1811-stringfromcodepoint)
-      - [18.1.2 String#codePointAt()](#1812-stringcodepointat)
-      - [18.1.3 String.nomalize()](#1813-stringnomalize)
-    - [18.2 String.raw()](#182-stringraw)
-    - [18.3 String#repeat(n)](#183-stringrepeatn)
-    - [18.4 新的索引方法](#184-新的索引方法)
-        - [18.4.1 String#startsWith(str[, index])](#1841-stringstartswithstr-index)
-        - [18.4.2 String#endsWith(str[, index])](#1842-stringendswithstr-index)
-        - [18.4.3 String#includes(str[, index])](#1843-stringincludesstr-index)
-- [JQuery](#jquery)
-  - [1 了解jQuery](#1-了解jquery)
-  - [2 jQuery的基本方法](#2-jquery的基本方法)
-    - [1 jQuery的入口函数](#1-jquery的入口函数)
-    - [2 jQuery的顶级对象$](#2-jquery的顶级对象)
-        - [2.1 DOM对象和jQuery对象的区别](#21-dom对象和jquery对象的区别)
-        - [2.1.1 DOM对象](#211-dom对象)
-        - [2.1.2 jQuery对象](#212-jquery对象)
-      - [2.2 DOM对象和jQuery对象的相互转化](#22-dom对象和jquery对象的相互转化)
-        - [2.2.1 DOM对象转化为jQuery对象](#221-dom对象转化为jquery对象)
-        - [2.2.2 jQuery转化为DOM对象](#222-jquery转化为dom对象)
-    - [3 jQuery常用API](#3-jquery常用api)
-      - [3.1 jQuery的选择器(获取元素对象)](#31-jquery的选择器获取元素对象)
-      - [3.2 jQuery筛选方法](#32-jquery筛选方法)
-      - [3.3 jQuery是设置样式](#33-jquery是设置样式)
-        - [3.3.1 .css(attr)****](#331-cssattr)
-        - [3.3.2 .css(attr, style)](#332-cssattr-style)
-        - [3.3.3 .css({attr: style...})](#333-cssattr-style)
-      - [3.4 jQuery的动画效果](#34-jquery的动画效果)
-        - [3.4.1 显示隐藏](#341-显示隐藏)
-          - [3.4.1.1 show([speed], [easing], [fn]])](#3411-showspeed-easing-fn)
-          - [3.4.1.2 hide([speed], [easing], [fn])](#3412-hidespeed-easing-fn)
-          - [3.4.1.3 toggle([speed], [easing], [fn])](#3413-togglespeed-easing-fn)
-        - [3.4.2 滑动效果](#342-滑动效果)
-          - [3.4.2.1 slideDown([speed],[easing],[fn])](#3421-slidedownspeedeasingfn)
-          - [3.4.2.2 slideUp([speed],[easing],[fn])](#3422-slideupspeedeasingfn)
-          - [3.4.2.2 slideToggle([speed],[easing],[fn])](#3422-slidetogglespeedeasingfn)
-        - [3.4.3 淡入淡出效果](#343-淡入淡出效果)
-          - [3.4.2.1 fadeIn([speed],[easing],[fn])](#3421-fadeinspeedeasingfn)
-          - [3.4.2.2 fadeout([speed],[easing],[fn])](#3422-fadeoutspeedeasingfn)
-          - [3.4.2.3 fade([speed],[easing],[fn])](#3423-fadespeedeasingfn)
-          - [3.4.2.4 fadeTo([speed], opacity, [easing],[fn])](#3424-fadetospeed-opacity-easingfn)
-          - [3.4.2.5 高亮显示的思路](#3425-高亮显示的思路)
-        - [3.4.3 自定义动画animate](#343-自定义动画animate)
-          - [3.4.3.1 animate(params, [speed], [easing], [fn])](#3431-animateparams-speed-easing-fn)
-          - [3.4.3.2 手风琴效果的实现](#3432-手风琴效果的实现)
-      - [3.5 jQuery的元素固有属性的操作](#35-jquery的元素固有属性的操作)
-        - [3.5.1 获取元素的固有属性](#351-获取元素的固有属性)
-        - [3.5.2 设置元素的固有属性](#352-设置元素的固有属性)
-        - [3.5.3 获取自定义属性](#353-获取自定义属性)
-        - [3.5.4 添加自定义属性](#354-添加自定义属性)
-        - [3.5.5 获取元素内存的属性](#355-获取元素内存的属性)
-        - [3.5.6 在元素内存中添加属性](#356-在元素内存中添加属性)
-        - [3.5.6 全选框的实现](#356-全选框的实现)
-      - [3.6 jQuery的对象元素的内容](#36-jquery的对象元素的内容)
-        - [3.6.1 获取对象元素的内容](#361-获取对象元素的内容)
-        - [3.6.2 修改对象元素的内容](#362-修改对象元素的内容)
-        - [3.6.3 获取对象元素的文本](#363-获取对象元素的文本)
-        - [3.6.4 修改对象元素的文本](#364-修改对象元素的文本)
-        - [3.6.5 获取对象元素的value值](#365-获取对象元素的value值)
-        - [3.6.6 修改对象元素的value值](#366-修改对象元素的value值)
-      - [3.7 jQuery的对象元素的操作](#37-jquery的对象元素的操作)
-        - [3.7.1 元素的遍历](#371-元素的遍历)
-          - [3.7.1.1 each(function(index, domEle) {})](#3711-eachfunctionindex-domele-)
-          - [3.7.1.2 $.each(jqueryObject, function(index, domEle) {})](#3712-eachjqueryobject-functionindex-domele-)
-        - [3.7.2 元素的创建](#372-元素的创建)
-          - [3.7.2.1 $(content)](#3721-content)
-        - [3.7.3 元素的添加](#373-元素的添加)
-          - [3.7.3.1 fatherObject.append(sonObject)](#3731-fatherobjectappendsonobject)
-          - [3.7.3.2 fatherObject.prepend(sonObject)](#3732-fatherobjectprependsonobject)
-          - [3.7.3.3 brotherObject.before(jqueryObject)](#3733-brotherobjectbeforejqueryobject)
-        - [3.7.4 元素的删除](#374-元素的删除)
-          - [3.7.4.1 juqueryObject.remove()](#3741-juqueryobjectremove)
-          - [3.7.4.2 fatherObject.empty()](#3742-fatherobjectempty)
-          - [3.7.4.3 brotherObject.after(jqueryObject)](#3743-brotherobjectafterjqueryobject)
-      - [3.8 jQuery的对象方法总结](#38-jquery的对象方法总结)
-        - [3.8.0 length](#380-length)
-        - [3.8.1 $(this)](#381-this)
-        - [3.8.2 index()](#382-index)
-        - [3.8.3 show()](#383-show)
-        - [3.8.4 hide()](#384-hide)
-        - [3.8.5 addClass(className)](#385-addclassclassname)
-        - [3.8.6 removeClass(className)](#386-removeclassclassname)
-        - [3.8.6 toggleClass(className)](#386-toggleclassclassname)
-        - [3.8.7 hover(inFunc,[outFunc])](#387-hoverinfuncoutfunc)
-      - [3.10 jQuery的常见触发事件](#310-jquery的常见触发事件)
-      - [change(func)](#changefunc)
-    - [4 jQuery的隐式迭代](#4-jquery的隐式迭代)
-- [四 jquery的事件相关的操作](#四-jquery的事件相关的操作)
-  - [1 jquery事件注册](#1-jquery事件注册)
-    - [1.1 单个事件的注册](#11-单个事件的注册)
-      - [1.1.1 jqueryObject.eventName(function() {})](#111-jqueryobjecteventnamefunction-)
-    - [1.2 多个事件的注册](#12-多个事件的注册)
-      - [1.2.1 jqueryObject.once(events, [selector], fn)](#121-jqueryobjectonceevents-selector-fn)
-      - [1.2.2 jqueryObject.on(events, [selector], fn)](#122-jqueryobjectonevents-selector-fn)
-      - [1.2.3 微博发布页(重点关注事件委派的作用)](#123-微博发布页重点关注事件委派的作用)
-  - [2 jquery事件的解绑](#2-jquery事件的解绑)
-    - [2.1 jqueryObject.off()](#21-jqueryobjectoff)
-    - [2.2 jqueryObject.off(eventName, [selector])](#22-jqueryobjectoffeventname-selector)
-  - [3 jquery自动触发事件](#3-jquery自动触发事件)
-    - [3.1 jqueryObject.eventName()](#31-jqueryobjecteventname)
-    - [3.2 jqueryObject.trigger(eventName)](#32-jqueryobjecttriggereventname)
-    - [3.3 jqueryObject.triggerHandler(eventName)](#33-jqueryobjecttriggerhandlereventname)
-  - [3 jquery事件对象](#3-jquery事件对象)
-  - [4 jquery的对象拷贝](#4-jquery的对象拷贝)
-    - [4.1 $.extend([deep], target, ...object)](#41-extenddeep-target-object)
-  - [5 jquery多库共存](#5-jquery多库共存)
-    - [5.1 方法一](#51-方法一)
-    - [5.2 方法二](#52-方法二)
-
-<!-- /TOC -->
-
 <style>
  table {
    border-collapse: collapse;
@@ -1196,6 +122,58 @@
       <td>epsilon</td>
       <td>希腊字母中表示极小值的那个</td>
   </tr>
+  <tr>
+      <td>slide</td>
+      <td>滑动</td>
+  </tr>
+  <tr>
+      <td>fadein</td>
+      <td>淡入</td>
+  </tr>
+  <tr>
+      <td>fadeout</td>
+      <td>淡出</td>
+  </tr>
+  <tr>
+      <td>propagation</td>
+      <td>传播</td>
+  </tr>
+  <tr>
+      <td>splice</td>
+      <td>拼接</td>
+  </tr>
+  <tr>
+      <td>ceil</td>
+      <td>天花板</td>
+  </tr>
+  <tr>
+      <td>exponential</td>
+      <td>指数的</td>
+  </tr>
+  <tr>
+      <td>precision</td>
+      <td>精确</td>
+  </tr>
+  <tr>
+      <td>stringify</td>
+      <td>转化成JSON类型</td>
+  </tr>
+  <tr>
+      <td>credential</td>
+      <td>凭证/证明</td>
+  </tr>
+  <tr>
+      <td>separator</td>
+      <td>分隔符</td>
+  </tr>
+  <tr>
+      <td>delegate</td>
+      <td>委派</td>
+  </tr>
+  <tr>
+      <td>time stamp</td>
+      <td>事件戳（从1970年1月到现在的毫秒数）</td>
+  </tr>
 </table>
 
 ## 2. 常见的语法名称的术语
@@ -1226,71 +204,18 @@
   - 可以用\+、\-号表示符号
   - 若字符串为空或者只有空格，则会返回+0
   - 字符串型有Infinity和-Infinity，<a href="#numeraic-literal">Numeric Literals</a>
-## 3 typeof, instanceof
-- typeof只能分辨基本数据类型和object
-- instanceof可以用于判断对象类型，即某个对象是不是某个构造对象的实例
 
-## 4. 用于调试的一些函数
-### 4.1. console.log()与console.dir()
+## 3. 用于调试的一些函数
+### 3.4.1. console.log()与console.dir()
 - console.log()会在浏览器控制台打印出信息
 - console.dir()可以显示一个对象的所有属性和方法
-## 5 Object.prototype.toString.call(object)
-- <font color="red">每个对象</font>都默认有toString方法
-- 如果此方法在自定义对象中未被覆盖，toString() 返回 "[object type]"，其中 type 是对象的类型，返回的类型是string类型
-- 应用
-- 判断对象类型
-```javascript
-	// 获取strObject的构造函数类型
-	var objectType = Object.prototype.toString.call(strObject);
-	console.log(objectType.substring(8, objectType.length - 1));
-```
-## 6 理解这段话
-- 有些函数具有 this 引用，有时候这些 this 确实会指向调用位置的对象引用。但是这种用法从本质上来说并没有把一个函数变成一个“方法”，因为 this 是在运行时根据调用位置动态绑定的，所以函数和对象的关系最多也只能说是间接关系。
-- 函数并不是在定义时成为方法，而是在被调用时根据调用位置的不同成为方法（不太准确但可以作为理解）
-- 即使你在对象的文字形式中声明一个函数表达式，这个函数也不会“属于”这个对象——它们只是对于相同函数对象的多个引用
-- 结论
-    - 函数是某个对象的方法并不是在定义时决定的，而是在调用时确定的（隐式绑定的时候）
-## 7 Object的一些常用函数
-### 7.1 Object.prototype.toString
-- <font color="red">每个对象</font>都默认有toString方法
-- 如果此方法在自定义对象中未被覆盖，toString() 返回 "[object type]"，其中 type 是对象的类型，返回的类型是string类型
-- 应用
-- 判断对象类型
-```javascript
-	// 获取strObject的构造函数类型
-	var objectType = Object.prototype.toString.call(strObject);
-	console.log(objectType.substring(8, objectType.length - 1));
-```
-### 7.2 Object.keys(obj)
-- ES6新增的方法
-```javascript
-    Object.keys(obj)
-```
-- 参数
-    - obj: 要返回其枚举自身属性的对象
-- 返回值
-    - 一个表示给定对象的所有可枚举属性的字符串数组
-### 7.3 Object.assign()
-```javascript
-    Object.assign(target, ...sources)
-```
-- 参数
-    - target: 目标对象
-    - soures：源对象
-- 返回值
-    - 目标对象
-- 浅拷贝
-    - bject.assign()拷贝的是（可枚举）属性值。假如源值是一个对象的引用，它仅仅会复制其引用值。
-```javascript
-    const newObj = Object.assign({}, oldObj);
-```
-## 8 浮点数双精度的科学计数法
+## 4 浮点数双精度的科学计数法
 - 浮点数是用二进制的科学计数法来表示，由于js采用的是双精度的浮点数，以下就以双精度浮点数及64位二进制数来说明
 - <font color=red>双精度浮点数的10进制的精确有效位</font>
     - 所以只能保证前15位是精确数字，第16位只是部分精确。
         - 大于等于5：不精确，会被舍弃掉
         - 小于5：精确，保留
-- ![ex3.jpg](./img/ex3.jpg)
+- ![ex3.jpeg](./img/ex3.jpeg)
 - sign(63): 符号位
 - exponent(52~62): 指数位
     - 取值范围
@@ -1345,14 +270,14 @@
         </tr>
         <tr>
             <td>=2047</td>
-            <td>=0</td>
+            <td>!=0</td>
             <td>NAN</td>
         </tr>
     <tbody>
 </table> 
 
-### 5.1 将浮点数转化为二进制科学计数法遇到的问题
-- 一些小数的尾数部分无法使用小数的二进制进行表示，只能近似的进行表示
+### 4.1 将浮点数转化为二进制科学计数法遇到的问题
+- 一些小数的尾数部分无法使用有限的二进制形式进行表示，只能近似的进行表示
 - 规格化成浮点数的步骤：
     - 将整数部分和小数部分分别格式化成二进制数
     - 整数部分只保留1
@@ -1383,7 +308,7 @@
 - 由于有些小数并不能用一一对应的二进制形式表示，所以会导致这些小数在表达式的计算中会出现误差，该误差的数量级为
     - $$ 2^{-52} = 2.2 \times 10^{-16}$$
     - 导致10进制小数只能保证15位有效数字，第16位就开使为部分精确
-### 5.2 常见的解释原因问题
+### 4.2 常见的解释原因问题
 ```javascript
 例1：
 >>> 1.4 - 1.1
@@ -1409,21 +334,9 @@
 4已经在第17位，超出了双精度浮点数的最大有效位数，就被忽略了，所以有[公式] 。
 */
 ```
-## 9 一些js的简单表示
+## 5 一些js的简单表示
 - Object.prototype.func ==> Object#func
-## 10 toString函数的一些易错点
-- 基本数据类型
-    - null, undefined, NaN -- "null", "undefined", "NaN"
-    - boolean -- true: "true", false: "false"
-    - number, symbol: 为对应的字符串形式
-- 符合数据类型
-    - <font color="red">数组</font>
-        - [null] --> ""(空数组)
-        - [undefined] --> ""（空数组)
-        - [NaN] --> NaN
-        - 其他为对应的字符串形式
-    - 其他仍然遵照ToString类型
-## 11 区别实例对象与函数对象
+## 6 区别实例对象与函数对象
 - 实例对象（简称xx对象）：通过new创建一个新的实例对象
 - 函数对象：将函数当作一个对象使用（函数既可以当作一个函数使用，也可以看作一个对象使用）
 - 如何分析一个语句角度
@@ -1446,13 +359,13 @@
     $.get("/test")
     // 此时$是一个对象
 ```
-## 12 看懂数据类型
+## 7 看懂数据类型
 ```javascript
     a.b.c()
     // 括号前面的必然是函数即a.b.c为函数
     // 其中a,b为对象
 ```
-## 13 两种类型的回调函数
+## 8 两种类型的回调函数
 - 特征
   - 自己拟定
   - 没有调用但是会执行
@@ -1475,7 +388,7 @@
     }, 0)
     // 执行完后面的函数再执行该异步
 ```
-## 14 js常见的内置类型之Error
+## 9 js常见的内置类型之Error
 ```javascript
     new Error(content)
     // 显示content的错误
@@ -1519,64 +432,375 @@ console.log("hello_world");
 - 错误相关的信息
 #### 14.3.2 stack
 - 函数调用栈的记录信息
-## 15 理解apply, call, bind
-### 15.1 func.apply(thisArg, [args])
-#### 15.1.1 理解apply的作用
-- 将func中this所指的属性和方法添加到thisArg的this所指的属性和方法之中，并执行func
-  - 注意：此时的func所用的this就是thisArg的this即可以理解为thisArg在运行func的内容
+## 10 伪数组的特征
+- 具有length属性
+- 按照索引的方式进行存储的
+- 它没有真正数组的一些方法 pop() push()等等
+### 10.1 真(伪）数组转化为伪数组
+- 原理：push的原函数的执行类似于以下的步骤
+  - 所以，当this指向obj，即实现了伪数组的转化
 ```javascript
-function fn1() {
-  this.name = "hello"
-}
-
-function fn2() {
-  this.word = "world";
-}
-fn2Object = new fn2();
-fn1.apply(fn2Object)
-// 执行fn1的代码，并将fn1的this所指的属性和方法加入到fn2Object
-// 
-console.dir(fn2Object)
-console.dir(fn2)
-```
-### 15.2 bind(func1, func2)
-- 返回值是一个函数wrap
-#### 2.3.1 源码的理解
-```javascript
-// bind函数的理解
-// 语法上：返回一个函数wrap
-// 功能上：若是调用warp函数并传入参数
-//         fn根据传递的参数执行并且thisArg将继承fn的属性和方法
-//         之后返回值：undefine
-function bind(fn, thisArg) {
-  return function wrap() {
-    //根据传入的参数来调用fn
-    var args = new Array(arguments.length);
-    console.log(args);
-    for (var i = 0; i < args.length; i++) {
-      args[i] = arguments[i];
+  Array.prototype.push(...args) {
+    for(let i = 0;i < args.length;i ++) {
+      this[i] = args[i];
     }
-    //用apply来实现绑定
-    return fn.apply(thisArg, args);
-  };
-};
-
-function fn1(name) {
-  this.name = name
-}
-
-function fn2() {
-  this.word = "world";
-}
-fn2Object = new fn2();
-console.log(bind(fn1, fn2Object)("hello"))
-console.dir(fn2)
-/*
-undefined
-fn2
- name: "hello"word: "world" 
-*/
+  }
 ```
+```javascript
+  [].push.apply(obj, arraylike)
+```
+### 10.2 伪数组转化为真数组
+- 原理：slice函数的执行类似于以下的步骤
+  - 将this指向传入的arraylike，即可以实现伪数组转化为真数组
+```javascript
+  Array.prototype.slice(start, end) {
+    let arr = []
+    if(!start && !end) {
+      for(let i = 0;i < this.length;i ++) {
+        arr.push(this[i]);
+      } 
+    }
+    // ...
+    return arr;
+  }
+```
+```javascript
+  [].slice.call(arraylike)
+```
+## 11 跨域
+### 11.1 基本定义
+- 指浏览器不能执行其他网站的脚本。它是由浏览器的同源策略造成的，是浏览器对JavaScript实施的安全限制 
+  - 即浏览器允许发送跨域的http请求报文，但是浏览器拒绝接受http响应报文
+### 11.2 跨域的情况
+- 同源： 协议，域名，端口号均是相同的，因此跨域的情况如下：
+```
+1. 不同域名属于跨域，如：www.a.com 和www.b.com，另外www.a.com 和www.a.com.cn也属于不同域名。
+2. 主域名和子域名（二级域名、三级域名等）跨域，如：www.a.com 和 bbs.a.com 跨域。
+3. 不同协议属于跨域，如：http://www.a.com 和 https://www.a.com。
+4. Ip和域名属于跨域，如：123.23.23.12 和 www.a.com。 
+```
+### 11.3 跨域的解决方法
+#### 11.3.1 使用jsonp跨域
+- 原理：跨域只存在于javascript中，在html页面中通过相应的标签（&lt;script src /&gt;等）从不同域名下加载静态资源文件是被浏览器允许的，jsonp就是利用这个漏洞来实现跨域
+- 缺点：只能实现get请求
+```javascript
+  //原生的实现方式
+  let script = document.createElement('script');
+
+  script.src = 'http://www.nealyang.cn/login?username=Nealyang&callback=callback';
+
+  document.body.appendChild(script);
+
+  function callback(res) {
+    console.log(res);
+  }
+
+// 使用jquery的实现方法
+  $.ajax({
+    url:'http://www.nealyang.cn/login',
+    type:'GET',
+    dataType:'jsonp',//请求方式为jsonp
+    jsonpCallback:'callback',
+    data:{
+        "username":"Nealyang"
+    }
+})
+```
+#### 11.3.2 利用iframe的src能够实现跨域请求
+##### 11.3.2.1 document.domain + iframe跨域
+- 原理：利用iframe加载其他域下的文件(http://b.geekjc.com/1.html)，同时document.domain设置为geekjc.com，当iframe加载完毕后，就可以获取geekjc.com域下的全局对象，此时
+- 缺点：只能用于主域名相同
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>html</title>
+    <script type="text/javascript" src = "jquery-1.12.1.js"></script>
+</head>
+<body>
+    <div>A页面</div>
+    <iframe 
+      style = "display : none" 
+      name = "iframe1" 
+      id = "iframe" 
+      src="http://b.geekjc.com/1.html" frameborder="0">
+    </iframe>
+    <script type="text/javascript">
+        $(function(){
+            try{
+                document.domain = "geekjc.com"
+            }
+            catch(e){}
+            $("#iframe").load(function() {
+                var jq = document.getElementById('iframe').contentWindow.$
+                jq.get("http://geekjc.com/test.json",function(data){
+                    console.log(data);
+                });
+            })
+    })
+    </script>
+</body>
+</html>
+```
+##### 11.3.2.2 window.name + iframe跨域
+- 原理
+  - window.name属性可以设置或返回存放窗口名称的一个字符串。name值在不同页面或者不同域下加载后仍然存在，没有修改就不会发生变化，并且可以存储非常长的name
+  - 利用iframe
+##### 11.3.2.3 location + iframe跨域
+#### 11.3.3 postMessage跨域
+#### 11.3.4 跨域资源共享CORS
+- 目前主流的跨域解决方案
+##### 11.3.4.1 作用：
+- 允许浏览器向跨源服务其发出XMLHttpRequest请求，克服了AJAX只能同源使用的限制
+  - 所有浏览器都支持该功能，IE浏览器不能低于IE10。IE8+：IE8/9需要使用XDomainRequest对象来支持CORS
+##### 11.3.4.2 对于客户端开发者和服务器端开发需要做的事情
+###### 11.3.4.2.1 客户端开发者
+  - 请求代码和同源AJAX通信是相同的
+###### 11.3.4.2.2 服务端的开发者
+- 需要在该请求的端口设置以下的中间组件，用于给检查是否允许该请求跨域
+  - 若允许，服务器自动在相应的响应报文头添加Access-Control-Allow-Origin属性后在发出响应报文
+  - 若不允许，则直接发出响应报文
+```javascript
+require express from "express";
+
+var app = express();
+
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin", "YOUR-DOMAIN.TLD"); // update to match the domain you will make the request from
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
+
+app.get('/', function(req, res, next) {
+  // Handle the get for this route
+});
+
+app.post('/', function(req, res, next) {
+ // Handle the post for this route
+});
+```
+##### 11.3.4.3 浏览器的自动处理过程
+- 浏览器将ajax请求分成两类，一类是简单请求，一类是非简单请求
+###### 11.3.4.3.1 简单请求
+- 符合以下条件则为简单请求：
+```javascript
+请求方式使用下列方法之一：
+  GET
+  HEAD
+  POST
+ 
+Content-Type 的值仅限于下列三者之一：
+  text/plain
+  multipart/form-data
+  application/x-www-form-urlencoded
+```
+- 浏览器行为
+  - 第一步：浏览器在请求报文的请求头中自动增加origin: 当前URI
+    - origin: 用于说明本次请求来自哪个源（协议 + 域名 + 端口）
+  - 第二步：浏览器在接受到响应报文后，检查响应报文的响应头中是否包含Access-Control-Allow-Origin字段
+    - 若存在，则浏览器接受该响应报文，即ajax请求成功
+    - 若不存在，响应状态码仍然是200，但是会抛出XMLHttpRequest错误
+- 简单请求中响应报文Access-Control-Allow-Origin字段
+<table>
+  <thead>
+    <tr>
+      <th>Access-Control-Allow字段</th>
+      <th>描述信息</th>
+      <th>取值要求</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Access-Control-Allow-Origin</td>
+      <td>表示让浏览器接收该跨域响应信息</td>
+      <td>* / 请求时Origin字段的值<br/>
+          必须</td>
+    </tr>
+    <tr>
+      <td>Access-Control-Expose-Headers</td>
+      <td>表示服务器端在响应报文中增加的属性</td>
+      <td>除了这6个基本字段：Cache-Control、Content-Language、Content-Type、Expires、Last-Modified、Pragma，想要自行增加属性，则将属性的名称添加到该字段之中<br/>
+          可选</td>
+    </tr>
+    <tr>
+      <td>Access-Control-Allow-Credentials</td>
+      <td>指定了当浏览器的credentials设置为true时是否允许浏览器读取response的内容。当用在对preflight预检测请求的响应中时，它指定了实际的请求是否可以使用credentials。</td>
+      <td>true / false<br/>
+          可选</td>
+    </tr>
+  </tbody>
+</table>
+
+###### 11.3.4.3.2 非简单请求
+- 符合以下条件则为非简单请求：
+```javascript
+使用了下面任一 HTTP 方法：
+  PUT
+  DELETE
+  CONNECT
+  OPTIONS
+  TRACE
+  PATCH
+ 
+Content-Type 的值不属于下列之一:
+  application/x-www-form-urlencoded
+  multipart/form-data
+```
+- 浏览器行为
+- 重要区别：浏览器多了一步预检请求的过程
+  - 第一步：浏览器会自动先发送一个options请求(预检请求）
+    - 浏览器会在预检请求的请求头中自动添加以下属性
+      - Access-Control-Request-Method：表示客户端将要发送的请求包含什么类型的请求方法
+      - Access-Control-Request-Headers：表示由客户端自行增加的请求头属性
+  - 第二步：浏览器接收到了响应报文后，检查响应报文的请求头是否包含Access-Control-Allow-Origin字段
+    - 若存在，浏览器自动将响应报文中的Access-Control-Allow-Origin字段增加到请求报文的请求头中，然会发出ajax请求
+    - 第三步：浏览器接收到响应报文，响应报文头中有Access-Control-Allow-Origin字段，接收该响应报文，ajax请求成功
+    - 若不存在，响应状态码仍然是200，但是会抛出XMLHttpRequest错误
+
+- 非简单请求中预检验响应报文Access-Control-Allow字段
+<table>
+  <thead>
+    <tr>
+      <th>Access-Control-Allow字段</th>
+      <th>描述信息</th>
+      <th>取值要求</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Access-Control-Allow-Origin</td>
+      <td>表示让浏览器接收该跨域响应信息</td>
+      <td>* / 请求时Origin字段的值<br/>
+          必须</td>
+    </tr>
+    <tr>
+      <td>Access-Control-Expose-Headers</td>
+      <td>表示服务器端在响应报文中增加的属性</td>
+      <td>除了这6个基本字段：Cache-Control、Content-Language、Content-Type、Expires、Last-Modified、Pragma，想要自行增加属性，则将属性的名称添加到该字段之中<br/>
+          可选</td>
+    </tr>
+    <tr>
+      <td>Access-Control-Max-Age: &lt;delta-seconds&gt;</td>
+      <td>指定了preflight（预检验）请求的结果能够被缓存多久</td>
+      <td>delta-seconds 参数表示preflight请求的结果在多少秒内有效。<br/>
+          可选</td>
+    </tr>
+    <tr>
+      <td>Access-Control-Allow-Credentials</td>
+      <td>指定了当浏览器的credentials设置为true时是否允许浏览器读取response的内容。当用在对preflight预检测请求的响应中时，它指定了实际的请求是否可以使用credentials。</td>
+      <td>true / false<br/>
+          可选</td>
+    </tr>
+    <tr>
+      <td>Access-Control-Allow-Methods: &lt;method&gt;[, &lt;method&gt;]*</td>
+      <td>用于预检请求的响应。其指明了实际请求所允许使用的 HTTP 方法。</td>
+      <td>post, get, delete...<br/>
+          必须</td>
+    </tr>
+    <tr>
+      <td>Access-Control-Allow-Headers: &lt;field-name&gt;[, &lt;field-name&gt;]*</td>
+      <td>用于预检请求的响应。其指明了实际请求中允许携带的首部字段。</td>
+      <td>即预检验后发送的http的头部的属性<br/>
+          可选</td>
+    </tr>
+  </tbody>
+</table>
+
+- 非简单请求中响应报文的Access-Control-Allow字段
+  - 和简单请求的响应报文类似
+###### 11.3.4.3.3 附带身份凭证的请求
+- 一般而言，对于跨域 XMLHttpRequest 或 Fetch 请求，浏览器不会发送身份凭证信息。如果要发送凭证信息，需要设置 XMLHttpRequest 的某个特殊标志位。
+```javascript
+  var invocation = new XMLHttpRequest();
+  var url = 'http://bar.other/resources/credentialed-content/';
+      
+  function callOtherDomain(){
+    if(invocation) {
+      invocation.open('GET', url, true);
+      invocation.withCredentials = true;
+      invocation.onreadystatechange = handler;
+      invocation.send(); 
+    }
+  }
+```
+
+- 该请求中响应报文Access-Control-Allow-Origin字段
+<table>
+  <thead>
+    <tr>
+      <th>Access-Control-Allow字段</th>
+      <th>描述信息</th>
+      <th>取值要求</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Access-Control-Allow-Origin</td>
+      <td>表示让浏览器接收该跨域响应信息</td>
+      <td>* / 请求时Origin字段的值<br/>
+          必须</td>
+    </tr>
+    <tr>
+      <td>Access-Control-Expose-Headers</td>
+      <td>表示服务器端在响应报文中增加的属性</td>
+      <td>除了这6个基本字段：Cache-Control、Content-Language、Content-Type、Expires、Last-Modified、Pragma，想要自行增加属性，则将属性的名称添加到该字段之中<br/>
+          可选</td>
+    </tr>
+    <tr>
+      <td>Access-Control-Allow-Credentials</td>
+      <td>指定了当浏览器的credentials设置为true时是否允许浏览器读取response的内容。当用在对preflight预检测请求的响应中时，它指定了实际的请求是否可以使用credentials。</td>
+      <td>true / false<br/>
+          可选</td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+
+#### 11.3.5 WebSocket协议跨域
+- WebSocket protocol是HTML5一种新的协议。它实现了浏览器与服务器全双工通信，同时允许跨域通讯，是server push技术的一种很好的实现。
+- Socket.io将WebSocket、AJAX和其它的通信方式全部封装成了统一的通信接口
+#### 11.3.6 node代理跨域
+- 原理
+  - node中间件实现跨域代理，是通过启一个代理服务器，实现数据的转发，也可以通过设置cookieDomainRewrite参数修改响应头中cookie中域名，实现当前域的cookie写入，方便接口登录认证。
+```javascript
+  // 客户端
+  var xhr = new XMLHttpRequest();
+
+  // 前端开关：浏览器是否读写cookie
+  xhr.withCredentials = true;
+
+  // 访问http-proxy-middleware代理服务器
+  xhr.open('get', 'http://www.domain1.com:3000/login?user=admin', true);
+  xhr.send();
+```
+```javascript
+  // 服务器端
+  var express = require('express');
+  var proxy = require('http-proxy-middleware');
+  var app = express();
+
+  app.use('/', proxy({
+      // 代理跨域目标接口
+      target: 'http://www.domain2.com:8080',
+      changeOrigin: true,
+
+      // 修改响应头信息，实现跨域并允许带cookie
+      onProxyRes: function(proxyRes, req, res) {
+          res.header('Access-Control-Allow-Origin', 'http://www.domain1.com');
+          res.header('Access-Control-Allow-Credentials', 'true');
+      },
+
+      // 修改响应信息中的cookie域名
+      cookieDomainRewrite: 'www.domain1.com'  // 可以为false，表示不修改
+  }));
+
+  app.listen(3000);
+  console.log('Proxy server is listen at port 3000...');
+```
+
 
 # 一 javascript的基础认识
 ## 1. 解释型语言
@@ -1584,6 +808,11 @@ fn2
   - C语言->编译成2进制代码（与操作系统有关）-> 执行
 - 解释型语言
   - 一行一行读取，一行一行执行
+  - 特性
+    - 非独立
+      - 需要依赖于解释器（浏览器或者node）
+    - 效率低
+      - 每执行依次都要重新翻译一次
 ## 2. 动态类型语言
 - 动态类型的语言
   - 不能确定一个变量的类型，所以可以在代码执行的过程中动态修改
@@ -1600,11 +829,12 @@ fn2
 ## 4. 编写位置
 ### 4.1. 在HTML元素中属性直接执行js代码（不建议）
 - 事件触发属性的双引号内
-```CSS
+  - 里面的表达式表示在触发某些事件之后执行里面的js表达式
+```html
   <a href="" onclick="alert('hello_world')>我是a元素</a>
 ```
 - 非事件触发属性(需要指明javascript)
-```CSS
+```html
  <a href="javascript: alert('hello_world')" >我是a元素</a>
 ```
 ### 4.2. 书写到script标签中
@@ -1638,7 +868,8 @@ fn2
   */
 ```
 ## 6. js的内置数据类型数据类型
-- 基本数据类型
+- <font color="red">JS严格区分大小写</font>
+- 基本数据类型(原始数据类型，简单数据类型)
   - number
   - string
   - boolean
@@ -1658,6 +889,38 @@ fn2
 - 基本数据类型的变量所对应的值是直接存储在内存栈空间中，当变量的值改变时，是直接修改栈空间中对应位置的变量的值
 - 复合数据类型的变量所对应的值是存储在内存栈空间中，但是存储的变量的值是所在堆空间的地址
     - 变量的获取实际上是通过栈空间中存储的对应堆空间的内存地址来找到相应的存储位置
+## 8 js的变量垃圾回收规则
+### 8.1 不被回收的变量特征
+- 全局变量不会被回收
+- 只要变量被另外一个作用域所引用就不会被回收
+  - 如闭包作用域内的变量
+### 8.2 被回收的变量特征
+- 局部变量一旦用完就会被回收
+  - 例如函数一旦运行完，函数内部的变量就会被回收（除了上面的特殊情况）
+### 8.3 练习
+```javascript
+  var i = 1;
+  var i = 2; // 重复声明时，后声明会被忽略
+  var add = (function() {
+    var i = 0;
+    return function() {
+      i ++;
+      console.log(i)
+    }
+  })()
+  add();
+
+  /*
+  *   有三个变量不会被回收
+  *   1. 全局变量i不会被回收
+  *   2. 全局变量add不会被回收
+  *   3. 闭包引用的局部变量i不会被回收
+  */
+```
+## 9 html中确定某个元素的位置的相对量
+- 相对于窗口的偏移量  -- offset
+- 相对于定位元素的偏移量 --
+- 有滑动框的偏移量  -- scroll
 # 二 js内置数据类型与语法解析
 ## 1 js的内置类型
 - 一般认为有七种内置类型
@@ -1782,8 +1045,7 @@ fn2
 - 但是区别
     - 以前访问对应的字符应该使用charAt(index)来进行访问
     - <font color="red">js中字符串中的值是不可变的</font>
-        - 字符串不可变是无法对字符串内部的值进行修改
-            - 需要通过字符串的成员函数对字符串进行修改，但是实质上为创建并返回一个新的字符��，而不是在原字符串上进行修改。
+        - 字符串无法通过下标的形式来修改字符串内的内容，但是可以通过内置函数来进行修改。
     - 字符数组中的值是可变的
 ```javascript
     var a = "hello"
@@ -1797,9 +1059,9 @@ fn2
 ```
 #### 2.2.2 字符串借用数组类型的函数来实现功能
 - 各个字母中间插进其他字符
-#### 2.2.2.1 Array.prototype.join.call(string, 中间插入的值)
+#### 2.2.2.1 Array#join.call(string, 中间插入的值)
 - 返回一个中间加入值的新的字符串
-##### 2.2.2.2 Array.prototype.map.call(string, func).join("")
+##### 2.2.2.2 Array#map.call(string, func).join("")
 - 返回一个中间加入值的新的字符串
 ```javascript
     var c = Array.prototype.join.call( a, "-" );
@@ -1852,7 +1114,7 @@ fn2
 ```
 #### 2.3.1.2 Number.EPSILON
 - ES6将上述误差值保存在Number.EPSILON
-- 应用：判断是技术和表达式之间的大小
+- 应用：判断是数值和表达式之间的大小
 ```javascript
     var a = 0.1 + 0.2;
     var b = 0.3;
@@ -1956,7 +1218,7 @@ fn2
         return n === 0 && 1 / n === -Inifity
     }
 ```
-##### 2.3.4.3 特殊等式Object.is(v1, v2)
+##### 2.3.4.4 特殊等式Object.is(v1, v2)
 - 经常用于判断-0以及NaN，其他一般用==或者===
 - 源码
 ```javascript
@@ -2008,13 +1270,17 @@ fn2
     foo();
 ```
 - 与undefined相关的运算符--void
-- void运算符可以得到undefined标识符的返回值
-    - void + 表达式
-        - 返回值为内置undefined的值即undefined
-            - 作用：使得表达式的返回值为undefined
+##### 2.4.1 void运算符可以得到undefined标识符的返回值
+- void + 表达式
+    - 返回值为内置undefined的值即undefined
+      - 作用：使得表达式的返回值为undefined
 ```javascript
     var a = 42;
     console.log( void a, a ); // undefined 42
+```
+- 注意，void()则为语法错误(SyntaxError)
+```javascript
+  void();
 ```
 
 ## 3 数据类型和赋值，引用
@@ -2024,8 +1290,12 @@ fn2
     - 引用复制
         - 只将存储值的地址赋给变量
 - 规则
-    - 简单值（即标量基本类型值，scalar primitive）总是通过值复制的方式来赋值 / 传递，包括null、undefined、字符串、数字、布尔和 ES6 中的 symbol。
+    - 简单值（即标量基本类型值，scalar primitive）总是通过值复制的方式来赋值 / 传递，包括null、undefined、string、number、boolean和 ES6 中的 symbol。
     - 复合值（compound value）——对象（包括数组和封装对象）和函数，则总是通过引用复制的方式来赋值 / 传递。
+- 存在赋值的地方：
+  - = 
+  - return
+  - 函数参数的传递
 ### 3.1 函数的参数的值传递方式
 - 函数参数的传递方式仍然符合上面的规则，但是有要注意的地方
 - <font color="red">对引用复制的参数执行赋值操作</font>
@@ -2057,6 +1327,7 @@ fn2
     }
     var a = 2;
     var b = new Number( a ); // Object(a)也一样
+    // b是引用传递传递给x，x进行了赋值，所以此时x不是指向b的地址，所以x为3，b为2
     foo( b );
     console.log( b ); // 是2，不是3
 ```
@@ -2084,8 +1355,16 @@ fn2
 - 我们可以先对基本类型封装成对象以来调用对应的方法，但是js并不这样建议，直接使用封装对象来“提前优化”代码反而会降低执行效率。因为返回值都是基本类型，你这样又要进行封装
 - 基本类型在调用相应的函数时，
     - js会自动对基本数据类型进行封装后再调用相应的函数
+- 基本类型和封装对象的区别
+  - 封装对象本质上还是一个对象
+  - typeof
+    - 基本类型输出对应的值
+    - 封装对象返回object
+  - 参数传递
+    - 基本数据类型使用赋值
+    - 封装对象运用了引用赋值
 ### 4.2 拆封基本类型的封装对象
-- obj.valueOf()z
+- obj.valueOf()
     - 返回相应的基本类型
 - 隐式拆封
     - 在表达式中，有时候需要进行隐式拆分
@@ -2184,8 +1463,9 @@ fn2
     // [ Symbol(my own symbol) ]
 ```
 ### 4.4 Object#toString.call(obj)
-- 所有 typeof 返回值为 "object" 的对象（如数组）都包含一个内部属性 [[Class]]（我们可以把它看作一个内部的分类，而非传统的面向对象意义上的类）。
-- 返回值为字符串[object, 内部类]
+- 所有 typeof 返回值为 "object" 的对象（如数组）都包含一个内部属性 [[Class]]（我们可以把它看作一个内部的分类，而非传统的面向对象意义上的类）。  
+- 返回值为字符串[object, 构造函数名称]
+  - 注意对应的构造函数的名称要大写
 - obj为基本类型
     - null和undefined
         - 虽然没有对应的内部类，但仍然会返回[object, null] [object, undefined]
@@ -2305,9 +1585,15 @@ fn2
     console.log(String(b));
         // c: 2 d: 3 
 ```
-- 注意：
-  - \[null\] --> ""（空字符串）
-  - \[undefined\] --> ""（空字符串）
+##### 5.2.1.1 toString一些易错点
+- 复杂数据类型
+    - <font color="red">数组</font>
+        - [null] --> ""(空数组)
+        - [undefined] --> ""（空数组)
+        - [NaN] --> NaN
+        - 其他为对应的��符串形式
+    - 其他仍然遵照ToString类型
+
 ##### 5.2.1.1 JSON.stringify(obj)
 - 不属于强制转换类型，但是结果是返回一个string类型  
 - (1) string，number，null，boolean的 JSON.stringify(..) 规则与 ToString 基本相同。
@@ -2396,18 +1682,23 @@ fn2
 - ![toNumber_rule](./img/toNumber_rule.jpeg);
 - 规则
     - 基本数据类型
-        - true 转换为 1，false 转换为 0。
-        - undefined 转换为 NaN，null 转换为 0
-        - string
-            - 符合Number语法规则的string，转化为对应的数字
-            - 不符合语法规则返回NaN
-            - 空字符串，返回0
+      - undefined
+        - undefined --> NaN
+      - null
+        - null --> 0 
+      - boolean
+        - true --> 1, false --> 0
+      - true 转换为 1，false 转换为 0。
+      - string
+        - "n" --> n 符合Number规则
+        - "" --> 0
+        - 不符合语法规则 --> NaN
     - 对象
         - 调用抽象操作 ToPrimitive, 检查是否有valueOf()
             - 封装对象(有valueOf函数)
                 - 被转换为相应的基本类型值，如果返回的是非数字的基本类型值，遵循基本数据类型转化
             - 非封装对象（无valueOf函数），检查是否有toString()函数
-                - 如果有，返回toString函数的值，并且调用string的转化规则
+                - 如果有，返回toString函数的值，然后根据基本数据类型的规则来得到结果
                 - 如果没有，则返回TypeError
 ```javascript
     var a = [1, 3, 4]
@@ -2494,10 +1785,15 @@ fn2
 - 若+的左右运算数中都是number类型，则正常进行加法运算
 - 若+的左右运算数中存在string类型，则非string类型会进行隐式转化，再进行拼接
 - 若+的左右运算数中除了上述的两种情况，则两个运算数都会隐式转化为string类型，再进行拼接。
-###### 5.3.4.1.1 运用+号进行字符串的转化
 ```javascript
   console.log(typeof 123 + '')
   // string
+```
+###### 5.3.4.1.1 若+号只有一个操作数
+- 将相应的操作数转化为Number类型
+```javascript
+  +"fjioej" // NaN
+  +"2232"   // 2232
 ```
 ##### 5.3.4.2 ~ + 整数
 - ~符号的隐含操作（补码）
@@ -2547,6 +1843,7 @@ fn2
   // NaN
 ```
 ##### 5.4.1.3 隐式转化为Boolean类型
+- <font color="red">转化的实质是判断false是否在false的取值中</font>
 - (1) if (..) 语句中的条件判断表达式。
 - (2) for ( .. ; .. ; .. ) 语句中的条件判断表达式（第二个）。
 - (3) while (..) 和 do..while(..) 循环中的条件判断表达式。
@@ -2581,7 +1878,7 @@ fn2
     - 3. 存在布尔类型，调用toNumber(boolean)
   - 第三步
     - 若左右两侧的基本类型相同，则判断左 === 右
-    - 若存在undefine，null，NaN则根据特殊规则进行判断          
+    - 若存在undefine，null，NaN则根据特殊规则进行判断（其中有undefined == null)         
   - 第四步：循环步骤第二步，第三步知道左右两端的类型相同为止
   - 采用查表的方式
     - ![比较表格](./img/equal.JPG)
@@ -3151,8 +2448,8 @@ fn2
 #### 2.4.4 理解对象属性访问的默认操作
 ##### 2.4.4.1 [[ Get ]](用于属性的访问)
 - myObject.a 在 myObject 上实际上是实现了 [[ Get ]] 操作
-    - 对象默认的内置 [[Get]] 操作首先在当前对象中查找是否有名称相同的属性，如果找到就会返回这个属性的值。
-    - 如果没有找到遍历可能存在的 [[Prototype]] 链，也就是原型链
+    - 对象默认的内置 [[ Get ]] 操作首先在当前对象中查找是否有名称相同的属性，如果找到就会返回这个属性的值。
+    - 如果没有找到遍历可能存在的 [[ Prototype ]] 链，也就是原型链
     - 还是没有找到，放回undefined
 - 这种方法和访问变量时是不一样的。如果你引用了一个当前词法作用域中不存在的变量，并不会像对象属性一样返回 undefined，而是会抛出一个 ReferenceError 异常：
 ##### 2.4.4.2 [[ Put ]]（用于属性的新增和修改）
@@ -3285,7 +2582,7 @@ fn2
 - 返回值
     - 已经不可扩展的对象。
 ###### 2.4.6.3.2 Object.seal(obj)
-- __proto__ (  ) 属性的值也会不能修改。
+- __proto__属性的值也会不能修改。
 - Object.preventExtensions(obj) + configurable: false
 ```javascript
     Object.seal(obj);
@@ -3431,8 +2728,9 @@ fn2
   - new使构造函数中会做的四件事情：
     - 创建一个新的空的对象
     - 这个新对象会执行原型链接
-      - obj.__proto__ = Object.create(funcName.prototype)
+      - obj._/_proto__ = Object.create(funcName.prototype)
     - 这个新的对象会绑定到函数调用的this
+      - 由于函数的调用，会生成新的作用域，所以不同实例this指向的函数内部的变量并不是同一个
     - 如果函数没有返回其他对象，那么表达式中的函数调用会自动返回这个新的对象
 ##### 2.5.2.1. 类的实例对象的成员类型(实例成员，静态成员)
 - 构造函数中的属性和方法被称为成员
@@ -3467,7 +2765,18 @@ fn2
   Son.prototype = Object.create(Father.prototype);
   Son.constructor = Son;
 ```
-###### 2.5.5.1.1 实例对象是如何通过原型链来寻找相应的方法?
+- 访问某个对象的原型链中的第一个，即__proto__属性的方法
+- 方法1：
+```javascript
+  Object.getPrototypeOf(obj);
+  // 在任何浏览器上都可以使用
+```
+- 方法2
+```javascript
+  obj.__proto__
+  // 在某些浏览器上无法使用
+```
+###### 2.5.5.1.1 原型链的查询过程
 - 从实例对象开始的__proto__指向的原型对象
 - 第一类：实例对象
   - 实例对象的__proto__属性指向构造函数的原型对象
@@ -3503,43 +2812,46 @@ fn2
 - 第二步：若没有找到相应的方法，则会寻找该__proto__对象中属性__proto__所指向的另一个对象中寻找方法
 - 第三步：循环第二步直至找到为止
 - 这一个过程即形成了原型链查询
-- ![原型链](.img/ex7.jpg)
-##### 2.5.5.2 原型链引起的属性设置和屏蔽
-###### 2.5.5.2.1 属性屏蔽
-- 若当前对象myObject有属性prop，其原型链上也有属性prop
-    - 在访问属性prop的时候，访问的是myObject上的属性值而不是原型链上的属性
-- 此时称该prop为屏蔽属性
-
-###### 2.5.5.2.2 属性设置的过程（myObject.prop = value)
-- 遍历myObject的属性，
-    - 若该属性在myObject在遍历的属性中，则修改myObject的属性值（要考虑是否writable）
-    - 若不在myObject的属性，则往其原型链寻找
-        - 遍历原型链的属性
-            - 若该属性不在原型链上，则向myObject添加该属性以及对应的属性值
-            - 若该属性在原型链上
-                - 若该属性在原型链上不是只读的类型，则在myObject上添加该属性以及对应的属性值，<font color="red">此时该属性起到了屏蔽的作用</font>
-                - 若该属性在原型链上且是只读类型，由于继承的原因，myObject的属性也是只读类型，返回TypeError
-                - 如果在原型链上存在该属性并且它是一个 setter。foo 不会被添加到（或者说屏蔽于）myObject，也不会重新定义该属性这个 setter。
-- [属性设置的过程](./img/ex2.jpeg)
-
-###### 2.5.5.2.3 属性屏蔽和属性设置的易错点--隐式屏蔽
-- 在属性值进行++的过程，会有一个属性设置的过程，即给当前对象新增一个属性
+- ![原型链](./img/ex7.jpg)
+##### 2.5.5.2 对象属性的访问和设置
+###### 2.5.5.2.1 访问对象属性(prop)的过程
+- 第一步：查看当前的对象属性中有没有所需要的属性
+  - 若有，则返回属性值
+  - 若没有，则执行第二步
+- 第二步：按照先后顺序遍历原型链查看原型链中有没有所需要的属性
+  - 若有，则返回属性值
+  - 若没有，则返回ReferenceError
+- <font color='red'>属性屏蔽</font>
+  - 当前对象和原型链中存在相同的属性时，由于访问的先后关系，会造成无法访问到后出现的属性的值，此时把最开始出现的属性称为屏蔽属性，这种属性屏蔽的现象在继承中被称之为<font color='red'>多态</font>
+###### 2.5.5.2.2 设置对象属性(prop)的过程
+- 查看当前对象的有没有所需要的属性
+  - 若存在所需要的属性，则直接修改该属性的值
+  - 若不存在所需要的属性
+    - 遍历原型链
+      - 若<font color="blue">原型链上不存在该属性</font>或者<font color="red">存在该属性但不是只读的类型</font>则直接在该对象上建立该属性，并赋值
+      - 若存在该属性而且是只读的类型，则返回TypeError
+      - 如果在原型链上存在该属性并且它是一个 setter，则不会有任何操作
+- 若设置属性值的时候原型链中存在同样的属性，此时就会造成<font color="red">隐式屏蔽</font>
+###### 2.5.5.2.3 隐式屏蔽
+- 通过对象委派建立的继承关系，则存在隐式屏蔽的问题
+  - 若设置属性值的时候原型链中存在同样的属性，此时就会造成<font color="red">隐式屏蔽</font>
+- 在通过new创建的对象，由于构造函数中的this会指向当前的对象，相当于相应构造函数中的属性都成了当前对象的属性，存在隐式屏蔽的问题
 ```javascript
-    var obj = {
+    var father = {
         a: 2
     }
-    var newObj = Object.create(obj)
-
-    console.log(newObj.a)
-
-    newObj.a ++;
-    // newObj.a = newObj.a + 1 相当于一个设置属性的过程
-    console.log(obj.a)
-    console.log(newObj.a)
+    var son = Object.create(father);
+    console.log(son.a);
     // 2
-    // 2
-    // 3
+    son.a ++;
+
+    console.log(son.a);
+    console.log(father.a);
+    // 3 2
+    console.dir(son);
+    // 见下图
 ```
+- ![result](./img/hidden_attribute.jpg)
 - 若想要使obj的2增加，必须使用obj.a++
 ##### 2.5.5.3 通过构造函数实现类的继承
 - 称为组合继承
@@ -3581,7 +2893,10 @@ fn2
   Son.welcome();
 ```
 - ![result](./img/function_inherit.jpg);
-###### 2.5.5.2.1 为什么不能使用Son.prototype.__proto__ = Father.prototype来实现原型链的继承
+###### 2.5.5.2.1 为什么不能使用以下方法来实现原型链的继承
+```javascript
+  Son.prototype.__proto__  = Father.prototype
+```
 ###### 2.5.5.2.2 为什么不能使用Son.prototype = new Father()
 - new Father()会创建一个Father的实例对象
 ```javascript
@@ -3675,7 +2990,7 @@ fn2
     // true true
 ```
 ###### 2.5.7.1.2 原型继承
-- 该实例对象的__proto__会指向该构造函数的prototype，这即是原型继承
+- <font color="red">该实例对象的__proto__会指向该构造函数的prototype，这即是原型继承</font>
 - 对于js中的类的实例，只是通过原型相互关联，而形成了该类的实例，但本质上是一个对象
 ###### 2.5.7.1.3 类的实例对象的不可枚举属性constructor本质
 - 在类/构造函数进行声明的时候，就会有默认的.prototype.constructor的不可枚举属性，该属性指向本身
@@ -3721,25 +3036,8 @@ fn2
     console.log(obj.isPrototypeOf(newObj))
     // true
 ```
-##### 2.5.7.5 获取某个对象的原型链
-###### 2.5.7.5.1 Object.getPrototypeOf(obj)
-- 标准的方法
-###### 2.5.7.5.2 obj.__proto__
-- 在某些浏览器上并不适用
-- 对象__proto__的实质：
-```javascript
-Object.defineProperty( Object.prototype, "__proto__", {
-    get: function() {
-    return Object.getPrototypeOf( this );
-    },
-    set: function(o) {
-    // ES6 中的 setPrototypeOf(..)
-    Object.setPrototypeOf( this, o );
-    return o;
-    }
-    } );
-```
-##### 2.5.7.6 总结
+
+##### 2.5.7.5 总结
 - 如果要访问对象中并不存在的一个属性，[[Get]] 操作（参见第 3 章）就会查找对象内部原型链关联的对象
 - 关联两个对象最常用的方法是使用 new 关键词进行函数调用，即使类和实例的关系
 #### 2.5.8 注意
@@ -3750,10 +3048,6 @@ Object.defineProperty( Object.prototype, "__proto__", {
     - obj.key
   - 属性attr是一个变量：一般是用keys进行遍历的时候
     - obj[key]
-##### 2.5.8.1 会检查所有在原型链上的属性
-- ...in..
-  - for let key in obj
-  - prop in obj
 
 
 ## 3 函数
@@ -3797,10 +3091,6 @@ Object.defineProperty( Object.prototype, "__proto__", {
 ##### 3.2.3.1. arguments对象(现在很少用了)
 ###### 3.2.3.1.1. 特点1
 - 是一个object类型，而不是一个数组(Array类型)，但是和数组的用法类似
-- 伪数组
-  - 具有数组的length属性
-  - 按照索引的方式进行存储的
-  - 它没有真正数组的一些方法 pop() push()等等
 ###### 3.2.3.1.2. 特点2
 - 是所有非箭头函数中都可用的局部变量 
 ###### 3.2.3.1.3. 特点3
@@ -3838,25 +3128,22 @@ Object.defineProperty( Object.prototype, "__proto__", {
   - 形参改变值的内容会使得实参的值改变
 - 原因：复合数据类型存储在栈中的值是对应存储内容的堆的地址（即指针），参数传递实际上传的是地址，所以一旦形参改变了内容，则会导致实参指向的内容改变
 - ![理解](./img/ex1.jpg)
-### 3.3. 函数的调用
-#### 3.3.1. 函数的调用栈
-- 函数的调用过程是一个压栈的过程
-- ![function_use](./img/function_use.jpg)
-- [视频地址](https://www.bilibili.com/video/BV1nJ411J7a2?p=87)
-- 在开发中尽量避免使用递归
-  - 递归如果没有写好约束条件，意味着会无限调用
-  - 递归调用非常占用栈空间的内存
-#### 3.3.2. 普通函数的调用
+### 3.3. 函数的调用形式
+- 函数的调用栈
+  - 函数的调用过程是一个压栈的过程
+  - ![function_use](./img/function_use.jpg)
+  - 在开发中尽量避免使用递归
+    - 递归如果没有写好约束条件，意味着会无限调用
+    - 递归调用非常占用栈空间的内存
+#### 3.3.1. 普通函数的调用
 - funcName();
 - funcName.call();
-#### 3.3.3 函数的特殊的调用形式
+#### 3.3.2 函数的特殊的调用形式
 - <a href='#template-call' >标签模板字面量的调用</a>
-#### 3.3.4. 通过立即调用函数进行调（IIFE）
+#### 3.3.3 采用通过立即调用函数进行调（IIFE）
 - 函数定义的同时立即实行函数
-- 特点：执行完函数会立即销毁，对应的函数名在调用之后也会变得没有意义
 - 作用
-  - 创建一个独立的执行上下文环境，<font color="red">可以避免外界的访问修改内部的变量</font>
-- 例子见笔记
+  - 创建一个独立的执行上下文环境，<font color="red">可以避免外界的访问修改内部的变量，即实现了一个块级作用域的作用</font>
 ##### 3.3.4.1. 函数声明的立即调用函数规范
 - 可以使用立即调用函数，只是需要在定义加上一个小括号后在加上参数列表
 - 立即调用函数的写法1：
@@ -3967,9 +3254,9 @@ Object.defineProperty( Object.prototype, "__proto__", {
 - 遍历作用域链的过程
     - 在当前作用域中无法找到某个变量时，引擎就会在外层嵌套的作用域中继续查找，直到找到该变量，或抵达最外层的作用域（也就是全局作用域）为止
 - 注意：
-- var的特殊特性；非块级作用域
-  - 对于var而言，只有函数的嵌套才存在错用于的嵌套
-- 内部的作用域能够访问外部作用域变量，而外部作用域不能访问内部作用域的变量
+  - var的特殊特性；非块级作用域
+    - 对于var而言，只有函数的嵌套才存在错用于的嵌套
+  - 内部的作用域能够访问外部作用域变量，而外部作用域不能访问内部作用域的变量
 ### 1.3 总结
 - 作用域是一套规则，用于确定在何处以及如何查找变量（标识符）
 - 如果查找的目的是对变量进行赋值，那么就会使用 LHS 查询；如果目的是获取变量的值，就会使用 RHS 查询。
@@ -4073,7 +3360,7 @@ Object.defineProperty( Object.prototype, "__proto__", {
     foo(function() {
         // ...
     })
-    // 立即执行函数表达式
+    // 立即执行函数��达式
     (function(args){
         // ...
     })(args)
@@ -4081,19 +3368,9 @@ Object.defineProperty( Object.prototype, "__proto__", {
         // ...
     }(args))
 ```
-#### 1.5.4 立即执行函数表达式
-- IIFE(Immediately Invoked Function Expression)
-```javascript
-// 法1
-    (function(args){
-        // ...
-    })(args)
-// 法2
-    (function(args) {
-        // ...
-    }(args))
-```
+
 ### 1.6 块作用域
+- <font color="red">不要在一个块内用声明的方式定义一个函数，若想要定义一个函数，则使用函数表达式的形式</font>
 #### 1.6.1 var声明的变量不具有块级作用域
 - 在用var声明变量的时候，var并不具有块级作用域
 ```javascript
@@ -4248,6 +3525,21 @@ Object.defineProperty( Object.prototype, "__proto__", {
         console.log(1);
     }
 // 1
+```
+- 函数声明和函数表达式
+  - 函数声明存在提升
+  - 函数表达式不存在提升，它相当于赋值操作，只在当前位置执行
+```javascript
+  var foo = function(x, y) {
+    return x - y;
+  }
+  // 函数声明因为提升会被提到前面
+  function foo(x, y) {
+    return x + y;
+  }
+
+  console.log(foo(3, 4))
+  // -1
 ```
 #### 1.7.4 函数声明不具有块级作用域
 - 一个普通块内部的函数声明通常会被提升到所在作用域的顶部
@@ -4444,7 +3736,56 @@ baz();
     module1.doSomething();
     module1.doAnother();
 ```
-#### 1.8.5 总结
+#### 1.8.5 闭包的易错点
+##### 1.8.5.1 闭包和赋值传参
+```javascript
+  function test() {
+      var n = 4399;
+      function add() {
+          n ++;
+          console.log(n);
+      }
+      return {n, add};
+  }
+  result1 = test();
+  result2 = test();
+  // 两个函数的执行分别返回了一个对象
+  // {n: 4399, add}
+  // 函数执行会创建一个新的堆空间，所以两个对象中add的闭包作用域是是位于不同（即n不同存储位置的）
+  // 对象中的n是一个基本数据类型，采用的是赋值传参，所以此时的n与add闭包作用域中的n是没有关系的
+  result1.add();
+  result1.add();
+  console.log(result1.n);
+  // 4400 4401 4399
+  result2.add();
+  console.log(result2.n);
+  // 4400 4399
+```
+##### 1.8.5.2 闭包和引用传参
+```javascript
+  function test() {
+      var arr = [1, 3]
+      function add() {
+          arr.push(3)
+          console.log(arr);
+      }
+      return {arr, add};
+  }
+  result1 = test();
+  result2 = test();
+  // 两个函数的执行分别返回了一个对象
+  // {n: 4399, add}
+  // 函数执行会创建一个新的作用域，所以两个对象中add的闭包作用域是是位于不同（即n不同存储位置的）
+  // 对象中的n是一个基本数据类型，采用的是赋值传参，所以此时的n与add闭包作用域中的n是没有关系的
+  result1.add();
+  result1.add();
+  console.log(result1.arr);
+  // [1, 3, 3] [1, 3, 3, 3] [1, 3, 3, 3]
+  result2.add();
+  console.log(result2.arr);
+  // [1, 3, 3] [1, 3, 3]
+```
+#### 1.8.6 总结
 - 当函数可以记住并访问所在的词法作用域，即使函数是在当前词法作用域之外执行，这时就产生了闭包。
 - 模块有两个主要特征：
     - （1）为创建内部作用域而调用了一个包装函数；
@@ -4453,42 +3794,27 @@ baz();
 ## 2 this的理解
 - this是在<font color="red">运行时进行绑定,而不是编写时绑定</font>,它的上下文取决于函数调用时的各种条件.
 - this的绑定和函数声明的位置没有任何关系,只取决于函数的调用方式
+- this 是函数运行时自动生成的一个内部对象，只能在函数内部使用
 ### 2.1 this的实质
 - 当一个函数被调用时,会创建一个活动记录(有时候被称为执行上下文).这个记录会包含在调用栈中,函数调用栈中有函数的调用方法,传入的参数等信息.this就是记录其中一个属性,会在函数执行的过程中用到.
-### 2.2 确定this所指的对象的方法
-#### 2.2.1 第一步：寻找调用位置和当前的调用栈
+### 2.2 确定函数调用时this所指的对象的方法
+#### 2.2.1 第一步：寻找调用位置
 - 调用位置:函数在代码中被调用的位置
 ```javascript
-    function baz() {
-        /*
-         * 第二步
-         * 当前的调用栈是:baz
-         * 当前的调用位置是全局作用域
-        */
-        console.log("baz");
-        bar(); // 第三步: bar的调用位置
-    }
-    function bar() {
-        /*
-         * 第四步
-         * 当前的调用栈是:baz -> bar
-         * 当前的调用位置是baz中
-        */
-        console.log("bar");
-        foo(); // 第五步: foo的调用位置
-    }
-    function foo() {
-        /*
-         * 第六步
-         * 当前的调用栈是:baz -> bar -> foo
-         * 当前的调用位置是bar中
-        */
-        console.log("foo");
-    }
-
-    baz();  // 第一步:baz的调用位置
+  var obj = {
+      foo(fn) {
+          console.log(this)   //obj
+      //1. fn函数的调用位置
+          fn();               //window
+      }
+  }
+  function baz() {
+      console.log(this);
+  }
+  // 2. foo函数的调用位置
+  obj.foo(baz);
 ```
-- 调用栈的倒数第二个即为调用位置
+
 #### 2.2.2 第二步：根据this的绑定规则来确定绑定的对象
 - <font color="red">this的绑定规则</font>
   - 函数是否在 new 中调用（new 绑定）？如果是的话 this 绑定的是新创建的对象。
@@ -4543,6 +3869,7 @@ baz();
     // 42
 ```
 ###### 2.2.2.2.1 隐式丢失
+- 实际上就是<a href="#indirect_reference">间接引用</a>造成的问题
 - <font color="red">使用函数别名进行调用</font>
     - 虽然 bar 是 obj.foo 的一个引用，但是实际上，它引用的是 foo 函数本身，因此此时的bar() 其实是一个不带任何修饰的函数调用，因此应用了默认绑定。
 ```javascript
@@ -4629,6 +3956,63 @@ baz();
     3 awesome
     */
 ```
+
+###### 2.2.2.3.1 func.apply(thisArg, [args])
+- 将func中this所指的属性和方法添加到thisArg的this所指的属性和方法之中，并执行func
+  - 注意：此时的func所用的this就是thisArg的this即可以理解为thisArg在运行func的内容
+```javascript
+function fn1() {
+  this.name = "hello"
+}
+
+function fn2() {
+  this.word = "world";
+}
+fn2Object = new fn2();
+fn1.apply(fn2Object)
+// 执行fn1的代码，并将fn1的this所指的属性和方法加入到fn2Object
+// 
+console.dir(fn2Object)
+console.dir(fn2)
+```
+###### 2.2.2.3.2 bind(func1, func2)
+- 返回值是一个函数wrap
+- 源码的理解
+```javascript
+// bind函数的理解
+// 语法上：返回一个函数wrap
+// 功能上：若是调用warp函数并传入参数
+//         fn根据传递的参数执行并且thisArg将继承fn的属性和方法
+//         之后返回值：undefine
+function bind(fn, thisArg) {
+  return function wrap() {
+    //根据传入的参数来调用fn
+    var args = new Array(arguments.length);
+    console.log(args);
+    for (var i = 0; i < args.length; i++) {
+      args[i] = arguments[i];
+    }
+    //用apply来实现绑定
+    return fn.apply(thisArg, args);
+  };
+};
+
+function fn1(name) {
+  this.name = name
+}
+
+function fn2() {
+  this.word = "world";
+}
+fn2Object = new fn2();
+console.log(bind(fn1, fn2Object)("hello"))
+console.dir(fn2)
+/*
+undefined
+fn2
+ name: "hello"word: "world" 
+*/
+```
 ##### 2.2.2.4 new绑定
 - 四步走
     - 创建一个新的空的对象
@@ -4652,7 +4036,9 @@ baz();
     var bar = foo.bind( ø, 2 );
     ar( 3 );   
 ```
-#### 2.3.2 间接引用(包括函数参数的传递)
+#### 2.3.2 对象函数的间接引用(包括函数参数的传递)
+- <span id="#indirect_reference">间接引用造成问题的本质<span>:
+  - 由于this的绑定是在函数执行的时候，所以赋值的过程实质上也会影响到函数执行是this绑定的对象。
 - <font color="red">创建一个函数的“间接引用”，在这种情况下，调用这个函数会应用默认绑定规则。</font>
 ```javascript
     function foo() {
@@ -4712,6 +4098,7 @@ baz();
 ```
 #### 2.3.4 箭头函数
 - 箭头函数会继承外层函数调用的 this 绑定（无论 this 绑定到什么）
+  - 查看调用栈中的this
 ### 2.4 总结
 - 如果要判断一个运行中函数的 this 绑定，就需要找到这个函数的直接调用位置,然后再运用规则
 - this的规则
@@ -4722,8 +4109,125 @@ baz();
 - 一定要注意，有些调用可能在无意中使用默认绑定规则。如果想“更安全”地忽略 this 绑定，你可以使用一个 DMZ 对象，比如 ø = Object.create(null)，以保护全局对象。
 - ES6 中的箭头函数并不会使用四条标准的绑定规则，而是根据当前的词法作用域来决定this，具体来说，箭头函数会继承外层函数调用的 this 绑定（无论 this 绑定到什么）
 
-## 3 有关类的三种不同设计模式
-### 3.1 使用构造函数的模式
+## 3 面向对象编程的重要概念
+### 3.1 有关类的不同模拟方法
+#### 3.1.1 使用工厂的方法模拟类
+- 定义一个函数，在函数内部创建一个空对象，并且对它进行一些类实例的完善
+  - 无需使用new来创建一个新的实例对象
+```javascript
+  function Foo(name, age, height) {
+    var obj = {}
+    obj.name = name;
+    obj.age = age;
+    obj.height = height;
+    obj.getName = function() {
+      return this.name;
+    }
+    obj.getAge = function() {
+      return this.age;
+    }
+    obj.getHeight= function() {
+      return this.height;
+    }
+    return obj;
+  }
+
+  var foo = Foo("bulumrcai", 23, 1.76);
+  console.log(foo.getName(), foo.getAge(), foo.getHeight());
+    //  bulumrcai 23 1.76
+```
+#### 3.1.2 使用构造函数模拟一个类
+```javascript
+  function Foo(name, age, height) {
+    this.name = name;
+    this.age = age;
+    this.height = height;
+  }
+  Foo.prototype.getName = function() {
+    return this.name;
+  }
+  Foo.prototype.getAge = function() {
+    return this.age;
+  }
+  Foo.prototype.getHeight = function() {
+    return this.height;
+  }
+  var foo = new Foo("bulumrcai", 23, 1.76);
+  console.log(foo.getName(), foo.getAge(), foo.getHeight());
+    //  bulumrcai 23 1.76
+```
+#### 3.1.3 使用Object.create的方法模拟类
+- 弊端：在构造实例对象的时候没办法传入参数，必须在构造对象之后单独进行值的设置
+  - <font color="red">重新设置值时会存在属性的屏蔽</font>
+```javascript
+  var Foo = {
+    name: "bulumrcai",
+    age: 23,
+    height: 1.76,
+    getName() {
+      return this.name;
+    },
+    getAge() {
+      return this.age;
+    },
+    getHeight() {
+      return this.height;
+    }
+  }
+
+  var foo = Object.create(Foo);
+  console.log(foo.getName(), foo.getAge(), foo.getHeight());
+```
+#### 3.1.4 使用封装法来模拟类
+- 和工厂方法类似，只是换成一个对象
+```javascript
+  var Foo = {
+    init(name, age, height) {
+      var obj = {}
+      obj.name = name;
+      obj.age = age;
+      obj.height = height;
+      obj.getName = function() {
+        return this.name;
+      }
+      obj.getAge = function() {
+        return this.age;
+      }
+      obj.getHeight= function() {
+        return this.height;
+      }
+      return obj;
+    }
+  }
+  var foo = Foo.init("bulumrcai", 23, 1.76);
+  console.log(foo.getName(), foo.getAge(), foo.getHeight());
+   //  bulumrcai 23 1.76
+```
+#### 3.1.5 ES6的class
+```javascript
+  class Foo {
+      constructor(name, age, height) {
+          this.name = name;
+          this.age = age;
+          this.height = height;
+      }
+      getName() {
+          return this.name;
+      }
+      getAge() {
+          return this.age;
+      }
+      getHeight() {
+          return this.height;
+      }
+  }
+  var foo = new Foo("bulumrcai", 23, 1.76);
+  console.log(foo.getName(), foo.getAge(), foo.getHeight());
+  //  bulumrcai 23 1.76
+```
+### 3.2 有关类的继承不同的模拟方式
+#### 3.2.1 使用构造函数的模式
+- 混合的模式
 ```javascript
     function Father(name) {
         this.name = name;
@@ -4750,7 +4254,7 @@ baz();
     console.log(son.getName());
     console.dir(son);
 ```
-### 3.2 使用class模式
+#### 3.2.2 使用class模式
 ```javascript
     class Father {
         constructor(name) {
@@ -4778,7 +4282,8 @@ baz();
     console.log(son.getName());
     console.dir(son)
 ```
-### 3.3 使用事件委派的模式
+#### 3.2.3 使用事件委派的模式
+
 ```javascript
     var Father = {
         fatherInit(name) {
@@ -4903,7 +4408,9 @@ baz();
 ### 5.1. 正则表达式的定义
 - 用于匹配字符串中字符组合的模式
   - 在js中，是对象
-- <font color="red">正则表达式之中不需加引号</font>
+- 在正则表达式之中，除了特殊的字符，其他都是一个字符就表示相应的匹配，且不能够随意添加空格
+- 在正则表达式中，括号表示将括号内的部分视为一个整体
+- 在正则表达式中，若出现/，则表示后面一位为转义字符
 ### 5.2. 正则表达式的作用
 - 实现匹配字符串
 - 实现字符串的过滤（替换）
@@ -4923,23 +4430,24 @@ baz();
   </tr>
 </table>
 
-- ^和$在一起表示精确匹配
+作用：<font color="red">^和$在一起表示精确匹配</font>
 ```javascript
   const reg = /abc/
+  // 只需要包含abc就是返回true
 ```
-- 只需要包含abc就是返回true
 ```javascript
   const reg = /^abc/
+  // 必须以abc开头
 ```
-- 必须以abc开头
 ```javascript
   const reg = /abc$/
+  // 必须以abc结尾
 ```
-- 必须以abc结尾
 ```javascript
   const reg = /^abc$/
+  // 精确匹配，要求必须是abc字符才符合规范
 ```
-- 精确匹配，要求必须是abc字符才符合规范
+
 #### 5.3.2 字符类 []
 <table>
   <tr>
@@ -4963,22 +4471,23 @@ baz();
 - 字符组合类似于并集表达式
 ```javascript
   const reg = /[abc]/
+  // 只要包含有a,包含有b,包含有c都返回true
 ```
-- 只要包含有a,包含有b,包含有c都返回true
 ```javascript
   const reg = /^[abc]$/
+  // 只要是a或者b或者c都返回true
 ```
-- 只要是a或者b或者c都返回true
+
 
 ```javascript
   const reg = /^[a-z]$/
+  // 只有是小写的英文字母才返回true
 ```
-- 只有是小写的英文字母才返回true
 
 ```javascript
   const reg = /^[a-zA-Z0-9]$/
+  // 表示只有是26个字母以及数字才返回true
 ```
-- 表示只有是26个字母以及数字才返回true
 
 #### 5.3.3. 量词符
 - 量词符若没有括号，只是指前面的一位字符的重复
@@ -5065,7 +4574,7 @@ baz();
   - reg：是一个js的表达式
   - flags:正则表达式标志
 ```javascript
-  const reg = /js表达式/
+  const reg = /js表达式/gi
 ```
 #### 5.4.2. 通过构造函数创建(new RegExp(reg[, flags]))
 - <font color="red">new可以省略</font>
@@ -5104,7 +4613,7 @@ baz();
       <td>使用unicode码的匹配模式</td>
     </tr>
     <tr>
-      <td>u</td>
+      <td>y</td>
       <td>执行"粘性"搜索，匹配从目标字符串的当前位置开始</td>
     </tr>
   </tbody>
@@ -5232,6 +4741,176 @@ baz();
 </html>
 ```
 
+## 6 switch的易错点
+### 6.1 switch的基本格式
+```javascript
+  switch (a) {
+    case 2:
+    // 执行一些代码
+    break;
+    case 42:
+    // 执行另外一些代码
+    break;
+    default:
+    // 执行缺省代码
+  }
+```
+- <font color="red">a 和 case 表达式的匹配算法与 ===</font>
+### 6.2 switch使用==
+- switch默认使用===来进行匹配
+- 若想要判断等号时使用隐形类型转化，则可以使用下面的方法
+```javascript
+  switch (true) {
+    case a == 10:
+      console.log( "10 or '10'" );
+      break;
+    case a == 42;
+      console.log( "42 or '42'" );
+      break;
+    default:
+ // 永远执行不到这里
+}
+```
+- 采取这种方法的时候，必须保证case后面表达式的值是严格的真值，因为<font color="red">实际上的判断是true === true</font>
+## 7 javascript与JSON
+### 7.1 javascript的数据格式和JSON数据格式的区别
+<table>
+  <thead>
+    <tr>
+      <th>Javacript</th>
+      <th>JSON</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>对象和数组</td>
+      <td>属性名称必须是双引号括起来的字符串且<font color="red">最后一个属性后面不能有逗号</font></td>
+    </tr>
+    <tr>
+      <td>数值</td>
+      <td>禁止出现前导零；如果有小数点，则后面至少跟着一位数字</td>
+    </tr>
+    <tr>
+      <td>字符串</td>
+      <td>只有有限的一些字符可能会被转义；禁止某些控制字符； Unicode 行分隔符 （U+2028）和段分隔符 （U+2029）被允许 ; 字符串必须用双引号括起来</td>
+    </tr>
+  </tbody>
+</table>
+ 
+### 7.2 JSON.parse(text[, reviver])
+- 返回Object类型的javascript类型的值，对应给定JSON文本的对象/值
+- 参数
+  - text: 要被解析的JSON型字符串
+  - reviver：函数，可以用来修改解析生成的原始值
+```javascript
+JSON.parse('{}');              // {}
+JSON.parse('true');            // true
+JSON.parse('"foo"');           // "foo"
+JSON.parse('[1, 5, "false"]'); // [1, 5, "false"]
+JSON.parse('null');            // null
+```
+### 7.3 JSON.stringify(value[, replacer[, space]])
+- 返回一个表示给定值的JSON字符串（值转换为相应的JSON格式)。
+- 参数
+  - value: 将要序列化成 一个 JSON的 字符串的值。
+  - replacer
+    - 如果该参数是一个函数，则在序列化过程中，被序列化的值的每个属性都会经过该函数的转换和处理；如果该参数是一个数组，则只有包含在这个数组中的属性名才会被序列化到最终的 JSON 字符串中；如果该参数为 null 或者未提供，则对象所有的属性都会被序列化。
+  - space:
+    - 指定缩进用的空白字符串，用于美化输出（pretty-print）；如果参数是个数字，它代表有多少的空格；上限为10。该值若小于1，则意味着没有空格；如果该参数为字符串（当字符串长度超过10个字母，取其前10个字母），该字符串将被作为空格；如果该参数没有提供（或者为 null），将没有空格
+#### 7.3.1 针对不同类型的转化问题
+- 基本数据类型
+  - number
+    - n --> n
+    - NaN --> null
+    - inifity --> null
+  - boolean
+    - true --> true
+    - false --> false
+  - string
+    - str --> str
+  - undefined
+    - 忽略
+  - null
+    - null --> null
+  - symbol
+    - 忽略
+- 复杂数据类型
+  - object
+    - 调用toJSON的方法
+      - array --> array
+        - undefined, null, 函数,symbol --> null
+      - obj 
+        - undefined, null, 函数, symbol 忽略
+```javascript
+JSON.stringify({});                        // '{}'
+JSON.stringify(true);                      // 'true'
+JSON.stringify("foo");                     // '"foo"'
+JSON.stringify([1, "false", false]);       // '[1,"false",false]'
+JSON.stringify({ x: 5 });                  // '{"x":5}'
+
+JSON.stringify({x: 5, y: 6});              
+// "{"x":5,"y":6}"
+
+JSON.stringify([new Number(1), new String("false"), new Boolean(false)]); 
+// '[1,"false",false]'
+
+JSON.stringify({x: undefined, y: Object, z: Symbol("")}); 
+// '{}'
+
+JSON.stringify([undefined, Object, Symbol("")]);          
+// '[null,null,null]' 
+
+JSON.stringify({[Symbol("foo")]: "foo"});                 
+// '{}'
+
+JSON.stringify({[Symbol.for("foo")]: "foo"}, [Symbol.for("foo")]);
+// '{}'
+
+JSON.stringify(
+    {[Symbol.for("foo")]: "foo"}, 
+    function (k, v) {
+        if (typeof k === "symbol"){
+            return "a symbol";
+        }
+    }
+);
+
+
+// undefined 
+
+// 不可枚举的属性默认会被忽略：
+JSON.stringify( 
+    Object.create(
+        null, 
+        { 
+            x: { value: 'x', enumerable: false }, 
+            y: { value: 'y', enumerable: true } 
+        }
+    )
+);
+
+// "{"y":"y"}"
+```
+## 8  js中的关键词in
+### 8.1 in iterator
+- 判断当前值是否在iterator的下标中
+ - array: 数组
+ - object：key
+  - 包含原型链中的key
+```javascript
+  console.log(1 in [1]); //false
+  console.log(key in obj) //判断key是不是obj的属性，包含原型链的寻找
+```
+### 8.2 for...in...
+- 用于变量当前iterator的下标
+  - array: 数组
+  - object：key
+    - 包含原型链中的key
+## 9 js中的全局变量和函数
+### 9.1 js中的全局变量
+- ![tatal_val.jpg](./img/tatal_val.jpg)
+### 9.2 js中的全局函数
+- ![total_func.jpg](./img/total_func.jpg)
 
 # 五 js的DOM操作
 ## 1. DOM(document Object Model)
@@ -5251,11 +4930,11 @@ baz();
 ##### 1.3.1.1. 文档节点(document)
 - 浏览器已经为我们提供了文档节点，可以在页面中直接使用
 - 文档节点代表的是整个网页
-##### 1.3.1.1. 元素节点
+##### 1.3.1.2. 元素节点
 - 元素标签
-##### 1.3.1.1. 属性节点
+##### 1.3.1.3. 属性节点
 - 元素的属性 
-##### 1.3.1.1. 文本节点
+##### 1.3.1.4. 文本节点
 - 标签内部的文本内容
 #### 1.3.2. 节点的属性
 - ![了解](./img/ex15.jpg)
@@ -5264,19 +4943,19 @@ baz();
 ## 2 DOM方法
 ### 2.1 DOM document属性和方法
 #### 2.1.1 document获取元素对象的方法
-##### 2.1.1.1 document.getElementsByClassName(names)
+##### 2.1.1.1 document.getElementById(id)(特有)
+- 返回一个id的元素对象
+- 参数
+  - id：id名，是一个字符串
+##### 2.1.1.2 document.getElementsByClassName(names)
 - 返回类名names元素对象的类数组
 - 参数
   - names：类名，是一个字符串
 - ie8及以下不支持
-##### 2.1.1.2 document.getElementsByTagName(tagNames)
+##### 2.1.1.3 document.getElementsByTagName(tagNames)
 - 返回类名tagNames元素对象的类数组
 - 参数
   - tagNames：标签名，是一个字符串
-##### 2.1.1.3 document.getElementById(id)
-- 返回一个id的元素对象
-- 参数
-  - id：id名，是一个字符串
 ##### 2.1.1.4 document.getElementsByName(names)
 - 返回属性name值为names元素对象的类数组
 - 参数
@@ -5296,7 +4975,22 @@ baz();
 #### 2.1.3 doucment与增加元素对象相关的属性
 ##### 2.1.3.1 document.createElement(tagName)
 - 创建一个标签名为tagName的元素对象
-
+#### 2.1.4 document其他的一些操作
+##### 2.1.4.1 document.open()
+- 打开一个要写入的文档
+  - 此时已注册到文档、文档中的节点或文档的window的所有事件监听器会被清除。
+  - 文档中的所有节点会被清除。
+##### 2.1.4.2 document.write(markup)
+- 将markup的内容写入到文档之中
+  - 若第一次写入没有调用document.open(),则第一次调用的时候会自动调用document.open()清空当前的文档
+- 参数
+  - markup：字符串类型
+    - 若markup为非字符串类型，则会<font color="red">调用toString进行隐式转化</font>
+```javascript
+  var str1 = new RegExp("e");
+  document.write(str1.exec("hello"));
+  // 在当前页面输出e
+```
 ### 2.2 DOM Element方法
 #### 2.2.1 element获取元素对象的方法
 ##### 2.2.1.1 element.getElementsByClassName(names)
@@ -5337,16 +5031,36 @@ baz();
 - 参数
   - node 
     - 元素对象
-
-##### 2.2.2.2 element.childNode
+##### 2.2.2.2 element.offsetParent（只读属性）
+- 获取当前元素的定位父元素对象
+  - 获取到的离当前元素最近的非static祖先元素
+- 若没有，则默认为body。
+##### 2.2.2.3 element.childNode
 ###### 2.2.2.2.1 childNode.remove()
 - 删除当前元素对象
-##### 2.2.2.3 element.previousElementSibling（只读）
+##### 2.2.2.4 element.previousElementSibling（只读）
 - 该元素的上一个兄弟元素对象，若返回null，则说明不存在
-##### 2.2.2.4 element.nextElementSibling（只读）
+##### 2.2.2.5 element.nextElementSibling（只读）
 - 该元素的下一个兄弟元素对象，若返回null，则说明不存在
-##### 2.2.2.5 element.closest(selectors)
+##### 2.2.2.6 element.closest(cssSelector)
 - 获取离当前元素对象最近的具有能够匹配selectors的祖先元素
+##### 2.2.2.7 元素对象的增删
+###### 2.2.2.6.1 元素对象的增加
+- 创建子元素对象
+- 给子元素对象赋值
+- 添加到父元素对象中
+```javascript
+  let childElement = createElement('div');
+  childElement.innerHTML = 'hello_world' //一般是比较固定的格式
+  fatherElement.appendChild(childElement);
+```
+###### 2.2.2.6.2 元素对象的删除
+```javascript
+  // 方法1：直接本身删除
+  elementObject.remove();
+  // 方法2：利用父节点删除
+  elementObject.parentNode.removeChild(elementObject)
+```
 #### 2.2.3 element与增加元素对象相关的属性和方法
 ##### 2.2.3.1 parentNode.append(...node)
 - 在子元素对象的最后插入一个节点
@@ -5354,7 +5068,7 @@ baz();
   - node 
     - 元素对象
 ##### 2.2.3.2 parentNode.prepend(node)
-- 在子元素对象的最钱买你插入一个节点
+- 在子元素对象的最前面插入一个节点
 - 参数
   - node 
     - 元素对象
@@ -5386,20 +5100,20 @@ baz();
     - 以字符串形式表示的HTML
 #### 2.2.4 element与元素属性相关的属性及方法
 ##### 2.2.4.1 element.nodeName/tagName
+- 以字符串形式返回当前元素对象的标签名
 ##### 2.2.4.2 element.id
-##### 2.2.4.3 element.attributes（只读）
-- 返回一个与该元素相关的所有属性的类数组
-##### 2.2.4.4 element.innerHTML
+- 以字符串返回当前元素对象的id值
+##### 2.2.4.3 element.innerHTML
 - 仅获取元素内容的HTML表示形式或替换元素的内容
-##### 2.2.4.5 element.outerHTML
+##### 2.2.4.4 element.outerHTML
 - 获取描述元素（包括其后代）的序列化HTML片段。（包括自身的标签）
 ###### 2.2.4.1.1 用于替换当前的元素对象
-##### 2.2.4.6 element.innerText
+##### 2.2.4.5 element.innerText
 - 返回当前元素及其后代的“渲染”文本内容
   - 显示最终渲染完的内容，display:none无法获取
-##### 2.2.4.7 element.className
-- 返回标签的类名值，以空格的形式分开
-##### 2.2.4.8 element.classList（只读）
+##### 2.2.4.6 element.className
+- 以字符串的形式返回元素对象的类值，以空格的形式分开
+##### 2.2.4.7 element.classList（只读）
 - 相比将 element.className 作为以空格分隔的字符串来使用，classList 是一种更方便的访问元素的类列表的方法。
 - 虽然是只读属性，但是可以使用以下的方法来进行修改
 ###### 2.2.4.3.1 classList.add(...classValue)
@@ -5411,6 +5125,8 @@ baz();
   - 有则删去
   - 没有则添加
 
+##### 2.2.4.8 element.attributes（只读）
+- 返回一个与该元素相关的所有属性的类数组
 
 ##### 2.2.4.9 element.getAttribute(attrName:string)（只读）
 - 返回当前元素指定属性名的值
@@ -5452,104 +5168,31 @@ baz();
   - 如果元素不能滚动（比如：元素没有溢出），那么scroll[Left, Top] 的值是0。
   - 如果给scroll[Left, Top] 设置的值小于0，那么scroll[Left, Top] 的值将变为0。
   - 如果给scroll[Left, Top] 设置的值大于元素内容最大宽度，那么scroll[Left, Top]的值将被设为元素最大宽度。
-##### 2.2.5.5 element.[attName] （获取内联样式属性）
+##### 2.2.5.5 element.offset[Width, Height](只读)
+- 返回元素对象的整个宽度和整个高度
+  - 即包括content + padding + border
+  - 由于计算来的，所以readonly
+- 只是返回相应的数字
+##### 2.2.5.6 element.offset[Left,right], element.offset[Top,buttom]
+- 当前元素相对于其定位元素(offsetParent(非static))的水平偏移量/垂直偏移量
+  - 包含父元素的padding+top/left
+##### 2.2.5.7 element.[attName] （获取内联样式属性）
 - 以字符串的形式返回attrName的属性值
   - 导致相应的单位也会返回
 ###### 2.2.5.5.1 element.value
 - 一般用于获取或设置input的value
-##### 2.2.5.6 element.style.[attrName]
+##### 2.2.5.8 element.style.[attrName]
 - <font color="red">用于设置内联样式的style属性</font>
   - 若在样式表中有以-连接，则应该<font color="red">采取驼峰的形式</font>
   - 注意是有单位的字符串
 - 该样式的设置优先级为内联样式的优先级
 ###### 2.2.5.6.1 element.style.backgroundColor
 - 用于设置背景的颜色
-##### 2.2.5.7 实现判断滚动条是否到底
+##### 2.2.5.9 实现判断滚动条是否到底
 ```javascript
   // 当垂直滚动条滚动到底的时候有
   element.clientHeight === element.scrollHeight - element.scrollTop
-```
-#### 2.2.4.10  
-### 2.3 DOM的版本适应的问题
-
-  
-#### 6.1.2.3. 获取元素节点对象的行内样式属性值
-- 元素节点对象.属性
-- <font color="red">class属性不能使用这种方式</font>
-
-
-##### 6.1.2.3.3. 获取元素节点对象的样式表中的样式
-###### 6.1.2.3.3.1. 由于兼容性，需要自定义一个函数
-```javascript
-  function getStyle(obj, name) {
-    // 判断浏览器版本太麻烦，用什么进行判断？
-    // 正常浏览器
-    if(window.getComputedStyle)
-      return getComputedStyle(obj, null)[name];
-    else
-      return obj.currentStyle[name];
-    // ie8浏览器Style
-    
-  }
-```
-###### 6.1.2.3.3.2. getComputedStyle(elementObject, pseudoElements)
-- window方法
-- pseudoElements = null
-  - 返回了存储elementObject当前的样式的对象
-- pseudoElements 伪元素
-  - 返回了存储elementObject伪元素当前的样式的对象
-###### 6.1.2.3.3.3. objectElement.currentStyle.样式名
-- 获取当前元素对象显示的样式而不仅仅是内联或样式
-  - 只能ie
-- 区别：ie返回的auto，则上面一个放回的是具体的数值
-- 兼容ie8
-
-
-##### 6.1.2.4.1. 以父元素为对象的操作
-###### 6.1.2.4.1.1. document.createElement(tagStr)
-- 创建元素的标签对象
-###### 6.1.2.4.1.2. document.createTextNode(str)
-- 创建并初始化文本节点对象
-###### 6.1.2.4.1.3. fatherNodeObject.appendChild(childNodeObject)
-- 向父节点对象内部的最后面增加子节点对象
-- 父节点为对象
-###### 6.1.2.4.1.4. fatherNodeObject.insertBefore(newchildObject, oldchildObject)
-- 向旧的子节点对象的前面添加新的子节点对象
-- 父节点为对象
-###### 6.1.2.4.1.5. fatherNodeObject.replaceChild(newchildObject, oldchildObject)
-- 替换旧的子节点对象为新的子节点对象
-###### 6.1.2.4.1.6. fatherNodeObject.removeChild(childObject)
-- 删除子节点队形
-###### 6.1.2.4.1.7. 元素对象的增加的步骤（使用createElement）
-```javascript
-  /*
-    1. 创建子元素对象
-    2. 给子元素对象赋值
-    3. 添加到父元素对象中
-  */
-  let childElement = createElement('div');
-
-  let text = createTextNode('hello_world');
-  childElement.appendChild(text);
-
-  fatherElement.appendChild(childElement);
-```
-###### 6.1.2.4.1.8. 使用innerHTML对元素进行增加
-- 缺点:会把整一块替换
-```
-  fatherElement.innerHTML += childHTML
-```
-###### 6.1.2.4.1.9. 两种方式结合对元素进行添加(推荐)
-```javascript
-  let childElement = createElement('div');
-  childElement.innerHTML = 'hello_world'  //一般是比较固定的格式
-  fatherElement.appendChild(childElement);
-```
-###### 6.1.2.4.1.10. 元素对象的删除的步骤（经常使用的）
-```javascript
-// 找到父亲节点之后对其进行删除
-  childObject.parentNode.removeChild(childObject);
-```
+```  
 
 ## 3 DOM事件
 - 文档或浏览器窗口中发生的一些特定交互的瞬间
@@ -5600,6 +5243,8 @@ baz();
 - 缺点
   - 这种方法不支持ie8及以下
 ##### 3.0.2.4 element.removeEventListener(eventName:string, func, [true || false])
+- 删除使用element.addEventListen()方法添加的事件
+- 所有的参数值必须与对应的element.addEventListen()的参数值相同才能进行删除
 ##### 3.0.2.5 element.attachEvent(on[eventName]:string, func)
 - 适用于ie8及以下浏览器
 - 参数
@@ -5638,15 +5283,46 @@ baz();
   - 并不会向其子元素传播触发的事件
   - 该元素触发了事件
 ##### 3.0.3.2 冒泡事件
-- 假设当前绑定事件的元素有子元素，且此时事件触发
-- 冒泡事件的执行过程
-  - 该元素检查是否触发事件的回调函数
-  - 向其子元素传递该事件，导致其子元素都会检查是否触发事件的回调函数（捕获事件）
-  - 执行一次该事件触发的回调函数
-    - 若子元素满足回调函数的条件，则执行该子元素的事件触发回调函数，其父元素的回调函数不能再执行
-    - 若子元素都不满足回调函数的条件，则执行该元素的回调函数
+- 假设当前绑定事件的元素有子元素，且子元素也有绑定相同的事件
+- 事件由父元素触发
+  - 父元素检查是否触发了该事件，并将事件传递给子元素，同样，子元素也会检查是否触发该事件
+  - 直到子元素到底或者后面的子元素没办法触发该事件，最底层的子元素会首先调用事件的回调函数，然会其上一层再调用其触发事件，直至到达最上层的父元素
+- 事件由子元素触发
+ - 由于子元素也包含在父元素之中，实际上相当于触发了父元素，同样会发生冒泡
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="btn1">
+        按钮1
+        <div id="btn2">按钮2</div>
+    </div>
+    <script type="text/javascript">
+        let btn1 = document.getElementById("btn1");
+        let btn2 = document.getElementById("btn2");
+        btn1.addEventListener("click", function(event) {
+            console.log("按钮1");
+        })
+        btn2.addEventListener("click", function(event) {
+            console.log("按钮2");
+        })
+	</script> 
+</body>
+</html>
+```
+- btn2和btn1的区域重合
+- 点击按钮1，由于click是冒泡事件，所以事件会向下传播，由于冒泡的原因，所以会输出
+  - 按钮2，按钮2
+- 点击按钮2，实际上相当于点击了按钮1，结果是相同的
+- 若在按钮2的触发函数中增加event.stopPropogation()则会阻止两次事件的冒泡，所以会输出
+  - 按钮2
 ###### 3.0.3.2.1 冒泡事件的传播
-- ie8及以下没有捕获阶段
+- ie8及以���没有捕获阶段
 - 将冒泡事件分成三个阶段
   - 捕获阶段
     - 在捕获阶段时，从外层的祖先元素，向目标元素进行事件捕获，但是默认此时不会触发事件
@@ -5654,7 +5330,7 @@ baz();
     - 捕获到目标元素，捕获结束，开始在目标元素上触发事件
   - 冒泡阶段
     - 事件从目标元素向它的祖先元素传递，只会触发一次相应的事件
-- ![事件理解](./img/ex15.jpg)
+- ![事件理解](./img/ex16.jpg)
 - <span id="addEventListener">addEventListener的第三个参数</span>
   - 默认值为false 
     - 即事件的回调函数在冒泡阶段才会被触发，即子元素触发优先于祖先元素触发
@@ -5663,15 +5339,9 @@ baz();
 ###### 3.0.3.2.2 event.stopPropagation()的应用
 - 阻止捕获和冒泡阶段中在该元素的当前事件中的进一步传播。
 - 解释
-  - 若其父元素触发的事件是一个冒泡事件，当该冒泡事件被触发时，会向子元素传播
-  - 在向子元素传播时，会根据子元素触发事件中是否有event.stopPropagation()以及是否触发了相同事件决定是否往下传播
-    - 若存在，则不传播且不触发任何回调函数
-    - 若不存在，则继续往下传播，直至底层再冒泡起来执行
+  - 在子元素中调用该函数，会阻止其上元素调用回调函数，即阻止了该事件后的事件的冒泡
 - 使用event.stopPropagation()实现冒泡事件click父元素后不向子元素传播
 - <a href="#stopPropagation">例子见下面</a>
-###### 3.0.3.2.3 利用冒泡事件实现事件委派
-- 指将冒泡事件统一绑定给元素的共同祖先，当冒泡事件被触发，会通过事件冒泡传递给子元素且触发相应的回调函数
-  - 减少事件的绑定从而提高性能
 ### 3.1 剪贴版事件（ClipboardEvent）
 <table>
   <thead>
@@ -5981,8 +5651,8 @@ baz();
 </table>
 
 - mouseenter和mouseover的区别
- - mouseenter不能产生冒泡事件
- - mouseover有冒泡事件
+  - mouseenter不能产生冒泡事件
+  - mouseover有冒泡事件
 #### 3.4.1 鼠标事件的属性和方法(MouseEvent)
 - <span id="MouseEvent">鼠标事件</span>
 <table>
@@ -6241,6 +5911,77 @@ baz();
     向下
   }
 ```
+### 3.7 一些特殊元素标签才有的事件
+#### 3.7.1 change事件
+<table>
+  <thead>
+    <tr>
+      <th>事件名称</th>
+      <th>事件基本信息</th>
+      <th>事件触发条件</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>change</td>
+      <td>
+        Bubbles: Yes <br/>
+        Cancelable: No <br/>
+        Target: Element <br/>
+        返回的接口类型(eventType):Event </br> 
+      </td>
+      <td>当用户更改&lt;input&gt;、&lt;select&gt;和&lt;textarea&gt; 元素的值并提交这个更改时，change 事件在这些元素上触发。</td>
+    </tr>
+  </tbody>
+</table>
+
+- 基于表单元素的类型和用户对标签的操作的不同，change 事件触发的时机也不同：
+  - 当元素是 :checked改变时状态时（通过点击或者使用键盘），见于 &lt;input type="radio"&gt; 和 &lt;input type="checkbox"&gt;；
+  - 当用户显式提交改变时（例如：点击了 &lt;select&gt;中的一个选项，从 &lt;input type="date"&gt; 标签选择了一个日期，通过 &lt;input type="file"&gt; 标签上传了一个文件等）；
+  - 当标签的值被修改并且失去焦点后，但未提交时（例如：对&lt;textarea&gt; 或者 &lt;input type="text"&gt;的值进行编辑后）
+#### 3.7.2 input事件
+<table>
+  <thead>
+    <tr>
+      <th>事件名称</th>
+      <th>事件基本信息</th>
+      <th>事件触发条件</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>input</td>
+      <td>
+        Bubbles: Yes <br/>
+        Cancelable: No <br/>
+        Target: Element <br/>
+        返回的接口类型(eventType):InputEvent</br> 
+      </td>
+      <td>当&lt;input&gt;、&lt;select&gt;和&lt;textarea&gt; 的value值被修改时</td>
+    </tr>
+  </tbody>
+</table>
+
+##### 3.7.2.1 input事件的特有的属性(InputEvent)
+<table>
+  <thead>
+    <tr>
+      <th>事件属性</th>
+      <th>属性的功能</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>InputEvent.data</td>
+      <td>返回当前输入的字符串，如果是删除操作，则该值为空字符串。</td>
+    </tr>
+    <tr>
+      <td>InputEvent.isComposing</td>
+      <td>返回一个布尔值，表明该事件是在触发 compositionstart 事件之后且触发 compositionend 事件之前触发的，也就是表明当前输入的字符是输入法的中途输入</td>
+    </tr>
+  </tbody>
+</table>
+
 ### 3.7 事件的一些要学会的应用
 #### 3.7.1 冒泡事件实现子盒和父盒的颜色变化
 - 实现功能
@@ -6487,7 +6228,8 @@ baz();
 </body>
 </html>
 ```
-
+- 注意
+  - 在绑定onmousemove时，应该绑定的是整个document对象而不是本身的对象，因为若只是绑定当前的对象，由于元素的移动是之后计算得到的，会有延迟，此时鼠标已经在元素的外面了，无法触发该该事件了。
 ##### 3.7.3.2 拖拽位置位于鼠标位置刚开始点击的位置
 
 ```html
@@ -6770,8 +6512,18 @@ function drag(obj) {
 </html>
 ```
 
-### 3.8 与事件相关的兼容性问题
+### 3.8 常用的的兼容性问题
 #### 3.8.1 获取样式表中属性值的兼容性问题
+- 要和设置区分开来
+##### 3.8.1.1 window.getComputedStyle(element, pseudoElements)
+- pseudoElements 伪元素
+  - 返回了存储elementObject伪元素当前的样式的对象(默认值为null)
+- 不兼容ie
+##### 3.8.1.2 objectElement.currentStyle.样式名
+- 获取当前元素对象显示的样式而不仅仅是内联或样式
+  - 只能ie
+- 区别：ie返回的auto，则上面一个放回的是具体的数值
+- 兼容ie8
 ```javascript
   function getStyle(obj, name) {
   // 判断浏览器版本太麻烦，用什么进行判断？
@@ -6811,50 +6563,6 @@ function drag(obj) {
   }
 // callback.bind(obj)
 
-```
-#### 6.1.3.1. elementObject.clientWidth, elementObject.clientHeight
-- 返回元素对象的可见宽度和可见高度
-  - 即包括content和padding（包含滚动条）
-  - 由于是计算过来的，所以readonly，不能够修改
-- 只是返回相应的数字而不带px，可以直接用于计算
-#### 6.1.3.2. elementObject.offsetWidth, elementObject.offsetHeight
-- 返回元素对象的整个宽度和整个高度
-  - 即包括content + padding + border
-  - 由于计算来的，所以readonly
-- 只是返回相应的数字
-#### 6.1.3.3. elementObject.offsetParent
-- 获取当前元素的定位父元素对象
-  - 获取到的离当前元素最近的非static祖先元素
-- 若没有，则默认为body
-#### 6.1.3.4. elementObject.offset[Left,right], elementObject.offset[Top,buttom]
-- 当前元素相对于其定位元素(offsetParent(非static))的水平偏移量/垂直偏移量
-  - 包含父元素的padding+top/left
-#### 6.1.3.5. elementObject.scrollWidth, elementObject.scrollHeight
-- 在父元素有overflow:auto/scroll下
-  - 获取滚动区域整个宽度/高度
-#### 6.1.3.6. elementObject.scrollLeft, elementObject.scrollTop
-- 在父元素有overflow:auto/scroll下
-  - 获取滚动条滚动的距离（水平/垂直）
-#### 6.1.3.7. elementObject.scrollHeight, elementObject.scrollTop和elementObject.clientHeight的结合使用
-- 实现判断滚动条是否已经滚动到底
-```javascript 
-  // 当垂直滚动条滚动到底的时候有
-  elementObject.clientHeight == elementObject.scrollHeight - elementObject.scrollTop
-```
-
-
-
-
-
-#### 6.2.6.4. elementObject.onmousewheel
-- 鼠标在该元素对象中的滚轮触发该事件
-  - 火狐不兼容
-  - 在火狐中，需要使用DMMMouseScroll来绑定事件
-    - 必须使用addEventListener来进行绑定
-    - 可以使用bind函数来实现绑定
-```javascript
-  elementObject.onmousewheel = function() {};
-  bind(elementObject,'DOMMouseScroll', elementObject.onmousewheel);
 ```
 
 
@@ -6904,7 +6612,7 @@ function drag(obj) {
 - 代表的当前浏览器的信息，通过该对象可以用来识别不同的浏览器
 #### 6.2.2.1. Navigator的属性
 - 由于历史原因，Navigator对象中的大部分属性都已经不能帮助我们识别浏览器
-##### 7.2.2.1.1. navigator.userAgent
+##### 6.2.2.1.1. navigator.userAgent
 - 一般我们只会使用userAgent用来判断浏览器的信息
 - 返回的是一个字符串，这个字符串中包含有用来秒速浏览器信息的内容，不同浏览器会有不同的userAgent
 ```javascript
@@ -7259,6 +6967,208 @@ function drag(obj) {
 - 原理
   - ![原理](./img/ex17.jpg)
 ```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        ul, li {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        .container ul li img {
+            vertical-align: center;
+            width: 500px;
+            height: 500px;
+            z-index: 0;
+        }
+        .container {
+            margin: 0 auto;
+            width: 500px;
+            height: 500px;
+            padding: 20px;
+            background-color: #eaeaea;
+            /* 裁剪溢出的部分 */
+            overflow: hidden;
+            position: relative;
+        }
+        .container ul {
+            /* width: 2600px; */
+            position: absolute;
+            left: 0px;
+            top: 20px;
+            z-index: 2;
+        }
+        .container ul::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+        .container ul li {
+            float: left;
+            margin-left: 20px;
+            width: 500px;
+            height: 500px;
+        }
+        .container .nav {
+            position: absolute;
+            bottom: 30px;
+            /* absolute的居中 */
+            left: 50%;
+            transform: translate(-50%);
+            /* 也可以用js来计算居中 */
+            z-index: 100;
+            /* background-color: #ff0000; */
+        }
+        /* 触发了BFC，父元素不会崩塌 */
+        /* .container .nav::after {
+            content: "";
+            display: block;
+            clear: both;
+        } */
+        .container .nav a{
+            float: left;
+            margin-left: -20px;
+        }
+        .container .nav a img:hover {
+            content: url("../img/point_active.svg");
+            opacity: 0.5;
+            fill: alpha(opacity=50);
+        }
+        .container .nav a img {
+            content: url("../img/point.svg");
+            opacity: 0.5;
+            /* 兼容ie8的透明 */
+            fill: alpha(opacity=50);
+        }
+        .container .nav .active img {
+            content: url("../img/point_active.svg");
+            opacity: 0.5;
+            fill: alpha(opacity=50);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <ul>
+            <li><img src="" alt=""></li>
+            <li><img src="" alt=""></li>
+            <li><img src="" alt=""></li>
+            <li><img src="" alt=""></li>
+            <li><img src="" alt=""></li>
+            <li><img src="" alt=""></li>
+        </ul>
+        <!-- 导航按钮 -->
+        <div class="nav">
+            <!-- 要定位且位于上面，想到使用z-index -->
+            <a class="active" href="javascript:;"><img alt="" width="50px" height="50px"></a>
+            <a href="javascript:;"><img alt="" width="50px" height="50px"></a>
+            <a href="javascript:;"><img alt="" width="50px" height="50px"></a>
+            <a href="javascript:;"><img alt="" width="50px" height="50px"></a>
+            <a href="javascript:;"><img alt="" width="50px" height="50px"></a>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            const imgUrl = [
+                '../img/ex1.JPG',
+                '../img/ex2.JPG',
+                '../img/ex3.JPG',
+                '../img/ex4.JPG',
+                '../img/ex5.JPG',
+                '../img/ex1.JPG'
+            ]
+            // 插入图片
+            
+            let imgs = document.querySelectorAll('.container ul li img')
+            imgs.forEach((img, index) => img.src = imgUrl[index]);
+            
+            // 调整ul的大小，是对应的li元素能够容纳
+            const length = imgs.length;
+            let ulObject = document.querySelector('.container ul');
+            let imgWidth = imgs[0].offsetWidth;
+            ulObject.style.width = (imgWidth + 20) * length + 'px';
+
+            // 点击a实现切换图片
+            let timer; //轮播图的定时器
+            let aObjects = document.querySelectorAll('.container .nav a');      
+            // 要实现点击对应的点变色步骤
+            //      - 清空所有的点的颜色
+            //      - 使对应的点变色
+            aObjects.forEach((aObject, index) => {
+                aObject.onclick = function() {
+                    // 去除轮播图的定时器
+                    clearInterval(timer)
+                    aObjects.forEach(item => item.className = '');
+                    this.className = 'active';
+                    autoMove(ulObject, 60, -index * 520, 'left',()=>{
+                        changeIndex = index + 1;
+                        autoChange();
+                    });
+                }
+            })
+            let changeIndex = 1;
+            // 实现轮播,即将轮播过程分为多次调用move，每次调用回调函数修改对应的changeIndex即可
+            autoChange();
+            function autoChange() {
+                timer = setInterval(() => {
+                    autoMove(ulObject, 30, -changeIndex * 520, 'left',function() {
+                        aObjects.forEach(item => item.className = '');
+                        if(changeIndex >= length - 1) {
+                            changeIndex = 0;
+                            ulObject.style.left = 0;
+                        }
+                        aObjects[changeIndex].className = 'active';
+                        changeIndex = changeIndex + 1
+                    } )
+                }, 3000)
+            }
+            function getStyle(obj, cssStyle) {
+                if(window.getComputedStyle)
+                    return getComputedStyle(obj, null)[cssStyle];
+                else //IE8及以下没有getComputedStyle方法
+                    return obj.currentStyle[cssStyle];
+            }
+
+            function autoMove(obj, speed, target, attr, callback=function(){}) {
+                // 清除定时器
+                clearInterval(obj.intervalId)
+                // 定义定时器
+                obj.intervalId = setInterval(function() {
+                    let flag = 1;
+                    // console.log(parseInt(getStyle(obj, attr)) > target)
+                    if(parseInt(getStyle(obj, attr)) > target)
+                        flag = -1;
+                    let currentPosition = parseInt(getStyle(obj, attr));
+                    let nextPosition = currentPosition + flag * speed;
+                    if(flag === 1) 
+                        nextPosition = nextPosition > target ? target : nextPosition;
+                    else
+                        nextPosition = nextPosition < target ? target : nextPosition;
+                       
+                    obj.style[attr] = nextPosition + 'px';
+                    if(nextPosition === target) {
+                        clearInterval(obj.intervalId);
+                        obj.intervalId = undefined;
+                        callback();
+                    }
+                
+                }, 30)     
+            }
+
+        }
+    </script>
+    
+</body>
+</html>
 ```
 
 
@@ -7421,9 +7331,7 @@ var something = (function(){
   console.log(iterator.next().value);
   // 0 1 
 ```
-```javascript
 
-```
 ## 6 终止无限循环迭代器
 ### 6.1 无限循环迭代器
 - 当生成器函数返回的迭代器可以无数次调用next函数时，会变成无限循环
@@ -7446,6 +7354,7 @@ var something = (function(){
 ## 7 生成器函数的应用
 - 理解多个生成器如何在共享的作用域上并发运行
 ### 7.1 异步迭代生成器
+- yield表达式为异步的函数操作
 ### 7.2 生成器 + Promise
 - 实现用同步代码的写法来实现异步代码
 #### 7.2.1 run函数
@@ -7491,9 +7400,7 @@ var something = (function(){
 } 
 ```
 #### 7.2.2 例子
-```javascript
-
-```
+- 见7.3
 #### 7.2.3 async和await运用的是这种原理
 ### 7.3 生成器中的 Promise 并发
 - 以下代码中r1和r2是依次执行的，但是因为r1和r2并没有实际上的关系，所以可以使用并行
@@ -7544,7 +7451,7 @@ var something = (function(){
 ```
 ### 7.4 生成器委托(后面再进行补充)
 # 九 Promise
-## 1 Promised的基本理解
+## 1 Promise的基本理解
 ### 1.1 promise的理解
 - 通常情况下, 要实现异步调用的返回, 必须判断异步调用有没有执行结束, 然后通过callback函数来获取数据
 - 抽象表达
@@ -7618,14 +7525,14 @@ var something = (function(){
 - 语法和前后端交互的方法
 - (prototype)函数原型对象上的方法只能由实例对象进行调用
   - 因为有原型链
-#### 5.1 基本语法
+#### 1.5.1 基本语法
 ```javascript
     new Promise(function(resolve, reject) {...}/*executor*/)
 ```
 - executor是带有 resolve 和 reject 两个参数的函数 
 - Promise构造函数执行时立即调用executor 函数， resolve 和 reject 两个函数作为参数传递给executor
 - executor函数在<font color='red'>Promise构造函数返回所建promise实例对象前</font>被调用
-#### 5.2 函数对象的方法
+#### 1.5.2 函数对象的方法
 ##### 5.2.1 Promise.all(iterable))
 - 作用: 用于将多个pending状态的promise实例对象的结果统一起来
 - 返回一个Promise实例
@@ -7672,9 +7579,9 @@ Promise.all([promise1, promise2, promise3]).then((values) => {
 ```
 ##### 5.2.4 Promise.reject(reason)
 - 返回一个失败的promise的实例对象
-#### 5.3 实例对象的方法
+#### 1.5.3 实例对象的方法
 - 函数原型对象的方法只能由实例对象进行调用
-##### 5.3.1 Promise.prototype.then(onFulfilled[, onRejected])
+##### 1.5.3.1 Promise.prototype.then(onFulfilled[, onRejected])
 - 作用: 当函数处于fulfilled状态时调用的函数, 指定一个异步调用的回调函数
 - 
 - 返回一个新的promise
@@ -7688,7 +7595,7 @@ primiseObject.then(value => {
   // rejection
 });
 ```
-##### 5.3.2 Promise.prototype.catch(onRejected)
+##### 1.5.3.2 Promise.prototype.catch(onRejected)
 - 相当于then的语法糖, 相当于then(undefined, onRejected)
 - 返回一个新的promise对象
 - 参数
@@ -8180,6 +8087,10 @@ console.log('script end');
 - ![请求报文](./img/http_request.jpg)
 #### 1.2.1 请求报文的组成
 ##### 1.2.1.1 请求行
+- 以以下的格式在浏览器中显示
+```
+  method URL 协议版本
+```
 ###### 1.1.1.1.1 method(请求方法)
 - 控制服务器端的增删改查
   - GET: 请求指定的页面信息，并返回实体主题 --服务端数据查询
@@ -8191,39 +8102,55 @@ console.log('script end');
   - TRACE: 回显服务器收到的请求，主要用于测试或诊断
   - CONNECT：HTTP/1.1协议中预留给能够将连接改为管道方式的代理服务器。
 ###### 1.1.1.1.2 URL
+- 不包含host和query字段
 ###### 1.1.1.1.3 协议版本
 - http的版本类型
-##### 1.2.1.2 请求头
+##### 1.2.1.2 请求头(headers)
 - 请求头部由关键字/值对组成，每行一对，关键字和值用英文冒号":"分隔
-###### 1.2.1.2.1 User-Agent
-- 产生浏览器类型
-###### 1.2.1.2.2 Accipt
-- 客户端可识别的相应内容类型列表
+###### 1.2.1.2.1 Accept
+- 客户端可接受的响应数据类型
+- text/plain: 可以为一个或多个MIME类型的值
+###### 1.2.1.2.2 Referer
+- 请求的URL来源
+  - 假如你通过google搜索出一个商家的广告页面，你对这个广告页面感兴趣，鼠标一点发送一个请求报文到商家的网站，这个请求报文的Referer报文头属性值就是http://www.google.com。
 ###### 1.2.1.2.3 Accept-Language
-- 客户端可接收的语言类型
-###### 1.2.1.2.4 Accept-Encoding
-- 客户端可接受的编码压缩格式
-###### 1.2.1.2.5 Accept-Charset
-- 客户端可接受的应答的字符集
+- 客户端可接收的响应数据语言类型
+###### 1.2.1.2.4 User-Agent
+- 客户端浏览器的版本号
+###### 1.2.1.2.5 Content-Type
+- 请求包体中数据的格式
 ###### 1.2.1.2.6 Host
-- 请求主机名，允许多个域名同处一个IP，即虚拟主机
-###### 1.2.1.2.7 connection
+- 目标主机和端口号
+###### 1.2.1.2.7 Content-Length
+- 请求包体中数据的长度
+###### 1.2.1.2.8 Accept-Encoding
+- 客户端可接受的编码压缩格式
+  - 例如：Accept-Encoding:gzip, deflate
+###### 1.2.1.2.10 Accept-Charset
+- 客户端可接受的应答的字符集
+###### 1.2.1.2.11 Connection
+- 服务器端和客户端的连接关系
 - 连接方式
   - close
   - keepalive
-###### 1.2.1.2.8 Cookie
-- 存储于客户端扩展字段，向同一域名的服务端发送属于该域的cookie
+###### 1.2.1.2.12 Cache-Control
+- 对缓存的控制
+  - 如一个请求希望响应返回的内容在客户端要被缓存一年，或不希望被缓存就可以通过这个报文头达到目的。
+###### 1.2.1.2.13 Cookie
+- 用于识别用户
+###### 1.2.1.2.14 Date
+- 客户端请求服务器端的时间
+
+
 ##### 1.2.1.3 空行
 - 最后一个请求头之后是一个空行，发送回车符和换行符，通知服务器以下不再有请求头
 ##### 1.2.1.4 请求包体
 - 存不存在与方法的选择有关
 - get方法中
   - 不存在请求包体
-- 其他方法包含以下属性
-  - Content-Type
-  - Content-Length
+
 #### 1.2.2 请求方法与请求包体Content-type以及axios的config的关系
-<tabel>
+<table>
   <thead>
     <tr>
       <th>请求方法</th>
@@ -8264,6 +8191,10 @@ console.log('script end');
 #### 1.3.1 响应报文的组成
 ##### 1.3.1.1 状态行
 - 状态行由 HTTP 协议版本字段、状态码和状态码的描述文本 3 个部分组成，他们之间使用空格隔开;
+- 以以下格式在浏览器中显示
+```
+  http协议字段 状态码 状态描述文本
+```
 ###### 1.3.1.1.1 http协议字段
 ###### 1.3.1.1.2 状态码
 <table>
@@ -8337,26 +8268,49 @@ console.log('script end');
   </tbody>
 </table>
 
-##### 1.3.1.2 响应头部
+##### 1.3.1.2 响应头部(headers)
 ###### 1.3.1.2.1 Location
 - 用于重定向接受者到一个新的位置。
   - 例如：客户端所请求的页面已不存在原先的位置，为了让客户端重定向到这个页面新的位置，服务器端可以发回Location响应报头后使用重定向语句，让客户端去访问新的域名所对应的服务器上的资源;
-###### 1.3.1.2.2 Server
-- Server 响应报头域包含了服务器用来处理请求的软件信息及其版本。
-  - 它和 User-Agent 请求报头域是相对应的，前者发送服务器端软件的信息，后者发送客户端软件(浏览器)和操作系统的信息。
+###### 1.3.1.2.1 Server
+- 服务端的web服务器的信息
 ###### 1.3.1.2.3 Vary
 - 指示不可缓存的请求头列表
-###### 1.3.1.2.4 Vary
-- 指示不可缓存的请求头列表
-###### 1.3.1.2.5 Connection
+###### 1.3.1.2.4 Connection
 - 连接方式
  - close
  - keepalive
+###### 1.3.1.2.5 Content-Type
+- 响应包体的格式
+###### 1.3.1.2.6 Content-Lenght
+- 响应包体的长度
+###### 1.3.1.2.5 Content-Encoding
+- 响应包体的压缩格式
+###### 1.3.1.2.6 Content-Language
+- 响应包体的语言类型
+###### 1.3.1.2.6 Content-Disopsition
+- 服务器要求客户端以某种形式打开响应包体
+  - attachment: 以下载文件的方式
+###### 1.3.1.2.6 Last-Modified
+- 服务器对资源最后的修改时间
+###### 1.3.1.2.4 Transfer-Encoding
+- 以什么形式传输响应包体
+  - chunked
+    - 以分块的形式
+###### 1.3.1.2.4 Expires
+- 服务器是否允许客户端缓存页面
+  - -1：不允许
+###### 1.3.1.2.4 Connection
+- 服务器和客户端的连接关系
+###### 1.3.1.3.5 Date
+- 服务器响应客户端的时间
+###### 1.3.1.2.4 Cache-Control
+###### 1.3.1.2.4 Pragma
+###### 1.3.1.2.4 Refresh
+###### 1.3.1.2.4 Set-Cookies
 ##### 1.3.1.3 空行
+- 用于确定相应头已经结束
 ##### 1.3.1.4 响应包体
-
-
-
 
 ### 1.4 基础知识补充
 #### 1.4.1 Connection在不同报文中的作用
@@ -8389,7 +8343,7 @@ console.log('script end');
       - posts: 发布文章
       - comments: 评论文章
       - profile: 我的信息
-## 4 AJAX编程的基础--XHR
+## 4 AJAX编程的基础--xmlhttprequest
 ### 4.1. XHR的基本定义
 - XMLHttpRequest（XHR）对象用于与服务器交互。通过 XMLHttpRequest 可以在不刷新页面的情况下请求特定 URL，获取数据
 - XMLHttpRequest 在 AJAX 编程中被大量使用。
@@ -8401,12 +8355,12 @@ console.log('script end');
 ```javascript
   const request = new XmlHttpRequest()
 ```
-#### 4.2.3 XHR实例对象从建立到接收到数据状态以及变化
+#### 4.2.2 XHR实例对象从建立到接收到数据状态以及变化
 - ![状态](./img/axios_ex4.jpg)
 - ![状态关系](./img/axios_ex8.jpg)
 - 分界的操作
   - open, send
-#### 4.2.2 XHR实例对象接收数据时事件
+#### 4.2.3 XHR实例对象接收数据时事件
 - 事件的基本模型
 - ![模型](./img/axios_ex3.jpg)
 <table>
@@ -8613,7 +8567,42 @@ xhr.send("foo=bar&lorem=ipsum");
 
 
 
+### 4.3 XHR的跨域问题
+- XMLHttpRequestAPI遵循同源策略
+  - 意味着使用这些API的Web应用程序只能从加载应用程序的同一个域请求HTTP资源
+    - 有可能是浏览器限制了发起跨站请求，也可能是跨站请求可以正常发起，但是返回结果被浏览器拦截了
+### 4.4 CORS实现XHR的跨域HTTP请求
+- CORS机制允许 Web 应用服务器进行跨域访问控制，从而使跨域数据传输得以安全进行
+#### 4.4.1 CORS通过给http的请求报文的
 
+#### 4.4.2 CORS通过服务器端增加http的响应头属性来实现跨域
+<table>
+  <thead>
+    <tr>
+      <th>响应头名称</th>
+      <th>作用</th>
+    </tr>
+  </thead> 
+  <tbody>
+    <tr>
+      <td>Access-Control-Allow-Origin:[orign, *]</td>
+      <td>指定了该响应的资源是否被允许与给定的origin共享。(orign指定一个可以访问资源的URI)</td>
+    </tr>
+    <tr>
+      <td>Access-Control-Allow-Credentials: true</td>
+      <td>表示是否可以将对请求的响应暴露给页面。返回true则可以，其他值均不可以。</td>
+    </tr>
+    <tr>
+      <td>Access-Control-Allow-Methods: &lt;method&gt;, &lt;method&gt;, ... </td>
+      <td>应答中明确了客户端所要访问的资源允许使用的方法或方法列表。</td>
+    </tr>
+  </tbody>
+</table>
+
+#### 4.4.1 实现方式
+- 新增了一组 HTTP 首部字段
+  - 允许服务器声明哪些源站通过浏览器有权限访问哪些资源
+- 对那些可能对服务器数据产生副作用的 HTTP 请求方法（特别是 GET 以外的 HTTP 请求，或者搭配某些 MIME 类型的 POST 请求），浏览器必须首先使用 OPTIONS 方法发起一个预检请求（preflight request），从而获知服务端是否允许该跨域请求。服务器确认允许之后，才发起实际的 HTTP 请求。在预检请求的返回中，服务器端也可以通知客户端，是否需要携带身份凭证（包括 Cookies 和 HTTP 认证相关数据）。
 ## 5 利用XHR简单实现axios
 ```javascript
 /**
@@ -8702,7 +8691,13 @@ function axios({
 - 支持取消请求
 - 自动转换 JSON 数据
 - 客户端支持防御 XSRF
-
+#### 6.2.1 自动转换 JSON 数据的性质
+- 在config中，get/put的查询的参数params是以对象的查询传入，而axios会自动将其进行转化
+```javascript
+  {key1: value1, key2: value2...} ==> ?key1=value&key2=value2...
+```
+- 在config中,post等的函数体是以参数data以对象的形式传入的，而axios会自动将其转化
+  - 会自动转化为Content-type指定的类型
 ### 6.3 axios的基本使用
 #### 6.3.0 ajax请求和普通的http请求的区别
 - 对于服务端，ajax请求和普通的http请求没有区别，区别在于浏览器
@@ -8713,8 +8708,182 @@ function axios({
   - 一般请求：浏览器一般会直接显示响应体的数据，也就是我们所说的刷新/跳转页面
   - ajax请求：浏览器不会对界面进行更新操作，只是调用监视的回调函数并传入响应的相关数据
 #### 6.3.1 axios的config对应的参数和含义
+```javascript
+{
+  // `method` is the request method to be used when making the request
+  method: 'get', // default
+  // `baseURL` will be prepended to `url` unless `url` is absolute.
+  // It can be convenient to set `baseURL` for an instance of axios to pass relative URLs
+  // to methods of that instance.
+  baseURL: 'https://some-domain.com/api/',
+
+  // `url` is the server URL that will be used for the request
+  url: '/user',
+
+  // `params` are the URL parameters to be sent with the request
+  // Must be a plain object or a URLSearchParams object
+  params: {
+    ID: 12345
+  },
+
+  // `headers` are custom headers to be sent
+  // headers: {Content-Type: ...}
+  headers: {'X-Requested-With': 'XMLHttpRequest'},
+  // `data` is the data to be sent as the request body
+  // Only applicable for request methods 'PUT', 'POST', 'DELETE , and 'PATCH'
+  // When no `transformRequest` is set, must be of one of the following types:
+  // - string, plain object, ArrayBuffer, ArrayBufferView, URLSearchParams
+  // - Browser only: FormData, File, Blob
+  // - Node only: Stream, Buffer
+  data: {
+    firstName: 'Fred' //若在调用的时候就加入data，则不需要再传入
+  },
+
+  // `cancelToken` specifies a cancel token that can be used to cancel the request
+  // (see Cancellation section below for details)
+  cancelToken: new CancelToken(function (cancel) {
+  }), 
+  // `transformRequest` allows changes to the request data before it is sent to the server
+  // This is only applicable for request methods 'PUT', 'POST', 'PATCH' and 'DELETE'
+  // The last function in the array must return a string or an instance of Buffer, ArrayBuffer,
+  // FormData or Stream
+  // You may modify the headers object.
+  transformRequest: [function (data, headers) {
+    // Do whatever you want to transform the data
+
+    return data;
+  }],
+
+  // `transformResponse` allows changes to the response data to be made before
+  // it is passed to then/catch
+  transformResponse: [function (data) {
+    // Do whatever you want to transform the data
+
+    return data;
+  }],
+
+  // `paramsSerializer` is an optional function in charge of serializing `params`
+  // (e.g. https://www.npmjs.com/package/qs, http://api.jquery.com/jquery.param/)
+  paramsSerializer: function (params) {
+    return Qs.stringify(params, {arrayFormat: 'brackets'})
+  },
+
+  // syntax alternative to send data into the body
+  // method post
+  // only the value is sent, not the key
+  data: 'Country=Brasil&City=Belo Horizonte',
+
+  // `timeout` specifies the number of milliseconds before the request times out.
+  // If the request takes longer than `timeout`, the request will be aborted.
+  timeout: 1000, // default is `0` (no timeout)
+
+  // `withCredentials` indicates whether or not cross-site Access-Control requests
+  // should be made using credentials
+  withCredentials: false, // default
+
+  // `adapter` allows custom handling of requests which makes testing easier.
+  // Return a promise and supply a valid response (see lib/adapters/README.md).
+  adapter: function (config) {
+    /* ... */
+  },
+
+  // `auth` indicates that HTTP Basic auth should be used, and supplies credentials.
+  // This will set an `Authorization` header, overwriting any existing
+  // `Authorization` custom headers you have set using `headers`.
+  // Please note that only HTTP Basic auth is configurable through this parameter.
+  // For Bearer tokens and such, use `Authorization` custom headers instead.
+  auth: {
+    username: 'janedoe',
+    password: 's00pers3cret'
+  },
+
+  // `responseType` indicates the type of data that the server will respond with
+  // options are: 'arraybuffer', 'document', 'json', 'text', 'stream'
+  //   browser only: 'blob'
+  responseType: 'json', // default
+
+  // `responseEncoding` indicates encoding to use for decoding responses (Node.js only)
+  // Note: Ignored for `responseType` of 'stream' or client-side requests
+  responseEncoding: 'utf8', // default
+
+  // `xsrfCookieName` is the name of the cookie to use as a value for xsrf token
+  xsrfCookieName: 'XSRF-TOKEN', // default
+
+  // `xsrfHeaderName` is the name of the http header that carries the xsrf token value
+  xsrfHeaderName: 'X-XSRF-TOKEN', // default
+
+  // `onUploadProgress` allows handling of progress events for uploads
+  // browser only
+  onUploadProgress: function (progressEvent) {
+    // Do whatever you want with the native progress event
+  },
+
+  // `onDownloadProgress` allows handling of progress events for downloads
+  // browser only
+  onDownloadProgress: function (progressEvent) {
+    // Do whatever you want with the native progress event
+  },
+
+  // `maxContentLength` defines the max size of the http response content in bytes allowed in node.js
+  maxContentLength: 2000,
+
+  // `maxBodyLength` (Node only option) defines the max size of the http request content in bytes allowed
+  maxBodyLength: 2000,
+
+  // `validateStatus` defines whether to resolve or reject the promise for a given
+  // HTTP response status code. If `validateStatus` returns `true` (or is set to `null`
+  // or `undefined`), the promise will be resolved; otherwise, the promise will be
+  // rejected.
+  validateStatus: function (status) {
+    return status >= 200 && status < 300; // default
+  },
+
+  // `maxRedirects` defines the maximum number of redirects to follow in node.js.
+  // If set to 0, no redirects will be followed.
+  maxRedirects: 5, // default
+
+  // `socketPath` defines a UNIX Socket to be used in node.js.
+  // e.g. '/var/run/docker.sock' to send requests to the docker daemon.
+  // Only either `socketPath` or `proxy` can be specified.
+  // If both are specified, `socketPath` is used.
+  socketPath: null, // default
+
+  // `httpAgent` and `httpsAgent` define a custom agent to be used when performing http
+  // and https requests, respectively, in node.js. This allows options to be added like
+  // `keepAlive` that are not enabled by default.
+  httpAgent: new http.Agent({ keepAlive: true }),
+  httpsAgent: new https.Agent({ keepAlive: true }),
+
+  // `proxy` defines the hostname and port of the proxy server.
+  // You can also define your proxy using the conventional `http_proxy` and
+  // `https_proxy` environment variables. If you are using environment variables
+  // for your proxy configuration, you can also define a `no_proxy` environment
+  // variable as a comma-separated list of domains that should not be proxied.
+  // Use `false` to disable proxies, ignoring environment variables.
+  // `auth` indicates that HTTP Basic auth should be used to connect to the proxy, and
+  // supplies credentials.
+  // This will set an `Proxy-Authorization` header, overwriting any existing
+  // `Proxy-Authorization` custom headers you have set using `headers`.
+  proxy: {
+    host: '127.0.0.1',
+    port: 9000,
+    auth: {
+      username: 'mikeymike',
+      password: 'rapunz3l'
+    }
+  },
+
+  // `decompress` indicates whether or not the response body should be decompressed 
+  // automatically. If set to `true` will also remove the 'content-encoding' header 
+  // from the responses objects of all decompressed responses
+  // - Node only (XHR cannot turn off decompression)
+  decompress: true // default
+
+}
+```
 #### 6.3.2 axios发送请求的三种不同方式
 ##### 6.3.2.1 将axios视为一个对象去向服务器端发送请求
+- 缺点：只能设置一个baseURL或者其他默认配置
 ```javascript
     //发送get请求
   axios.get(url[, config])
@@ -8788,7 +8957,7 @@ axios.get('/user', {
   });
 ```
 ##### 6.3.2.2 将axios视为一个函数去向服务器端发送请求
-- 缺点：只能有一个异步的ajax请求
+- 缺点：只能设置一个baseURL或者其他默认配置
 ###### 6.3.3.1 axios(config)
 - 返回一个promise对象
 ```javascript
@@ -8799,6 +8968,7 @@ axios.get('/user', {
   })
 ```
 ##### 6.3.2.3 将axios视为一个构造函数去向服务器端发送请求
+- 当作为构造函数时，可以给不同的axios实例对象指定不同的BaseURL。
 ###### 6.3.2.3.1 axios.create(config)
 - 返回一个axios的实例
 ```javascript
@@ -8845,7 +9015,7 @@ axios.get('/user', {
   });
 ```
 - 为什么需要返回config
-  - 在axios中，拦截器和request请求是以链的形式串联起来的，若不返回config，则返回undefine，相当于向下一个函数传递了config为undefined，所以会报错
+  - 在axios中，拦截器和request请求是以promise链的形式串联起来的，即拦截器的回调函数的返回值为一个promise类型，而return config相当于给该promise的value赋值，从而实现将config往后面传递。若不返回，请求函数接收的config是一个undefined类型
 
 ##### 6.3.4.2 axios.interceptors.response.use(func(response) {}, function(error) {})
 - 在axios获得response对response进行一些处理
@@ -8862,7 +9032,7 @@ axios.interceptors.response.use(function (response) {
   });
 ```
 - 为什么需要返回response
-  - 在axios中，拦截器和request请求是以链的形式串联起来的，若不返回response，则返回undefine，相当于向下一个函数传递了response为undefined，所以会报错
+  - 在axios中，拦截器和request请求是以promise链的形式串联起来的，即拦截器的回调函数的返回值为一个promise类型，而return response相当于给该promise的value赋值，从而实现将response往后面传递。若不返回，then收到的response为undefined类型
 
 ##### 6.3.4.3 拦截器的运行流程
 ```javascript
@@ -9418,6 +9588,7 @@ module.exports = function xhrAdapter(config) {
   request.send(requestData);
 ```
 ### 7.4 axios如何把interceptor和request串联起来
+- 可以观察到请求拦截器后添加的在前面执行，而响应拦截器后添加的后在后面执行
 - ![串连图](./img/axios_ex7.jpg)
 ```javascript
 Axios.prototype.request = function request(config) {
@@ -9551,7 +9722,6 @@ CancelToken.source = function source() {
   - 创建一个用于将来中断请求的cancelPromise
   - 并定义了一个用于取消请求的cancel函数
   - 将cance函数传递出来
-- 调用cancel()取消请求
 - 调用cancel()取消请求
   - 执行cancel函数，传入错误信息message
   - 内部会让cancelPromise变为成功，且成功的值为一个cancelPromise
@@ -9713,7 +9883,7 @@ CancelToken.source = function source() {
 ```
     npm init
     npm install -g browserify
-    npm install --sava-dev browserify
+    npm install --save-dev browserify
 ```
 - 第二步：定义modules模块，并暴露想要用的函数或者对象
 - 第三步: 组织文件app.js中引入定义的模块
@@ -9738,7 +9908,17 @@ CancelToken.source = function source() {
     |- index
     |- package.json
 ```
-
+### 3.2 commonJS标准的模块的加载过程
+- 优先从缓存中加载
+  - node对引入过的模块都会进行缓存，缓存的是编译和执行之后的对象
+- 加载核心模块
+  - 第一步：先寻找当前文件目录下的node_modules目录
+  - 第二步：在寻找父目录下的node_modules目录
+  - 若没找到，则循环执行第二步直至找到为止
+- 加载自定义模块
+  - 由路径找到相应的自定义模块
+- 注意，若是文件没有声明文件类型，则nodejs会按照
+  - .js、.json、.node文件名进行扩充
 ### 3.2 AMD模块化的规范
 - <font color="red">专门用于浏览器端, 模块加载是异步的</font>
   - 模块的加载不影响它后面语句的执行，所有依赖这个模块的运行，都定义在一个回调函数中，只有模块加载完成后才会进行调用
@@ -10200,7 +10380,7 @@ CancelToken.source = function source() {
 - 方便从数组，对象中提取值
 - <font color="red">特征</font>
   - 数组或对象的字面量写在赋值函数的前面（左边）
-  - 数组或��象的字面量作为形参
+  - 数组或对象的字面量作为形参
 ### 5.1 数组解构
 - 变量的位置和数组值的位置一一对应
 ```javascript
@@ -10645,7 +10825,7 @@ CancelToken.source = function source() {
   - 只有增改查和大小的操作，不能机型删除，暴露key，value等操作
 - 优势
 ## 14 Set数据结构
-- Set的唯一性使得内部元素不能进行类型转化来判断是否相等。
+- Set的唯一性使得内部元素不能进行类型转化来判断是否相等。（即===）
 ### 14.1. Set的构造
 ```javascript
   var set = new Set(obj)
@@ -10657,8 +10837,8 @@ CancelToken.source = function source() {
   - 可以是一个set对象实例
 ### 14.2. Set的方法
 #### 14.2.1 增删改查
-##### 14.2.1.1 Set#add(key, value)
-  - 给Map对象添加/修改相应的键值
+##### 14.2.1.1 Set#add(value)
+  - 给Set对象添加相应的值
 ##### 14.2.1.2 Set#delete(key)
   - 删除Map对象中对应的键
 ##### 14.2.1.3 Set#clear(key)
@@ -10808,7 +10988,7 @@ CancelToken.source = function source() {
 - 判断val是否是整数
 ```javascript
   function isFloat(x) {
-    return Number.inFinite(x) && !Number.isInteger(x)
+    return Number.isFinite(x) && !Number.isInteger(x)
   }
 ```
 ### 17.7 Number.isSafeInteger(val)
@@ -10826,7 +11006,7 @@ CancelToken.source = function source() {
   console.log("foo".repeat(3));
   // foofoofoo
 ```
-### 18.4 新的索引方法
+### 18.4 新的String判断内部字符的方法
 ##### 18.4.1 String#startsWith(str[, index])
 - 查看第index位是否是以str为开始，index默认值为0
 ##### 18.4.2 String#endsWith(str[, index])
@@ -10845,213 +11025,570 @@ CancelToken.source = function source() {
   palindrome.includes( "on", 6 ); // false
 ```
 
-
-
+# 十三 JS常用的涉及模式
+## 1 工厂设计模式
+### 1.1 设计的目的
+- 简化具有相同接口的类的构造
+### 1.2 设计的方法
+- 组成
+  - 接口协议
+   - 生产说明书
+  - 实现类
+    - 针对同一个写协议的不同实现
+  - 工厂函数
+    - 直接提供开始者调用的方法，用来进行对象实例的组装和创建
+- 将对象的组装过程封装在工厂内部，对外使用统一的接口
+  - 即只向用户暴露的工厂函数和接口对象
+### 1.3 设计的实例
 ```javascript
-{
-  
-  method: 'get', // default
-
-
-  // `transformRequest` allows changes to the request data before it is sent to the server
-  // This is only applicable for request methods 'PUT', 'POST', 'PATCH' and 'DELETE'
-  // The last function in the array must return a string or an instance of Buffer, ArrayBuffer,
-  // FormData or Stream
-  // You may modify the headers object.
-  transformRequest: [function (data, headers) {
-    // Do whatever you want to transform the data
-
-    return data;
-  }],
-
-  // `transformResponse` allows changes to the response data to be made before
-  // it is passed to then/catch
-  transformResponse: [function (data) {
-    // Do whatever you want to transform the data
-
-    return data;
-  }],
-
-  // `headers` are custom headers to be sent
-  headers: {'X-Requested-With': 'XMLHttpRequest'},
-
-  // `params` are the URL parameters to be sent with the request
-  // Must be a plain object or a URLSearchParams object
-  params: {
-    ID: 12345
-  },
-
-  // `paramsSerializer` is an optional function in charge of serializing `params`
-  // (e.g. https://www.npmjs.com/package/qs, http://api.jquery.com/jquery.param/)
-  paramsSerializer: function (params) {
-    return Qs.stringify(params, {arrayFormat: 'brackets'})
-  },
-
-  // `data` is the data to be sent as the request body
-  // Only applicable for request methods 'PUT', 'POST', 'DELETE , and 'PATCH'
-  // When no `transformRequest` is set, must be of one of the following types:
-  // - string, plain object, ArrayBuffer, ArrayBufferView, URLSearchParams
-  // - Browser only: FormData, File, Blob
-  // - Node only: Stream, Buffer
-  data: {
-    firstName: 'Fred'
-  },
-  
-  // syntax alternative to send data into the body
-  // method post
-  // only the value is sent, not the key
-  data: 'Country=Brasil&City=Belo Horizonte',
-
-  // `timeout` specifies the number of milliseconds before the request times out.
-  // If the request takes longer than `timeout`, the request will be aborted.
-  timeout: 1000, // default is `0` (no timeout)
-
-  // `withCredentials` indicates whether or not cross-site Access-Control requests
-  // should be made using credentials
-  withCredentials: false, // default
-
-  // `adapter` allows custom handling of requests which makes testing easier.
-  // Return a promise and supply a valid response (see lib/adapters/README.md).
-  adapter: function (config) {
-    /* ... */
-  },
-
-  // `auth` indicates that HTTP Basic auth should be used, and supplies credentials.
-  // This will set an `Authorization` header, overwriting any existing
-  // `Authorization` custom headers you have set using `headers`.
-  // Please note that only HTTP Basic auth is configurable through this parameter.
-  // For Bearer tokens and such, use `Authorization` custom headers instead.
-  auth: {
-    username: 'janedoe',
-    password: 's00pers3cret'
-  },
-
-  // `responseType` indicates the type of data that the server will respond with
-  // options are: 'arraybuffer', 'document', 'json', 'text', 'stream'
-  //   browser only: 'blob'
-  responseType: 'json', // default
-
-  // `responseEncoding` indicates encoding to use for decoding responses (Node.js only)
-  // Note: Ignored for `responseType` of 'stream' or client-side requests
-  responseEncoding: 'utf8', // default
-
-  // `xsrfCookieName` is the name of the cookie to use as a value for xsrf token
-  xsrfCookieName: 'XSRF-TOKEN', // default
-
-  // `xsrfHeaderName` is the name of the http header that carries the xsrf token value
-  xsrfHeaderName: 'X-XSRF-TOKEN', // default
-
-  // `onUploadProgress` allows handling of progress events for uploads
-  // browser only
-  onUploadProgress: function (progressEvent) {
-    // Do whatever you want with the native progress event
-  },
-
-  // `onDownloadProgress` allows handling of progress events for downloads
-  // browser only
-  onDownloadProgress: function (progressEvent) {
-    // Do whatever you want with the native progress event
-  },
-
-  // `maxContentLength` defines the max size of the http response content in bytes allowed in node.js
-  maxContentLength: 2000,
-
-  // `maxBodyLength` (Node only option) defines the max size of the http request content in bytes allowed
-  maxBodyLength: 2000,
-
-  // `validateStatus` defines whether to resolve or reject the promise for a given
-  // HTTP response status code. If `validateStatus` returns `true` (or is set to `null`
-  // or `undefined`), the promise will be resolved; otherwise, the promise will be
-  // rejected.
-  validateStatus: function (status) {
-    return status >= 200 && status < 300; // default
-  },
-
-  // `maxRedirects` defines the maximum number of redirects to follow in node.js.
-  // If set to 0, no redirects will be followed.
-  maxRedirects: 5, // default
-
-  // `socketPath` defines a UNIX Socket to be used in node.js.
-  // e.g. '/var/run/docker.sock' to send requests to the docker daemon.
-  // Only either `socketPath` or `proxy` can be specified.
-  // If both are specified, `socketPath` is used.
-  socketPath: null, // default
-
-  // `httpAgent` and `httpsAgent` define a custom agent to be used when performing http
-  // and https requests, respectively, in node.js. This allows options to be added like
-  // `keepAlive` that are not enabled by default.
-  httpAgent: new http.Agent({ keepAlive: true }),
-  httpsAgent: new https.Agent({ keepAlive: true }),
-
-  // `proxy` defines the hostname and port of the proxy server.
-  // You can also define your proxy using the conventional `http_proxy` and
-  // `https_proxy` environment variables. If you are using environment variables
-  // for your proxy configuration, you can also define a `no_proxy` environment
-  // variable as a comma-separated list of domains that should not be proxied.
-  // Use `false` to disable proxies, ignoring environment variables.
-  // `auth` indicates that HTTP Basic auth should be used to connect to the proxy, and
-  // supplies credentials.
-  // This will set an `Proxy-Authorization` header, overwriting any existing
-  // `Proxy-Authorization` custom headers you have set using `headers`.
-  proxy: {
-    host: '127.0.0.1',
-    port: 9000,
-    auth: {
-      username: 'mikeymike',
-      password: 'rapunz3l'
+  // 统一的接口协议
+  var shapeInterface = {
+    draw() {
+      throw "must be implementation"
     }
-  },
+  }
+  // 根据不同的型号实现类（实现不同的接口函数）
+  function Circle() {
+    this.draw = function() {
+      console.log("Circle");
+    }
+  }
+  Circle.prototype = shapeInterface;
+  
+  function Rect() {
+    this.draw = function() {
+      console.log("Rect");
+    }
+  }
+  Rect.prototype = shapeInterface;
+  // 实现工厂函数根据不同的类型返回不同的类的实例
+  function Shape(type) {
+    if(type === "Circle")
+      return new Circle();
+    else if(type === "Rect")
+      return new Rect();
+  }
 
-  // `cancelToken` specifies a cancel token that can be used to cancel the request
-  // (see Cancellation section below for details)
-  cancelToken: new CancelToken(function (cancel) {
-  }),
+  var shape = Shape("Circle");
+  var shape2 = Shape("Rect");
 
-  // `decompress` indicates whether or not the response body should be decompressed 
-  // automatically. If set to `true` will also remove the 'content-encoding' header 
-  // from the responses objects of all decompressed responses
-  // - Node only (XHR cannot turn off decompression)
-  decompress: true // default
-
-}
+  shape.draw();     // Circle
+  shape2.draw();    // Rect
 ```
-config
-<table>
-  <thead>
-    <tr>
-      <th>设置的名称</th>
-      <th>设置的作用</th>
-      <th>设置的取值</th>
-      <th>设置的要求</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>baseURL</td>
-      <td>基础Url</td>
-      <td>string: 基础网址</td>
-      <td>无</td>
-    </tr>
-    <tr>
-      <td>url</td>
-      <td>网址</td>
-      <td>string: 网址</td>
-      <td>无</td>
-    </tr>
-    <tr>
-      <td>method</td>
-      <td>请求方法</td>
-      <td>string: 网址</td>
-      <td>
-      get<br/>
-      post<br/>
-      delete<br/>
-      </td>
-    </tr>
-  </tbody>
-</table>
+## 2 单例设计模式
+### 2.1 设计的目的
+- 有登录功能的软件，用户信息的管理类， 文件和操作的管理类
+- 
+### 2.2 设计的方法
+- 单例只能有一个实例
+  - 定义一个全局对象，作为可以全局访问的单例的接口
+- 单例必须为其他所有调用方提供这一实例
+  - 定义一个单例方法，用来获取单例实例
+- 单例一旦创建，就不会轻易销毁
+  - 在使用单例时，若单例实例不存在，则进行创建；若存在，则直接返回
+### 2.3 设计的实例
+```javascript
+// 1. 定义一个全局对象，作为可以全局访问的单例的接口
+  var Singleton = {
+    // 2. 定义一个单例方法，用来获取单例实例
+    // 3. 在使用单例时，若单例实例不存在，则进行创建；若存在，则直接返回
+    instance() {
+      if(Singleton.__instance === undefined) {
+        Singleton._instance.__instance = {
+          name: "bulumrcai",
+          weapon: "gun"
+        }
+        return Singleton.__instance;
+      }
+    }
+  }
 
-# JQuery
+  var user = Singletion.instance();
+
+```
+
+## 3 建造者设计模式
+### 3.1 设计的目的
+- 优点
+  - 建造者只是独立完成拼装过程，易维护，易扩展
+  - 将复杂对象进行拆分，隐藏对象构建的内部细节，符合单一功能原则
+### 3.2 设计的方法
+- 使用多个简单的对象构建一个复杂的对象
+- 多个生产者
+  - 分别实现类的构建
+- 建造者
+  - 建造这将复杂对象的创建过程拆分成一个个简单对象并交给相应的生产者完成创建
+  - 再将生产者创建出的简单对象进行组合，以提供复杂对象使用者使用
+- 步骤
+  - 指定协议
+  - 拆分生产者
+  - 建造者进行组合
+```javascript
+// 构建统一的接口 
+  var mealInterface = {
+    getName() {
+      throw "必须有套餐名";
+    },
+    getStaple() {
+      throw "必须有主食";
+    },
+    getDrink() {
+      throw "必须有饮料";
+    }
+  }
+// 生产者用来确定具体的对象
+  function Drink(type) {
+    switch(type) {
+      case 1: {return "可口可乐"} 
+      case 2: {return "热牛奶"}
+    }
+  }
+
+  function Staple(type) {
+    switch(type){
+      case 1: {return "汉堡包"}
+      case 2: {return "鸡肉卷"}
+    }
+  }
+
+  // 以餐厅作为建造者进行套餐的组合
+  function restaurant(type) {
+    switch(type) {
+      case 1: {
+        var food = Object.create(mealInterface);
+        food.getName = function() {
+          return "可乐汉堡套餐";
+        }
+        food.getDrink = function() {
+          return Drink(1);
+        }
+        food.getStaple = function() {
+          return Staple(1);
+        }
+        return food;
+      }
+      case 2: {
+        var food = Object.create(mealInterface);
+        food.getName = function() {
+          return "鸡肉牛奶套餐";
+        }
+        food.getDrink = function() {
+          return Drink(2);
+        }
+        food.getStaple = function() {
+          return Staple(2);
+        }
+        return food;
+      }  
+    }
+  }
+
+  var f = restaurant(2);
+  console.log(f.getName(), f.getStaple(), f.getDrink());
+  // 鸡肉牛奶套餐 鸡肉卷 热牛奶
+```
+### 3.3 设计的实例
+## 4 设配器设计模式
+### 4.1 设计的目的
+- 为两个互不兼容的系统提供可以调用的接口
+### 4.2 设计的方法
+- 某个对象的适配器
+  - 属性和方法和原来的对象基本保持一致，只是适应了不同的使用方法
+### 4.3 设计的实例
+```javascript
+  var sort = {
+    type: "DESC",
+    data: [],
+    run() {
+      if(this.type === "DESC") {
+        return this.data.sort((a, b) => b - a);
+      }
+      else if(this.type === "ASC") {
+        return this.data.sort((a, b) => a - b);
+      }
+    }
+  }
+
+  sort.type = "ASC";
+  sort.data = [2, 3, 1, 5, 3, 2, 6];
+  console.log(sort.run());
+
+  // 加入有一个用户输入系统，只能接受如下格式的排序命令
+  // "D 2, 3, 1, 5, 3, 2, 6"
+  // 利用适配器对格式进行转化
+  var d1 = "D 2,3,1,5,3,2,6";
+  var sortAdapt = {
+    data: "",
+    run() {
+      let array = this.data.split(" "); 
+      sort.type = array[0] === "D" ? "DESC" : "ASC";
+      sort.data = array[1].split(",").map(value => Number(value));
+      return sort.run();
+    }
+  }
+
+  sortAdapt.data = d1;
+  console.log(sortAdapt.run());
+  // 6, 5, 3, 3, 2, 2, 1
+```
+## 5 装饰器设计模式
+### 5.1 设计的目的
+- 扩展已有类的新的功能
+  - 对已有类的一种包装，在保持原类结构不变的前提下扩展类的功能
+### 5.2 设计的方法
+- 创建一个传入要扩展对象作为参数的扩展的类
+  - 保持装饰后的对象和原对象具有相同的接口
+- 将要扩展的对象作用参数传入构造一个新的实例对象
+### 5.3 设计的实例
+```javascript
+  var general = {
+    name: "bulumrcai",
+    weap: "gun",
+    skill() {
+      console.log(this.name + " " + this.weap + "发射");
+    }
+  }
+
+  var GeneralPack = function(general) {
+    this.name = general.name;
+    this.weap = general.weap;
+    this.height = 1.78;
+  }
+  generalPack.prototype.skill = function() {
+    console.log(this.height + " " this.name + " " + this.weap + "发射");
+  }
+
+  general.skill();
+  // bulumrcai gun发射
+  general = new GeneralPack(general);
+  general.skill();
+  // 1.78 bulumrcai gun发射
+```
+## 6 外观（门面模式）设计模式
+### 6.1 设计的目的
+- 将复杂的子系统进行组合，对外提供统一的访问接口，隐藏系统内的复杂结构
+- 开发者需要调用多个对象的多个方法，并且需要进行参数的来回传递
+### 6.2 设计的方法
+- 多个方法组合调用，并且参数的传递只在这些方法内部使用
+### 6.3 设计的实例
+```javascript
+  var register = {
+      wait() {
+          console.log("排队等待取号");
+      },
+      regist() {
+          console.log("拿到挂号");
+      }
+  }
+  var doctor = {
+      diagnose() {
+          console.log("进行问诊");
+      },
+      watchCheck(check) {
+          console.log("查看检查结果: " + check);
+      },
+      medication() {
+          console.log("开发药方");
+          return "药方A"
+      }
+  }
+  var check = {
+      makeCheck() {
+          console.log("做检查");
+          return "检查结果";
+      }
+  }
+
+  var medication = {
+      cost(medication) {
+          console.log("付费: " + medication);
+      },
+      take() {
+          console.log("取药回家");
+      }
+  }
+  var hospital = {
+      watch() {
+          register.wait();
+          register.regist();
+          doctor.diagnose();
+          var res = check.makeCheck();
+          doctor.watchCheck(res);
+          var me = doctor.medication();
+          medication.cost(me);
+          medication.take();
+      }
+  }
+  hospital.watch();
+  // 排队等待取号
+  // 拿到挂号
+  // 进行问诊
+  // 做检查
+  // 查看检查结果: 检查结果
+  // 开发药方
+  // 付费: 药方A
+  // 取药回家
+```
+## 7 享元设计模式
+### 7.1 设计的目的
+- 对于存在大量对象的系统，使用享元模式可以显著减轻内存的负担
+- 图书管理系统
+### 7.2 设计的方法
+- 将对象通用且静态的部分与独立且动态的部分分离，使其内部状态和外部状态隔离开，将内部状态进行共享复用
+- 将代码中的通用属性提取成享元，放入一个共享池中。
+- 再像系统增加对象时，会从共享池中取数据，没有的话才进行享元的创建
+### 7.3 设计的实例
+- 模拟一个图书类，没当有图书录入系统时，都要构建出这样一个类对象
+```javascript
+  function Book(sn, name, content, author, reader, initTime, expriseTime) {
+        this.sn = sn;
+        this.name = name;
+        this.content = content;
+        this.author = author;
+        this.reader = reader;
+        this.initTime = initTime;
+        this.expriseTime = expriseTime;
+    }
+    Book.prototype.show = function() {
+        console.log(this.sn, this.name, this.content, this.author, this.reader, this.initTime, this.expriseTime)
+    };
+
+    var book = new Book(10011, "老人与海", "在逆境中坚持", "海明威", "Jaki", "2017.11.11", "2017.12.12");
+    book.show();
+    // 10011 "老人与海" "在逆境中坚持" "海明威" "Jaki" "2017.11.11" "2017.12.12"
+```
+- 使用享元设计模式
+```javascript
+  function BookIn(sn, name, content, author) {
+    this.sn = sn;
+    this.name = name;
+    this.content = content;
+    this.author = author;
+  }
+  var bookPool = new Set();
+  function Book(sn, name, content, author, reader, initTime, expriseTime) {
+    for(var b of bookPool) {
+            if(b.sn === sn ) {
+                this.in = b;
+            }
+        }
+        if(this.in === undefined) {
+            this.in = new BookIn(sn, name, content, author);
+            bookPool.add(this.in);
+        }
+        this.reader = reader;
+        this.initTime = initTime;
+        this.expriseTime = expriseTime;
+    }
+    Book.prototype.show = function() {
+        console.log(this.in.sn, this.in.name, this.in.content, this.in.author, this.reader, this.initTime, this.expriseTime)
+    };
+    // 书本的作者等是静态数据
+    var book1 = new Book(10011, "老人与海", "在逆境中坚持", "海明威", "Jaki", "2017.11.11", "2017.12.12");
+    var book2 = new Book(10011, "老人与海", "在逆境中坚持", "海明威", "Lucy", "2017.12.20", "2018.01.12");
+
+    book1.show();
+    book2.show();
+```
+
+## 8 代理设计模式
+### 8.1 设计的目的(补充)
+### 8.2 设计的方法（补充）
+### 8.3 设计的实例
+- 网购中买家和卖家之间的物流公司就可以理解为一个代理
+- 房产中介也可以理解为代理
+```javascript
+    var me = {
+        shop: undefined,
+        buy() {
+            console.log("网购 " + this.shop.delever());
+        }
+    }
+
+    var computerShop = {
+        delegate: undefined,
+        delever() {
+            return this.delegate.delever();
+        }
+    }
+
+    var logistics = {
+        delever() {
+            return "顺丰物流正在送货";
+        }
+    }
+    // 我选择了这家店购买商品
+    me.shop = computerShop;
+    // 这家店选择了下面的快递公司快递物品
+    computerShop.delegate = logistics;
+    me.buy();
+```
+## 9 责任链设计模式
+### 9.1 设计的目的
+- 用来连接处理任务的一连串节点，使用责任链设计模式可以将复杂的处理过程拆分成多个负责方，并且可以灵活替换和修改
+### 9.2 设计的方法
+- 通过nextHandler来串联不同的节点，为了实现某个功能而使得代码连续调用
+### 9.3 设计的实例
+- 很多单位都采用这样的设计模式来阻止结构
+- 使用责任链设计来实现校验网址功能
+```javascript
+    var typeCheck = {
+        nextHandler: undefined,
+        handle(obj) {
+            if(typeof obj !== "string") {
+                console.log("必须为字符串");
+                return false;
+            }
+            if(this.nextHandler != undefined) {
+                this.nextHandler.handle(obj);
+            }
+            else{
+                console.log("校验成功");
+                return true;
+            }
+        }
+    }
+    var emptyCheck = {
+        nextHandler: undefined,
+        handle(obj) {
+            if(obj.length === 0) {
+                console.log("字符串不能为为空");
+                return false;
+            }
+            if(this.nextHandler != undefined) {
+                this.nextHandler.handle(obj);
+            }
+            else{
+                console.log("校验成功");
+                return true;
+            }
+        }
+    }
+    var validCheck = {
+        nextHandler: undefined,
+        handle(obj) {
+            if(!/^(www\.).+(\.com)$/.test(obj)) {
+                console.log("字符串不符合规范");
+                return false;
+            }
+            if(this.nextHandler != undefined) {
+                this.nextHandler.handle(obj);
+            }
+            else{
+                console.log("校验成功");
+                return true;
+            }
+        }
+    }
+
+    typeCheck.nextHandler = emptyCheck;
+    emptyCheck.nextHandler = validCheck;
+    typeCheck.handle("www.ws.com");
+```
+## 10 命令设计模式
+## 11 迭代器设计模式
+### 11.1 设计的目的
+- 对于开发者：实现了统一遍历集合对象的方式，并且十分易于扩展
+- 对于使用方：统一的接口便于进行代码的组织和管理
+### 11.2 设计的方法
+- 设计一个遍历函数用来传对象和callback，并在其中使用next
+- 对于每一个对象只需构造一个next函数便可以实现遍历
+### 11.3 设计实例
+- 实现一个简单的迭代器
+```javascript
+      var MyIterator = {
+          next: function() {
+              throw "必须实现next";
+          }
+      }
+      function tool(obj, callback) {
+          var item = obj.next();
+          while(item != undefined) {
+              callback(item);
+              item = obj.next();
+          }
+      }
+
+      var myObj = {
+          name: "bulumrcai",
+          age: 23,
+          subject: "javascript",
+          teaching() {
+              console.log("teaching");
+          },
+          __keys: ["name", "age", "subject"],
+          __tip: 0,
+          next() {
+              return this.__keys[this.__tip ++]
+          }
+      }
+      myObj.prototype = MyIterator;
+      tool(myObj, item => console.log(item));
+```
+## 12 备忘录设计模式
+## 13 观察者设计模式
+### 13.1 设计的目的
+- 观察者模式常常用来实现订阅逻辑
+- 当对象件出现一对多的交互关系，可以使用观察者来处理
+### 13.2 设计的方法
+- 由服务端和客户端两方组成
+- 客户端通过订阅来监听服务器端的信息  
+  - 向服务器端添加自己
+- 由服务器端发送信息给已经订阅的客户端
+  - 通过在内部建立的观察者对象，可以用来确定订阅的用户并向相应的用户发布同样的消息
+### 13.3 设计的实例
+```javascript
+  var Service = {
+    _customer: new Set(),
+    addObserver(obj, func) {
+      this._customer.add({obj, func}); 
+    },
+    deleteObserver(obj)  {
+      var has;
+      this._customer.forEach(object => {
+        if(object.obj === obj) {
+          has = object;
+        }
+      });
+      if(has != undefined) {
+        this._customer.delete(has);
+      }
+    },
+    publish(msg) {
+      console.log("发布了消息");
+      this._customer.forEach(object => {
+          object.func.call(object.obj, msg);
+      });
+    }
+  }
+
+  var teacher1 = {
+    name: "bulumrcai",
+    teach(msg) {
+      console.log(this.name + "开始教学" + msg);
+    }
+  }
+  var teacher2 = {
+    name: "lucy",
+    teach(msg) {
+      console.log(this.name + "开始教学" + msg);
+    }
+  }
+
+  Service.addObserver(teacher1, teacher1.teach);
+  Service.addObserver(teacher2, teacher2.teach);
+
+  Service.publish("Javascript");
+  // 发布了消息
+  // bulumrcai开始教学Javascript
+  // lucy开始教学Javascript
+  Service.deleteObserver(teacher1);
+
+  Service.publish("C++");
+  // 发布了消息
+  // lucy开始教学C++
+```
+# 十四 JQuery
 ## 1 了解jQuery
 - 是一个javascrpt库
   - 对原生的javascript的封装，内部是用JavaScript实现的
@@ -11065,10 +11602,31 @@ config
   - 支持插件扩展开放，有着丰富的第三方的插件
   - 免费，开源
 - <a href="https://jquery.com/">官方网站</a>
-  - ![版本问题](./img/ex1.jpg)
-
+  - ![版本问题](./img/jquery_ex1.jpg)
+- jQuery对象是一个伪数组
+- <font color="red">获取的方法一般只能获取第一个匹配的，设置可以设置所有匹配的</font>
 ## 2 jQuery的基本方法
-### 1 jQuery的入口函数 
+- 注意
+  - 回调函数函数中的this指的是dom对象而不是jquery，所以，若是想要取得jQuery，得加上$(this)
+### 2.1 jQuery的顶级对象$
+- 是一个函数
+- $是jQuery的语法糖
+- $是jQuery的顶级对象，相当于原生javsScript中的window，把元素利用$包装称jQuery对象，就可以调用jQuery方法了
+### 2.2 jQuery的核心函数
+- $()
+  - 代表调用jQuery的核心函数
+  - 返回一个jQuery元素对象
+- 括号里面的选择
+  - 接收一个函数对象
+    - 入口函数
+  - 接收一个字符串
+    - 接收字符串选择器
+      - 选择器
+    - 接收一个代码片段
+      - 动态创建对应的dom元素
+  - 接收一个DOM元素
+    - 类似于将dom元素包装成jQuery元素
+#### 2.2.1 入口函数
 ```javascript
     // 1. 等待页面加载完毕再调用js代码
     $(document).ready(function() {
@@ -11079,98 +11637,244 @@ config
         $('div').hide();
     })
 ```
-- 等这DOM结构渲染完毕即可以执行内部代码，不必等到所有外部资源加载完成
-- 相当于原生js中的DOMContentLoaded
-- 不同于原生js中的load事件是等页面文档，外部的js文件，css，图片加载完毕才执行内部代码
-### 2 jQuery的顶级对象$
-- 是一个函数
-- $是jQuery的语法糖
-- $是jQuery的顶级对象，相当于原生javsScript中的window，把元素利用$包装称jQuery对象，就可以调用jQuery方法了
-##### 2.1 DOM对象和jQuery对象的区别
-##### 2.1.1 DOM对象
-- 用原生js获取的元素对象
-- 只能使用DOM对象的属性和方法
-##### 2.1.2 jQuery对象
-- 用jQuery方法获取的对象
-- 利用$对DOM对象包装后产生的对象(伪数组形式存储)
-- 只能使用jQuery方法
-#### 2.2 DOM对象和jQuery对象的相互转化
-##### 2.2.1 DOM对象转化为jQuery对象
+##### 2.2.1.1 和原生函数的区别
+- window.onload = function () {}
+  - 等页面文档，外部的js文件，css，图片加载完毕才执行内部代码
+  - 后写的会覆盖先写的
+- $(document).ready(function() {})
+  - 等DOM结构渲染完毕即可以执行内部代码，不必等到所有外部资源加载完成
+  - 后写的不会覆盖先写的
+- 不同于原生js中的load事件是
+#### 2.2.2 选择器函数
+- $(cssSelector)
+#### 2.2.3 创建元素的函数
+- $(html[, ownerDocument])
+  - 返回一个由html决定内容的jquery元素
+  - 你可以传递一个手写的 HTML 字符串，或者由某些模板引擎或插件创建的字符串，也可以是通过 AJAX 加载过来的字符串。但是在你创建 input 元素的时会有限制，可以参考第二个示例。当然这个字符串可以包含斜杠 (比如一个图像地址)，还有反斜杠。当你创建单个元素时，请使用闭合标签或 XHTML 格式。例如，创建一个 span ，可以用$("&lt;span/&gt;") 或 $("&lt;span&gt;&lt;/span&gt;") ，但不推荐 $("<span>")。在jQuery 中，这个语法等同于$(document.createElement("span")) 。
+```javascript
+$("<div>", {
+  "class": "test",
+  text: "Click me!",
+  click: function(){
+    $(this).toggleClass("test");
+  }
+}).appendTo("body");
+
+// 动态创建一个 div 元素（以及其中的所有内容），并将它追加到 body 元素中。在这个函数的内部，是通过临时创建一个元素，并将这个元素的 innerHTML 属性设置为给定的标记字符串，来实现标记到 DOM 元素转换的。所以，这个函数既有灵活性，也有局限性。
+```
+#### 2.2.4 DOM对象和jQuery对象的区别
+##### 2.2.4.1 DOM对象和jQuery的关系
+- DOM对象
+  - 用原生js获取的元素对象
+  - 只能使用DOM对象的属性和方法
+- jQuery对象
+  - 用jQuery方法获取的对象
+  - 利用$对DOM对象包装后产生的对象(伪数组形式存储)
+  - 只能使用jQuery方法
+##### 2.2.4.2 DOM对象和jQuery对象的相互转化
+###### 2.2.4.2.1 DOM对象转化为jQuery对象
 ```javascript
     $(DOM对象)
 ```
-##### 2.2.2 jQuery转化为DOM对象
+###### 2.2.4.2.2 jQuery转化为DOM对象
 ```javascript
-    $(selector)[index] //index是索引号
+    $(selector)[index] //index是索引号，
 
     $(selector).get(index) //index是索引号
 ```
-### 3 jQuery常用API
-#### 3.1 jQuery的选择器(获取元素对象)
+#### 2.2.5 jquery多库共存
+- jQuery使用$作为标志符号,和其他js库的$符号产生冲突。
+##### 2.2.4.1 方法一
+- 统一将$符号改为jQuery
+##### 2.2.4.2 方法二
+- 使用noConflict()函数
+- 注意
+  - 释放的操作必须在编写其他jQuery之前编写
+  - 释放之后就不能再使用$,该为使用jQuery
+  - 若前面alias有名称，可以使用自定义的符号
+```javascript
+    let alias = $.noConflict()
+```
+## 3 jQuery常用API
+### 3.1 jQuery中选择器(获取元素对象)
+##### 3.1.1 使用cssSelector选择器来进行选择
 ```javascript
     $(selector) //里面选择器直接写CSS选择器即可，要记得加引号
+// 特殊选择器
+    $(selector1,selector2,selectorN) // 逗号起到了或的作用
+// parent > child 当前元素的子元素 
+    $(parent > child)
+// prev + next  当前元素的下一个xx元素
+    $(prev + next)
+// prev ~ siblings 当前元素的后面所有xx的兄弟元素
+    $(prev ~ siblings)
+// 这个方法通常被用在类选择器或者ID选择器中包含一些CSS特殊字符的时候
+    $.escapeSelector(selector)
 ```
-#### 3.2 jQuery筛选方法
-<table> 
-    <thead>
-        <tr>
-            <th>语法</th>
-            <th>用法</th>
-            <th>说明</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>parent()</td>
-            <td>$('li').parent()</td>
-            <td>查找父级</td>
-        </tr>
-        <tr>
-            <td>parents(selector)</td>
-            <td>$('li').parents('.className')</td>
-            <td>返回所有的祖先元素（通过选择器选择可以返回指定的祖先元素）</td>
-        </tr>
-        <tr>
-            <td>children(selector)</td>
-            <td>$('ul').children('li')</td>
-            <td>相当于('ul>li'),最近一级</td>
-        </tr>
-        <tr>
-            <td>find(selector)</td>
-            <td>$('ul').find('li')</td>
-            <td>当于('ul li'),后代选择器</td>
-        </tr>
-        <tr>
-            <td>siblings(selector)</td>
-            <td>$('.first').siblings('li')</td>
-            <td>查找兄弟节点，不包括本身</td>
-        </tr>
-        <tr>
-            <td>nextAll([expr])</td>
-            <td>$('.first').nextAll()</td>
-            <td>查找当前元素之后的同级元素</td>
-        </tr>
-        <tr>
-            <td>prevAll([expr])</td>
-            <td>$('.first').prevAll()</td>
-            <td>查找当前元素之前的同级元素</td>
-        </tr>
-        <tr>
-            <td>hasClass(className)</td>
-            <td>$('li').hasClass('active')</td>
-            <td>查看当前元素是否有某一个类，有则返回true</td>
-        </tr>
-        <tr>
-            <td>eq(index)</td>
-            <td>$('li').eq(2)</td>
-            <td>查看第index的元素对象（相当于$('li:eq(index)')</td>
-        </tr>
-    </tbody>
-</table>
+##### 3.1.2 伪选择器
+###### 3.1.2.1 :first
+- 当前元素的第一个
+###### 3.1.2.2 :lt(index)
+- 当前元素小于第index的所有元素
+###### 3.1.2.3 :eq(index)
+- 当前元素的第index个
+###### 3.1.2.4 :gt(index)
+- 当前元素大于第index的所有元素 
+###### 3.1.2.5 :last
+- 当前元素的最后一个
+###### 3.1.2.6 :even
+- 当前的元素的偶数所有元素
+###### 3.1.2.7 :odd
+- 当前元素的奇数的所有元素
+###### 3.1.2.8 :not(selector)
+- 去除所有与给定选择器匹配的元素
+###### 3.1.2.9 :root
+- 选择该文档的根元素。
+###### 3.1.2.10 :header
+- 匹配如 h1, h2, h3之类的标题元素
+###### 3.1.2.11 :focus
+- <font>匹配当前获取焦点的元素。</font>
+###### 3.1.2.12 :target
+- 选择由文档URI的格式化识别码表示的目标元素。
+- 如果文档的URI包含一个格式化的标识符，或hash（哈希）， 然后:target选择器将匹配ID和标识符相匹配的元素。  例如，给定的URI https://example.com/#foo， $( "p:target" )，将选择<p id="foo">元素。
+###### 3.1.2.13 :animated
+- 匹配所有正在执行动画效果的元素
+- 应用
+```html
+<!-- 只有对不在执行动画效果的元素执行一个动画特效 -->
+<button id="run">Run</button><div></div>
+<script>
+  $("#run").click(function(){
+  $("div:not(:animated)").animate({ left: "+=20" }, 1000);
+});
+</script>
+```
+###### 3.1.2.14 :lang
+- 选择指定语言的所有元素。
 
-- 1. 重点记住:parent, children, find, siblings, eq这几种方法
-- 2. 练习
-  - 实现上下拉
+
+
+
+
+
+
+
+##### 3.1.3 与内容匹配（css中没有的）
+###### 3.1.3.1 :contains(text)
+- 匹配包含给定文本的元素
+```html
+<div>John Resig</div>
+<div>George Martin</div>
+<div>Malcom John Sinclair</div>
+
+[ <div>John Resig</div>, <div>Malcom John Sinclair</div> ]
+```
+```javascript
+$("div:contains('John')")
+```
+###### 3.1.3.2 :empty
+- 匹配所有不包含子元素或者文本的空元素
+###### 3.1.3.3 :has(selector)
+- 匹配含有选择器所匹配的元素的元素
+###### 3.1.3.4 :parent
+- <font>匹配含有子元素或者文本的元素</font>
+##### 3.1.4 可见性
+###### 3.1.4.1 :hidden
+- 匹配所有不可见元素，或者type为hidden的元素
+###### 3.1.4.2 :visible
+- 匹配所有的可见元素
+##### 3.1.5 与对应的属性匹配的元素
+###### 3.1.5.1 [attribute]
+- 匹配包含给定属性的元素
+###### 3.1.5.2 [attribute=value]
+- 匹配给定的属性是某个特定值的元素
+###### 3.1.5.3 [attribute!=value]
+- 匹配所有不含有指定的属性，或者属性不等于特定值的元素。
+```javascript
+此选择器等价于 :not([attr=value]) 要匹配含有特定属性但不等于特定值的元素，请使用[attr]:not([attr=value])
+```
+###### 3.1.5.4 [attribute^=value]
+- 匹配给定的属性是以某些值开始的元素
+###### 3.1.5.5 [attribute$=value]
+- 匹配给定的属性是以某些值结尾的元素
+###### 3.1.5.6 [attribute*=value]
+- 匹配给定的属性是以包含某些值的元素
+###### 3.1.5.7 [attrSel1][attrSel2][attrSelN]
+- 复合属性选择器，需要同时满足多个条件时使用。
+```html 
+<input id="man-news" name="man-news" />
+<input name="milkman" />
+<input id="letterman" name="new-letterman" />
+<input name="newmilk" />
+
+[ <input id="letterman" name="new-letterman" /> ]
+```
+```javascript
+$("input[id][name$='man']")
+```
+##### 3.1.6 子元素
+###### 3.1.6.1 :first-child
+- 第一个子元素
+###### 3.1.6.2 :first-of-type
+- 第一个具有xx类型的子元素（前面需要绑定对应的类型）
+###### 3.1.6.3 :last-child
+- 最后一个子元素
+###### 3.1.6.4 :last-of-type
+- 最后一个具有xx类型的子元素（前面需要绑定对应的类型）
+###### 3.1.6.5 :nth-child()
+- 第n个子元素
+- 具有某些规律的子元素
+- <font>:nth-child从1开始的，而:eq()是从0算起的！</font>
+###### 3.1.6.6 :nth-last-child()
+- 倒数第n个子元素
+- 具有某些规律的倒数第n个子元素
+###### 3.1.6.7 :nth-of-type()
+- 第n个xx类型的子元素
+- 具有某些规律的xx类型的子元素
+###### 3.1.6.8 :nth-last-of-type()
+- 倒数第n个子元素
+- 具有某些规律的倒数第n个子元素
+###### 3.1.6.9 :only-child
+- 如果某个元素是父元素中唯一的子元素，那将会被匹配
+###### 3.1.6.10 :only-of-type
+- 选择所有没有兄弟元素，且具有相同的元素名称的元素。
+##### 3.1.7 与表单元素有关的匹配方法
+###### 3.1.7.1 :input
+- 匹配所有 input, textarea, select 和 button 元素
+###### 3.1.7.2 :text
+- 匹配类型为text的input元素
+###### 3.1.7.3 :password
+- 匹配类型为password的input元素
+###### 3.1.7.4 :radio
+- 匹配类型为radio的input元素
+###### 3.1.7.5 :checkbox
+- 匹配类型为checkbox的input元素
+###### 3.1.7.6 :submit
+- 匹配类型为submit的input元素和button元素
+  - button元素默认为submit类型
+###### 3.1.7.7 :image
+- 匹配类型为image的input元素
+###### 3.1.7.8 :reset
+- 匹配类型为reset的input元素
+###### 3.1.7.9 :button
+- 匹配类型为button的input元素或者button元素
+###### 3.1.7.10 :file
+- 匹配类型为file的input元素
+###### 3.1.7.11 :enabled
+- 匹配所有可用元素
+###### 3.1.7.10 :disabled
+- 匹配所有不可用元素
+###### 3.1.7.11 :checked
+- 匹配所有被选中的元素
+###### 3.1.7.12 :selected
+- 匹配select中被选中的元素
+
+
+
+#### 3.1.2 jQuery对象的的隐式迭代
+- 当jQuery对象不是单个对象且此时针对该对象有函数被调用
+  - jQuery会默认把匹配的所有元素内部及逆行遍历循环，给每一个元素做相同的操作
+#### 3.2.1 利用以上的元素对象的获取实现上下拉功能
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -11231,9 +11935,142 @@ config
 </body>
 </html>
 ```
-  - js的排他思想
-    - 想要设置多选一的效果：当前元素设置样式，其他的兄弟元素清除样式
+### 3.2 jQuery中对选中的jQuery对象的基本属性和方法
+#### 3.2.1  jQueryEle.each(callback)
+- 对于每个匹配的元素所要执行的函数
+#### 3.2.2  jQueryEle.length
+- 相当于jQueryEle.size()
+- 返回选中的元素的个数
+#### 3.2.3  jQueryEle.selector
+- 以字符串的形式返回选择器内容
+#### 3.2.4 jQueryEle.context
+- 返回该元素的DOM节点
+#### 3.2.5 jQueryEle.get(index)
+- 相当于jQueryEle[ index ]，eq(index)
+- 返回第index个元素
+#### 3.2.6 jQueryEle.index([selector|element])
+- 搜索匹配的元素，并返回相应元素的索引值，从0开始计数。返回第一个匹配到的元素的下标
+- 参数
+  - selector 一个选择器，代表一个jQuery对象，将会从这个对象中查找元素。
+  - element 获得 index 位置的元素。<font color="red">可以是 DOM 元素或 jQuery 选择器。</font>
+### 3.3 jQuery操作属性节点以及属性
+- 属性和属性节点
+  - 属性
+    - 对象身上保存的变量就是属性
+    - 在dom中指的是disabled, checked等属性
+  - 属性节点
+    - <font color="red">在html代码时，在html的标签中添加的属性</font>
+- 任何对象都有属性，但是只有dom对象有属性节点
+#### 3.3.1 jQueryEle.attr(name|properties|key,value|fn)
+- 设置或返回被选元素的属性值。
+- 参数
+  - name  String
+    - 属性名称
+  - properties object
+    - 作为属性的“名/值对”对象
+  - key,valueString,Object
+    - 属性名称，属性值
+  - key,function(index, attr)   String,Function
+    - 属性名称。
+    - 返回属性值的函数,第一个参数为当前元素的索引值，第二个参数为原先的属性值。
+- 注意点
+   - 当只采用获取时，只会返回第一个元素指定的属性节点的值
+   - 如果是设置值，则会将所有找到的元素的属性节点的值进行设置
+    - 设置的属性节点不存在，则系统会新增
+#### 3.3.2 jQueryEle.removeAttr(name:string)
+- 从每一个匹配的元素中删除一个属性
+- 若想要删除多份，只需要在两个属性中间增加一个空格即可
+#### 3.3.3 jQueryEle.prop((name|properties|key,value|fn)
+- 获取在匹配的元素集中的第一个元素的属性值
+- 用法和上面的方法类似
+#### 3.3.4 jQueryEle.removeProp(name:string)
+- 用来删除由.prop()方法设置的属性集
+- 注意
+  - prop不仅可以用来操作属性，也可以用来操作属性节点
+  - 返回值为true和false的属性，使用prop
+    - checked, disabled, selected
+#### 3.3.5 jQueryEle.addClass(class|fn)
+- 为每个匹配的元素添加指定的类名
+- 参数
+  - class   String
+    - 一个或多个要添加到元素中的CSS类名，请用空格分开
+  - function(index, class)  Function
+    - 此函数必须返回一个或多个空格分隔的class名。接受两个参数，index参数为对象在这个集合中的索引值，class参数为这个对象原先的class属性值。
+- 给li加上不同的class(应用)
+```html
+<ul>
+      <li>Hello</li>
+      <li>Hello</li>
+      <li>Hello</li>
+</ul>
+```
 ```javascript
+$('ul li:last').addClass(function() {
+  return 'item-' + $(this).index();
+});
+```
+#### 3.3.6 jQueryEle.removeClass([class|fn])
+- 从所有匹配的元素中删除全部或者指定的类。
+- 参数
+  - class   String
+    - 一个或多个要添加到元素中的CSS类名，请用空格分开
+  - function(index, class)  Function
+    - 此函数必须返回一个或多个空格分隔的class名。接受两个参数，index参数为对象在这个集合中的索引值，class参数为这个对象原先的class属性值。
+#### 3.3.7 jQueryEle.toggleClass(class|fn[,sw])
+- 如果存在（不存在）就删除（添加）一个类。
+- class String
+  - CSS类名
+- class,switch  String,Boolean
+  - 要切换的CSS类名.
+  - 用于决定元素是否包含class的布尔值。
+- function(index, class,switch)[, switch]) Function,Boolean
+  - 用来返回在匹配的元素集合中的每个元素上用来切换的样式类名的一个函数。接收元素的索引位置和元素旧的样式类作为参数。
+  - 一个用来判断样式类添加还是移除的 boolean 值。
+- 根据counter来决定切换为true或者false
+```javascript
+ var count = 0;
+  $("p").click(function(){
+      $(this).toggleClass("highlight", count++ % 3 == 0);
+  });
+```
+- 根据父元素来设置class属性
+```javascript
+$('div.foo').toggleClass(function() {
+  if ($(this).parent().is('.bar') {
+    return 'happy';
+  } else {
+    return 'sad';
+  }
+});
+```
+### 3.4 jQuery是设置css样式
+#### 3.4.1 jQueryEle.css(attr)
+- 参数只写属性名，则是返回属性值
+```javascript
+    jQueryEle.css(attr) 
+    // 属性必须加上引号
+```
+#### 3.4.2 jQueryEle.css(attr, style)
+- 设置一组样式
+```javascript
+    jQueryEle.css(attr,style) 
+    // 属性必须加上引号
+```
+##### 3.3.3 .css({attr: style...})
+- 参数可以是对象形式，用于设置样式
+- 如果是复合属性，必须使用驼峰的方法
+```javascript
+    $(selector).css({attr1: style1, attr2: style2}) 
+    // 属性可以不用加上引号
+```
+#### 3.4.3 jQueryEle.css({attr: style...})
+```javascript
+   jQueryEle.css({attr1: style1, attr2: style2}) 
+```
+#### 3.4.4 实现多选一的功能
+- 利用了jQuery对象的隐式迭代
+- 给当前元素设置样式，其他的兄弟元素清除样式
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11264,96 +12101,185 @@ config
 
 </html>
 ```
-#### 3.3 jQuery是设置样式
-##### 3.3.1 .css(attr)****
-- 参数只写属性名，则是返回属性值
+#### 3.4.5 可以直接用参数获得的特殊的css值
+- 返回值都是纯数字
+- 位置
+##### 3.4.5.1 jQueryEle.offset([coordinates])
+- 获取匹配元素在当前窗口的相对偏移  - 返回一个对象{left:~, top:~}。
+- 若使用coordinates则可以用于设置
 ```javascript
-    $(selector)).css(attr) 
-    // 属性必须加上引号
+// 获取当前元素相对于窗口的偏移量
+var p = $("p:last");
+var offset = p.offset();
+p.html( "left: " + offset.left + ", top: " + offset.top );
+
+// 设置当前元素相对于窗口的偏移量
+$("p:last").offset({ top: 10, left: 30 });
 ```
-##### 3.3.2 .css(attr, style)
-- 设置一组样式
+##### 3.4.5.2 jQueryEle.position()
+- 获取匹配元素相对父元素的偏移。（返回一个包含left，top的属性的对象）
+  - 注意是没有单位的且不能设置
 ```javascript
-    $(selector).css(attr,style) 
-    // 属性必须加上引号
-```
-##### 3.3.3 .css({attr: style...})
-- 参数可以是对象形式，用于设置样式
-- 如果是复合属性，必须使用驼峰的方法
-```javascript
-    $(selector).css({attr1: style1, attr2: style2}) 
-    // 属性可以不用加上引号
+var p = $("p:first");
+var position = p.position();
+$("p:last").html( "left: " + position.left + ", top: " + position.top );
 ```
 
-#### 3.4 jQuery的动画效果
-- 1. 问题1：快速点击会造成多个动画执行
+##### 3.4.5.3 jQueryEle.scrollTop([val])
+- 获取或设置匹配元素相对于滚动条顶部的偏移
+
+##### 3.4.5.4 jQueryEle.scrollLeft([val])
+- 获取或设置匹配元素相对于滚动条左侧的偏移
+
+- 位置
+##### 3.5.5.1 jQueryEle.height|width(val|fn)
+- 设置或者获取当前元素的内容的宽度
+- fn参数的方法和上面的类似
+##### 3.5.5.2 jQueryEle.innerHeight|innerWidth
+- 获取当前元素的内容+padding的宽度或高度
+##### 3.5.5.3 jQueryEle.outerHeight|outerHeight([options])
+- 获取当前元素的内容+padding[ +border ]的宽度或高度
+- option 
+  - 设置为 true 时，计算边距在内。
+### 3.5 jQuery与内部元素相关的函数和方法
+#### 3.5.1 jQueryEle.html([val|fn])
+- 取得或者设置第一个匹配元素的html内容
+- 参数
+  - val String
+    - 用于设定HTML内容的值
+  - function(index, html) Function
+    - 此函数返回一个HTML字符串。接受两个参数，index为元素在集合中的索引位置，html为原先的HTML值。
+#### 3.5.2 jQueryEle.text([val|fn])
+- 取得匹配元素的第一个的文本内容。
+- 参数用法和前面的相同
+#### 3.5.3 jQueryEle.val([val|fn|arr])
+- 获得第一个匹配元素的value属性的值
+  - 可以返回任意元素的值了。包括select。如果多选，将返回一个数组，其包含所选的值。。
+- 特殊参数
+  - array
+    - 用于设定要被选中的值
+### 3.4 jQuery的动画效果
+- 问题1：快速点击会造成多个动画执行
   - 原因：多次点击会造成动画排队的现象
   - 解决方法：在执行动画前使用stop()函数
     - 结束上一次动画
 ```javascript
     $(this).stop().动画效果
 ```
-##### 3.4.1 显示隐藏
-###### 3.4.1.1 show([speed], [easing], [fn]])
-- 1. 参数省略时，无动画直接显示
-- 2. speed
-  - 三种预定速度之一的字符串('slow', 'normal', 'fast')
-  - 数字（默认单位ms）
-- 3. easing：用来指定切换效果，默认是"swing", 
-  - linear
-  - swing
-- 4. 回调函数，在动画执行的函数，每个元素执行一次
-###### 3.4.1.2 hide([speed], [easing], [fn])
-- 1. 参数省略时，无动画直接隐藏
-- 2. speed
-  - 三种预定速度之一的字符串('slow', 'normal', 'fast')
-  - 数字（默认单位ms）
-- 3. easing：用来指定切换效果，默认是"swing", 
-  - linear
-  - swing
-- 4. 回调函数，在动画执行的函数，每个元素执行一次
-###### 3.4.1.3 toggle([speed], [easing], [fn])
-- 1. 参数省略时，无则显示，有则隐藏
-- 2. speed
-  - 三种预定速度之一的字符串('slow', 'normal', 'fast')
-  - 数字（默认单位ms）
-- 3. easing：用来指定切换效果，默认是"swing", 
-  - linear
-  - swing
-- 4. 回调函数，在动画执行的函数，每个元素执行一次
-##### 3.4.2 滑动效果
-###### 3.4.2.1 slideDown([speed],[easing],[fn])
+- 实际上是改变display属性
+- jQuery中如果需要执行动画，建议在执行动画之前先调用stop方法，然后再执行动画
+- 使用链式调用动画函数来实现执行完的调用
+#### 3.4.1 实现元素的显示和隐藏的动画效果
+##### 3.4.1.1 实现元素的显示和隐藏
+###### 3.4.1.1.1 jQueryEle.show([speed], [easing], [fn]])
+- 参数省略时，无动画直接显示
+- 参数
+  - speed
+    - 三种预定速度之一的字符串('slow', 'normal', 'fast')
+    - 数字（默认单位ms）
+  - easing：用来指定切换效果，默认是"swing", 
+  - 回调函数，在动画执行的函数，每个元素执行一次
+###### 3.4.1.1.2 jQueryEle.hide([speed], [easing], [fn])
+- 参数省略时，无动画直接显示
+- 参数
+  - speed
+    - 三种预定速度之一的字符串('slow', 'normal', 'fast')
+    - 数字（默认单位ms）
+  - easing：用来指定切换效果，默认是"swing", 
+  - 回调函数，在动画执行的函数，每个元素执行一次
+###### 3.4.1.1.3 jQueryEle.toggle([speed], [easing], [fn])
+- 参数省略时，无则显示，有则隐藏
+- 参数
+  - speed
+    - 三种预定速度之一的字符串('slow', 'normal', 'fast')
+    - 数字（默认单位ms）
+  - easing：用来指定切换效果，默认是"swing", 
+  - 回调函数，在动画执行的函数，每个元素执行一次
+##### 3.4.1.2 实现滑动效果
+###### 3.4.1.2.1 jQueryEle.slideDown([speed],[easing],[fn])
 - 向下滑动
-###### 3.4.2.2 slideUp([speed],[easing],[fn])
+- 参数省略时，无动画直接显示
+- 参数
+  - speed
+    - 三种预定速度之一的字符串('slow', 'normal', 'fast')
+    - 数字（默认单位ms）
+  - easing：用来指定切换效果，默认是"swing", 
+  - 回调函数，在动画执行的函数，每个元素执行一次
+###### 3.4.1.2.2 jQueryEle.slideUp([speed],[easing],[fn])
 - 向上滑动
-###### 3.4.2.2 slideToggle([speed],[easing],[fn])
+- 参数省略时，无动画直接显示
+- 参数
+  - speed
+    - 三种预定速度之一的字符串('slow', 'normal', 'fast')
+    - 数字（默认单位ms）
+  - easing：用来指定切换效果，默认是"swing", 
+  - 回调函数，在动画执行的函数，每个元素执行一次
+###### 3.4.1.2.3 jQueryEle.slideToggle([speed],[easing],[fn])
 - 滑动切换
-##### 3.4.3 淡入淡出效果
-###### 3.4.2.1 fadeIn([speed],[easing],[fn])
+- 参数省略时，无动画直接显示
+- 参数
+  - speed
+    - 三种预定速度之一的字符串('slow', 'normal', 'fast')
+    - 数字（默认单位ms）
+  - easing：用来指定切换效果，默认是"swing", 
+  - 回调函数，在动画执行的函数，每个元素执行一次
+##### 3.4.1.3 淡入淡出效果
+###### 3.4.1.3.1 jQueryEle.fadeIn([speed],[easing],[fn])
 - 透明度慢慢改变最后显示（0-1）
-###### 3.4.2.2 fadeout([speed],[easing],[fn])
+- 参数省略时，无动画直接显示
+- 参数
+  - speed
+    - 三种预定速度之一的字符串('slow', 'normal', 'fast')
+    - 数字（默认单位ms）
+  - easing：用来指定切换效果，默认是"swing", 
+  - 回调函数，在动画执行的函数，每个元素执行一次
+###### 3.4.1.3.2 jQueryEle.fadeOut([speed],[easing],[fn])
 - 透明度慢慢改变最后消失fade
-###### 3.4.2.3 fade([speed],[easing],[fn])
+- 参数省略时，无动画直接显示
+- 参数
+  - speed
+    - 三种预定速度之一的字符串('slow', 'normal', 'fast')
+    - 数字（默认单位ms）
+  - easing：用来指定切换效果，默认是"swing", 
+  - 回调函数，在动画执行的函数，每个元素执行一次
+###### 3.4.1.3.3 jQueryEle.fadeToggle([speed],[easing],[fn])
 - 淡入淡出进行切换
-###### 3.4.2.4 fadeTo([speed], opacity, [easing],[fn])
+- 参数省略时，无动画直接显示
+- 参数
+  - speed
+    - 三种预定速度之一的字符串('slow', 'normal', 'fast')
+    - 数字（默认单位ms）
+  - easing：用来指定切换效果，默认是"swing", 
+  - 回调函数，在动画执行的函数，每个元素执行一次
+###### 3.4.1.3.4 jQueryEle.fadeTo([speed], opacity, [easing],[fn])
 - 渐进到指定的透明度
 - opacity：取值为0-1，必须写
-###### 3.4.2.5 高亮显示的思路
-- 背景设置为黑色，当想要变得不高亮，只需要将透明度变小 
-##### 3.4.3 自定义动画animate
-###### 3.4.3.1 animate(params, [speed], [easing], [fn])
-- 1. params
-  - 想要更改的属性，以对象的形式传递
-  - 必须写
-  - 属性名不用引号，复合属性使用驼峰表示
-- 2. speed
-  - 三种预定速度之一的字符串('slow', 'normal', 'fast')
-  - 数字（默认单位ms）
-- 3. easing：用来指定切换效果，默认是"swing", 
-  - linear
-  - swing
-- 4. 回调函数，在动画执行的函数，每个元素执行一次 
-###### 3.4.3.2 手风琴效果的实现
+- 经常用于设置蒙版
+ 
+#### 3.4.2 自定义元素的动画行为animate
+- 若是放在同一个对象之中，则会同时进行动画的效果
+- 若是编写的顺序不同，则会按照代码的位置来进行执行
+- 支持链式编程
+##### 3.4.2.1 jQueryEle.animate(params, [speed], [easing], [fn])
+- 参数  
+  - params
+    - 想要更改的属性，以对象的形式传递
+    - 必须写
+    - 属性值为更改的值
+    - 累加属性
+    - 关键字属性
+      - hide
+      - toggle
+  - speed
+    - 三种预定速度之一的字符串('slow', 'normal', 'fast')
+    - 数字（默认单位ms）
+  - easing：用来指定切换效果，默认是"swing", 
+    - linear  
+      - 匀速的效果
+    - swing
+      - 缓动的效果（开始慢，中间块，结果慢）
+  - 回调函数，在动画执行的函数，每个元素执行一次 
+##### 3.4.2.2 手风琴效果的实现
 ```html
 <!DOCTYPE html>
 <html lang="en">
@@ -11469,33 +12395,74 @@ config
 ```
 - 解决当large图片不显示，small图片使用相对定位脱离标准流导致li的宽度高度变为0的方法
   -  方法1：固定li的宽度和高度，给第一个即的宽度赋值为224px，由于动画效果会给width赋值所以不需要给其他赋值
+
+#### 3.4.3 一些控制动画行为的函数
+##### 3.4.3.1 jQueryEle.stop([clearQueue][, jumpToEnd])
+- 停止所有在指定元素上正在运行的动画。
+- 不传参(stop())或者(stop(false))
+  - 立即停止当前的动画，继续执行后面的动画
+- stop(true)
+  - 立即停止当前的动画和后续所有的动画
+- stop(false, true)
+  - 立即完成当前的动画，继续执行后续的动画
+- stop(true, true)
+  - 立即完成当前的动画，并且停止执行后续的动画
+- 参数
+  - clearQueue:如果设置成true，则清空队列。可以立即结束动画。
+  - gotoEnd:让当前正在执行的动画立即完成，并且重设show和hide的原始样式，调用回调函数等。
+```javascript
+// 开始动画
+$("#go").click(function(){
+  $(".block").animate({left: '+200px'}, 5000);
+});
+
+// 当点击按钮后停止动画
+$("#stop").click(function(){
+  $(".block").stop();
+});
+```
+##### 3.4.4.2 jQueryEle.delay(duration[, queueName])
+- 设置一个延时来推迟执行队列中之后的项目
+- 参数
+  - duration:延时时间，单位：毫秒
+  - queueName:队列名词，默认是Fx，动画队列。
+```javascript
+$('#foo').slideUp(300).delay(800).fadeIn(400);
+```
+##### 3.4.4.3 jQueryEle.finish([queue])
+- 停止当前正在运行的动画，删除所有排队的动画，并完成匹配元素所有的动画。
+```javascript
+$("#complete").click(function(){
+  $("div").finish();
+});
+```
 #### 3.5 jQuery的元素固有属性的操作
 ##### 3.5.1 获取元素的固有属性
 ```javascript
-    jqueryObject.prop(attr)
+    jQueryEle.prop(attr)
 ```
 ##### 3.5.2 设置元素的固有属性
 ```javascript
-    jqueryObject.prop(attr, style)
+    jQueryEle.prop(attr, style)
 ```
 ##### 3.5.3 获取自定义属性
 - 无法通过上面的函数获取通过
 ```javascript
-    jqueryObject.attr(attr);
+    jQueryEle.attr(attr);
 ```
 ##### 3.5.4 添加自定义属性
 ```javascript
-    jqueryObject.attr(attr, style);
+    jQueryEle.attr(attr, style);
 ```
 ##### 3.5.5 获取元素内存的属性
 - 无法在dom中看到对应的属性
 - 可以获取在h5中对应的属性data-，无需加上data-，返回的是数字型
 ```javascript
-    jqueryObject.data(attr);
+    jQueryEle.data(attr);
 ```
 ##### 3.5.6 在元素内存中添加属性
 ```javascript
-    jqueryObject.data(attr, style);
+    jQueryEle.data(attr, style);
 ```
 ##### 3.5.6 全选框的实现
 ```html
@@ -11565,48 +12532,48 @@ config
 ##### 3.6.1 获取对象元素的内容
 - 会输出全部的内容包括标签
 ```javascript
-    jqueryObject.html();
+    jQueryEle.html();
 ```
 ##### 3.6.2 修改对象元素的内容
 ```javascript
-    jqueryObject.html(content);
+    jQueryEle.html(content);
 ```
 ##### 3.6.3 获取对象元素的文本
 ```javascript
-    jqueryObject.text();
+    jQueryEle.text();
 ```
 ##### 3.6.4 修改对象元素的文本
 ```javascript
-    jqueryObject.text(content);
+    jQueryEle.text(content);
 ```
 ##### 3.6.5 获取对象元素的value值
 ```javascript
-    jqueryObject.val();
+    jQueryEle.val();
 ```
 ##### 3.6.6 修改对象元素的value值
 ```javascript
-    jqueryObject.val(content);
+    jQueryEle.val(content);
 ```
 #### 3.7 jQuery的对象元素的操作
 ##### 3.7.1 元素的遍历
 - 虽然有隐式迭代，但是有时后需要对每一个元素做不同的操作
 ###### 3.7.1.1 each(function(index, domEle) {})
 ```javascript
-    jqueryObject.each(function(index, domEle) {})
+    jQueryEle.each(function(index, domEle) {})
 ```
 - 注意里面的每一对象是domELe，要是用jquery方法必须先进行转化
 
-###### 3.7.1.2 $.each(jqueryObject, function(index, domEle) {})
+###### 3.7.1.2 $.each(jQueryEle, function(index, domEle) {})
 ```javascript
-    $.each(jqueryObject, function(index, domEle) {})
+    $.each(jQueryEle, function(index, domEle) {})
 ```
 - 拓展：
-  - jqueryObject不仅仅可以是jquery的对象，普通的对象以及数组都是可以进行操作的
+  - jQueryEle不仅仅可以是jquery的对象，普通的对象以及数组都是可以进行操作的
 ##### 3.7.2 元素的创建
 ###### 3.7.2.1 $(content)
 - 创建一个新的元素
 ```javascript
-    let jqueryObject = $(content);
+    let jQueryEle = $(content);
 ```
 ##### 3.7.3 元素的添加
 ###### 3.7.3.1 fatherObject.append(sonObject)
@@ -11619,10 +12586,10 @@ config
 ```javascript
     fatherObject.prepend(sonObject)
 ```
-###### 3.7.3.3 brotherObject.before(jqueryObject)
+###### 3.7.3.3 brotherObject.before(jQueryEle)
 - 外部添加, 添加到当前brotherObject元素的前面一位
 ```javascript
-    brotherObject.before(jqueryObject)
+    brotherObject.before(jQueryEle)
 ```
 ##### 3.7.4 元素的删除
 ###### 3.7.4.1 juqueryObject.remove()
@@ -11636,10 +12603,10 @@ config
 ```javascript
     fatherObject.empty()
 ```
-###### 3.7.4.3 brotherObject.after(jqueryObject)
+###### 3.7.4.3 brotherObject.after(jQueryEle)
 - 外部添加, 添加到当前brotherObject元素的后面一位
 ```javascript
-    brotherObject.after(jqueryObject)
+    brotherObject.after(jQueryEle)
 ```
 
 #### 3.8 jQuery的对象方法总结
@@ -11674,25 +12641,48 @@ config
 #### 3.10 jQuery的常见触发事件
 #### change(func)
 - 当元素对象发生改变是触发func
-### 4 jQuery的隐式迭代
-- 把匹配的所有元素内部及逆行遍历循环，给每一个元素做相同的操作
 
-# 四 jquery的事件相关的操作
-## 1 jquery事件注册
-### 1.1 单个事件的注册
-#### 1.1.1 jqueryObject.eventName(function() {})
-```javascript
-    jqueryObject.eventName(function() {})
+### 3.5 jQuery的元素数据缓存(增删改查)
+#### 3.5.1 jQueryEle.data(key[, value])
+- 在元素上存放或读取数据,返回jQuery对象。
+- 当参数只有一个key 
+  - 则读取对于key中的数据
+- 当参数有两个，则对于key进行设置
+  - value可以是任何合法类型
+- <font color="red">与html对应的是"data-"</font>
+```html
+<div data-test="this is test" ></div>
+
+$("div").data("test"); //this is test!;
 ```
-### 1.2 多个事件的注册
-#### 1.2.1 jqueryObject.once(events, [selector], fn)
+#### 3.5.2 jQueryEle.removeData([name|list])
+- 在元素上移除存放的数据
+- 参数
+  - name
+    - 存储的数据名
+  - list
+    - 移除数组或以空格分开的字符串
+## 4 jquery的事件相关的操作
+- 和js拥有类似的事件以及相应的事件属性
+### 4.1 jquery事件绑定
+#### 4.1.1 单个事件的绑定
+##### 4.1.1.1 jQueryEle.eventName(function() {})
+```javascript
+    jQueryEle.eventName(function() {})
+```
+#### 4.1.2 多个事件的绑定
+##### 4.1.2.1 jQueryEle.once(events, [selector], fn)
 - 用法和on类似,但是只是触发一次响应函数
-#### 1.2.2 jqueryObject.on(events, [selector], fn)
-- 1. 参数
+- 参数
   - events:一个或多个用空格分割的事件类型(以对象形式)
   - selector: 元素的子元素选择器
   - fn: 回调函数
-- 2 使用方法
+##### 4.1.2.2 jQueryEle.on(events[, selector][, data],fn)
+- 参数
+  - events:一个或多个用空格分割的事件类型(以对象形式)
+  - selector: <font color="red">元素的子元素选择器(用于实现事件的委派)</font>
+  - fn: 回调函数
+- 使用方法
   - 写法1: events以对象的形式传入
     - {event1: func1, event2: func2 ...}
 ```javascript
@@ -11723,7 +12713,7 @@ config
 - click绑定的是ul元素, 但是触发的对象是ul中的li(由于事件冒泡)
   - 写法四: 为动态创建的元素绑定动态事件
     - 利用事件的委派实现对新创建的动态元素绑定响应的事件
-#### 1.2.3 微博发布页(重点关注事件委派的作用)
+##### 4.1.2.3 微博发布页(重点关注事件委派的作用)
 - 注意this指针的指向
 ```html
 <!DOCTYPE html>
@@ -11784,53 +12774,2310 @@ config
 </body>
 </html>
 ```
-## 2 jquery事件的解绑
-### 2.1 jqueryObject.off()
-- 解绑jqueryObject元素的所有事件
+### 4.2 jquery事件的解绑
+#### 4.2.1 jQueryEle.off()
+- 解绑jQueryEle元素的所有事件
 ```javascript
-    jqueryObject.off()
+    jQueryEle.off()
 ```
-### 2.2 jqueryObject.off(eventName, [selector])
-- 解绑jqueryObject元素的eventName事件或事件委托
+#### 4.2.2 jQueryEle.off(eventName[, selector])
+- 解绑jQueryEle元素的eventName事件或事件委托
 ```javascript
-    jqueryObject.off(eventName, [selector])
+    jQueryEle.off(eventName, [selector])
 ```
-## 3 jquery自动触发事件
-### 3.1 jqueryObject.eventName()
+### 4.3 jquery自动触发事件
+#### 4.3.1 jQueryEle.eventName()
 - 自动触发eventName的事件
 ```javascript
     $("div").click();
 ```
-### 3.2 jqueryObject.trigger(eventName)
+#### 4.3.2 jQueryEle.trigger(eventName)
 - 自动触发eventName的事件
+- 特点：会触发冒泡事件，也会触发默认的事件
 ```javascript
     $("div").trigger("click");
 ```
-### 3.3 jqueryObject.triggerHandler(eventName)
+- <font color="red">a元素使用trigger触发的特殊情况</font>
+
+```javascript
+  $("a").trigger("click")
+// 由于trigger的机制的原因，并没有办法触发其默认的行为
+
+// 解决方法：包裹一个子元素，并且用子元素进行触发
+  $("span").trigger("click")
+```
+#### 4.3.3 jQueryEle.triggerHandler(eventName)
 - 自动触发eventName的事件
-- 不会触发元素的默认行为
+- <font color="red">不会触发元素的冒泡行为和默认行为</font>
 ```javascript
     $("div").triggerHandler("click");
 ```
-## 3 jquery事件对象
-- 和js类似
-
-## 4 jquery的对象拷贝
-- 理解浅拷贝和深拷贝, 见js的笔记
-  - 浅拷贝是将被拷贝对象的复杂数据类型中的地址拷贝到目标对象
-### 4.1 $.extend([deep], target, ...object) 
-- 参数
-  - 1. deep如果设置为true, 则为深拷贝, 默认为浅拷贝
-  - 2. target: 要拷贝的目标对象
-  - 3. object: 拷贝的源对象
-
-## 5 jquery多库共存
-- jQuery使用$作为标志符号,和其他js库的$符号产生冲突
-### 5.1 方法一
-- 统一将$符号改为jQuery
-### 5.2 方法二
-- 使用noConflict()()函数
+### 4.4 event事件的属性
+#### 4.4.1 与触发的元素有关的
+##### 4.4.1.1 eve.target
+- 最初触发事件的DOM元素
+##### 4.4.1.2 eve.currentTarget
+- 冒泡阶段触发的DOM元素
+##### 4.4.1.3 eve.delegateTarget
+- 委派的DOM元素
+##### 4.4.1.4 eve.relatedTarget
+- 在事件中涉及的其它任何DOM元素。
+对于 mouseout 事件，它指向被进入的元素；对于 mousein 事件，它指向被离开的元素。
+##### 4.4.1.5 eve.data
+#### 4.4.2 与冒泡事件的取消相关的
+##### 4.4.2.1 eve.stopPropagation()
+- 用于阻止事件的冒泡
+  - 对于非使用on绑定的事件的函数，可以使用return false来阻止事件的冒泡
+##### 4.4.2.2 eve.stopImmediateProgation()
+- 阻止剩余的事件处理函数执行并且防止事件冒泡到DOM树上。
+  - 即阻止所有事件的执行
+##### 4.4.2.3 eve.isImmediatePropagation()
+- 根据事件对象中是否调用过 event.stopImmediateProgation() 方法来返回一个布尔值。
+##### 4.4.2.4 eve.isPropagationStopped()
+- 根据事件对象中是否调用过 event.stopPropagation() 方法来返回一个布尔值。
+#### 4.4.3 与默认事件的取消相关的
+##### 4.4.3.1 eve.preventDefault()
+- 阻止事件的默认行为
+  - 对于非使用on绑定的事件的函数，可以使用return false来阻止事件的冒泡
+##### 4.4.3.2 eve.isDefaultPrevented()
+- 根据事件对象中是否调用过 event.preventDefault() 方法来返回一个布尔值。
+#### 4.4.4 与鼠标的位置与键盘相关的
+##### 4.4.4.1 eve.pageX
+- 鼠标的位置相当于窗口的左边的位置
+##### 4.4.4.2 eve.pageY
+- 鼠标的位置相当于窗口的右边的位置
+##### 4.4.4.3 eve.which
+- 针对键盘和鼠标事件，这个属性能确定你到底按的是哪个键或按钮。
+#### 4.4.5 与事件的属性有关
+##### 4.4.5.1 eve.type
+- 返回触发事件的名称
+##### 4.4.5.2 eve.timeStamp
+- 这个属性返回事件触发时距离1970年1月1日的毫秒数。
+##### 4.4.5.3 eve.result
+- 这个属性包含了当前事件事件最后触发的那个处理函数的返回值，除非值是 undefined 。
+##### 4.4.5.4 eve.namespace
+- 返回当前触发事件的命名空间
+### 4.5 自定义事件
+- 前提
+  - 必须使用on的形式绑定触发的函数
+  - 必须使用trigger来进行触发
 ```javascript
-    let alias = $.noConflict()
+  $("div").on("myEventName", func(){});
+
+  $("div").trigger("myEventName")
+```
+### 4.6 事件的委派
+- 如果想要通过动态的形式来创建新的元素，且要为该元素绑定特定的事件，此时我们可以使用事件委派的方式为该元素绑定事件
+- 前提
+  - 绑定的元素必须在进入到入口函数前已经被创建的元素
+- 在最新的jQuery中，已经可以直接使用on实现事件的委派
+- 例子
+```html
+
+```
+### 4.7 事件的命名空间
+- 在绑定事件的时候，可以在事件名称的后面添加.userName来是该事件具有命名空间
+- 若有命名空间的冒泡事件被触发
+  - 有相同命名空间的父元素的冒泡事件会被触发，其他（包括没有命名空间）的父元素事件都不会被触发
+- 若没有命名空间的冒泡事件被触发
+  - 所以的父元素的冒泡事件都会被触发
+## 5 jquery动态添加/删除/替换节点的方法
+### 5.1 创建节点
+- 使用jQuery的核心函数
+### 5.2 内部插入
+#### 5.2.1 append(content|fn)
+- 向每个匹配的元素内部的最后面追加元素。
+- 参数
+  - content: 要追加到目标中的内容
+  - function(index, html)
+    - <font>返回一个HTML字符串</font>，用于追加到每一个匹配元素的里边。接受两个参数，index参数为对象在这个集合中的索引值，html参数为这个对象原先的html值。 
+- 与后面的区别
+  - content不相同，to的content是目标位置
+#### 5.2.2 appendTo(content)
+- 把所有匹配的元素追加到另一个指定的元素的内部的后面。
+- 参数
+  - content: 要追加的目标
+#### 5.2.3 prepend(content|fn)
+- - 向每个匹配的元素内部的最前面追加元素。
+#### 5.2.4 prependTo(content)
+- 把所有匹配的元素追加到另一个指定的元素的内部的前面
+- 参数
+  - content: 要追加的目标
+### 5.3 外部插入
+#### 5.3.1 after(content|fn)
+- 在每个匹配的元素外部之后插入内容。
+- 参数和前面的类似的效果
+#### 5.3.2 insertAfter(content)
+- 把所有匹配的元素插入到另一个指定的元素外部的后面。
+#### 5.3.3 before(content|fn)
+- 在每个匹配的元素外部之前插入内容。
+- 参数和前面的类似的效果
+#### 5.3.4 insertBefore(content)
+- 把所有匹配的元素插入到另一个指定的元素外部的前面。
+### 5.4 动态删除节点
+#### 5.4.1 empty()
+- <font color="red">删除匹配的元素集合中所有的子节点和内容，本身不会被删除</font>
+#### 5.4.2 remove([expr])
+- 从DOM中<font color="red">删除所有匹配的元素</font>。
+  - 这个方法不会把匹配的元素从jQuery对象中删除，因而可以在将来再使用这些匹配的元素。但<font color="red">除了这个元素本身得以保留之外，其他的比如绑定的事件，附加的数据等都会被移除</font>
+- expr
+  - 用于指定特殊的某个当前对象
+#### 5.4.3 detach([expr])
+- 从DOM中<font color="red">删除所有匹配的元素</font>。
+  - 这个方法不会把匹配的元素从jQuery对象中删除，因而可以在将来再使用这些匹配的元素。与remove()不同的是，所有绑定的事件、附加的数据等都会保留下来。
+- expr
+  - 用于指定特殊的某个当前对象
+### 5.5 动态替换节点
+#### 5.5.1 replaceWith(content|fn)
+- 将所有匹配的元素替换成指定的HTML或DOM元素。
+- 参数
+  - content
+    - 用于将匹配元素替换掉的内容
+#### 5.5.2 replaceAll(selector)
+- 用匹配的元素替换掉所有 selector匹配到的元素。
+- 和前面的content方法相反
+### 5.6 动态复制节点
+#### 5.6.1 clone([Even[,deepEven]])
+- 克隆匹配的DOM元素并且选中这些克隆的副本。
+- 浅复制(false)
+  - 浅复制只会复制元素，但是不会复制元素的事件
+- 深复制(true)
+  - 深复制会复制元素，也会复制元素的事件
+
+## 5 jquery中的工具
+### 5.1 浏览器及特性检测
+#### 5.1.1 $.browser.version
+- 浏览器渲染引擎版本号。
+### 5.2 数组和对象操作
+#### 5.2.1 $.each(object[, callback])（还能遍历对象）
+- 会返回遍历的数组
+- 用于遍历当前的数组或者对象（包含为数组）
+  - 对于数组类似于forEach
+    - 但forEach返回值为一个空数组
+- 参数
+  - object  需要遍历的对象或数组
+  - callback  每个成员/元素执行的回调函数。
+#### 5.2.2 $.map(arr|obj,callback)
+- 将一个数组/对象（伪数组）中的元素转换到另一个数组/对象中。
+- 类似于map函数，但是可以用于对象
+#### 5.2.3 $.grep(array, callback[, invert])
+- 返回一个经过过滤的新的数组
+- 类似于filter函数
+- 参数
+  - array:待过滤数组。
+  - callback:此函数将处理数组每个元素。第一个参数为当前元素，第二个参数而元素索引值。此函数应必须返回一个布尔值。
+  - invert:如果 "invert" 为 false 或为设置，则函数返回数组中由过滤函数返回 true 的元素，当"invert" 为 true，则返回过滤函数中返回 false 的元素集。
+#### 5.2.4 $.merge(first, second)
+- 合并两个数组
+#### 5.2.5 $.uniqueSort(array)
+- $.uniqueSort()函数通过搜索的数组对象，排序数组，并移除任何重复的节点
+  - 如果一个节点和已经在数组中的节点完全相同，那么它被认为是重复的; 两个不同的节点具有相同的属性是被认为不重复的。
+- 注意
+  - 此功能只适用于普通的JavaScript DOM元素的数组，主要是jQuery内部使用。
+#### 5.2.6 $.extend([deep, ]target, object1[, objectN]
+- 用一个或多个其他对象来扩展一个对象，返回被扩展的对象。
+- 参数
+  - deep:如果设为true，则递归合并。
+  - target:待修改对象。
+  - object1:待合并到第一个对象的对象。
+  - objectN:待合并到第一个对象的对象。
+- 应用
+  - 深复制/浅复制
+#### 5.2.7 $.inArray(value,array[, fromIndex])
+- 判断某个value是否在array中
+- 参数
+  - value: 要判断的元素值
+  - array: 要查询的数组
+  - fromIndex: 开始的下标
+#### 5.2.8 jQueryEle.toArray()
+- 将DOM元素转化为一个数组
+#### 5.2.9 $.makeArray(obj)
+- 将类数组转化为数组
+#### 5.2.10 $.when(deferreds)
+- 参数
+  - deferreds
+    - 异步函数
+#### 5.2.11 $.proxy()
+- 返回改变了作用域的函数
+```javascript
+// 用法1
+  $.proxy(func, context)
+```
+- 参数
+  - func: 将要改变作用域的函数
+  - context：一个object，那个函数的作用域会被设置到这个context上来。
+```javascript
+// 用法2
+  $.proxy(context, name)
+```
+- 参数
+  - context: 一个object，那个函数的作用域会被设置到这个object上来。
+  - name: 改变上下文中的函数名(这个函数必须是前一个参数 'context' 对象的属性)
+```javascript
+var obj = {
+  name: "John",
+  test: function() {
+    alert( this.name );
+    $("#test").unbind("click", obj.test);
+  }
+};
+
+$("#test").click( jQuery.proxy( obj, "test" ) );
+
+// 以下代码跟上面那句是等价的:
+$("#test").click( jQuery.proxy( obj.test, obj ) );
+
+// 可以与单独执行下面这句做个比较。对象是window
+$("#test").click( obj.test );
+```
+### 5.3 一些基本函数
+#### 5.3.1 $.contains(container, contained)
+- 一个DOM节点是否包含另一个DOM节点
+```javascript
+$.contains(document.documentElement, document.body); // true
+$.contains(document.body, document.documentElement); // false
+```
+#### 5.3.2 $.isEmptyObject(obj)
+- 判断是不是一个空对象
+```javascript
+$.isEmptyObject({}) // true
+$.isEmptyObject({ foo: "bar" }) // false
+```
+#### 5.3.3 $.isNumeric(value)
+- 确定是不是一个数字
+```javascript
+$.isNumeric("-10");  // true
+$.isNumeric(16);     // true
+$.isNumeric(0xFF);   // true
+$.isNumeric("0xFF"); // true
+$.isNumeric("8e5");  // true (exponential notation string)
+$.isNumeric(3.1415); // true
+$.isNumeric(+10);    // true
+$.isNumeric(0144);   // true (octal integer literal)
+$.isNumeric("");     // false
+$.isNumeric({});     // false (empty object)
+$.isNumeric(NaN);    // false
+$.isNumeric(null);   // false
+$.isNumeric(true);   // false
+$.isNumeric(Infinity); // false
+$.isNumeric(undefined); // false
+    
+```
+#### 5.3.4 $.isPlainObject(obj)
+- 测试对象是否是纯粹的对象（通过 "{}" 或者 "new Object" 创建的）。
+#### 5.3.5 $.trim(str)
+- 返回一个去掉字符串起始和结尾的空格的字符串
+#### 5.3.6 $.param(obj[, traditional])
+- 将表单元素数组或者对象序列化
+```javascript
+var myObject = {
+  a: {
+    one: 1, 
+    two: 2, 
+    three: 3
+  }, 
+  b: [1,2,3]
+};
+var recursiveEncoded = $.param(myObject);
+var recursiveDecoded = decodeURIComponent($.param(myObject));
+
+alert(recursiveEncoded);
+alert(recursiveDecoded);
+//a%5Bone%5D=1&a%5Btwo%5D=2&a%5Bthree%5D=3&b%5B%5D=1&b%5B%5D=2&b%5B%5D=3
+//a[one]=1&a[two]=2&a[three]=3&b[]=1&b[]=2&b[]=3
+
+var shallowEncoded = $.param(myObject, true);
+var shallowDecoded = decodeURIComponent(shallowEncoded);
+
+alert(shallowEncoded);
+alert(shallowDecoded);
+//a=%5Bobject+Object%5D&b=1&b=2&b=3
+//a=[object+Object]&b=1&b=2&b=3
+```
+## 6 jquery的ajax请求
+### 6.0 $.ajaxSetup([options])
+- 设置全局 AJAX 默认选项。
+```javascript
+$.ajaxSetup({
+  url: "/xmlhttp/",
+  global: false,
+  type: "POST"
+});
+$.ajax({ data: myData });
+```
+### 6.1 $.ajax(url[, settings])
+### 6.2 $.get(url[, data][, callback][, type])
+- 参数
+  - url:待载入页面的URL地址
+  - data:待发送 Key/value 参数。
+  - callback:载入成功时回调函数。
+  - type:返回内容格式，xml, html, script, json, text, _default。
+```javascript
+$.get("test.cgi", { name: "John", time: "2pm" },
+          function(data){
+          alert("Data Loaded: " + data);
+});
+```
+#### 6.2.1 $.getJSON(url[, data][, callback])
+- 参数
+  - url:发送请求地址。
+  - data:待发送 Key/value 参数。
+  - callback:载入成功时回调函数。
+```javascript
+$.getJSON("test.js", { name: "John", time: "2pm" }, function(json){
+  alert("JSON Data: " + json.users[3].name);
+});
+```
+#### 6.2.2 $.getScript(url[, callback])
+- 参数
+  - url:待载入 JS 文件地址。
+  - callback:成功载入后回调函数。
+### 6.3 $.post(url[, data][, callback][, type])
+- 参数
+  - url:发送请求地址。
+  - data:待发送 Key/value 参数。
+  - callback:发送成功时回调函数。
+  - type:返回内容格式，xml, html, script, json, text, _default。
+```javascript
+$.post("test.php", { "func": "getNameAndTime" },
+          function(data){
+          alert(data.name); // John
+          console.log(data.time); //  2pm
+          }, "json");
+```
+### 6.4 jQueryEle.load(url[, data][, callback])
+- 载入远程 HTML 文件代码并插入至 DOM 中
+- 参数
+  - url:待装入 HTML 网页网址。
+  - data:发送至服务器的 key/value 数据。在jQuery 1.3中也可以接受一个字符串了。
+  - callback:载入成功时回调函数。
+### 6.4 ajax的事件触发
+#### 6.4.1 jQueryEle.ajaxComplete(callback)
+- AJAX 请求完成时执行函数。
+#### 6.4.2 jQueryEle.ajaxError(callback)
+- AJAX 请求发生错误时执行函数。
+#### 6.4.3 jQueryEle.ajaxSend(callback)
+- AJAX 请求发送前执行函数。
+#### 6.4.4 jQueryEle.ajaxStart(callback)
+- AJAX 请求开始时执行函数。
+#### 6.4.5 jQueryEle.ajaxStop(callback)
+- AJAX 请求结束时执行函数(即包含成功或者失败)。
+#### 6.4.6 jQueryEle.ajaxSuccess(callback)
+- AJAX 请求成功时执行函数。
+
+## 7 jQuery的原理（源码分析）
+### 7.1 jQuery的基本结构
+```javascript
+(function(window, undefined) {
+    var myjQuery = function() {
+        return new myjQuery.prototype.init();
+    }
+    // 1. 创建一个原型对象
+    myjQuery.prototype = {
+        constructor: myjQuery
+    }
+    // 2. 利用init()来创建对象
+    // 3. 为了init()的方法可以调用myjQuery中的方法,需要讲其原型指向myjQuery的原型
+    myjQuery.prototype.init.prototype = myjQuery.prototype;
+    // 将myjQuery绑定到window上
+    window.myjQuery = window.$ = myjQuery
+})(window)
+```
+- jQuery的本质是一个立即使用函数
+- 为什么使用立即使用函数
+  - 可以避免多个框架的冲突（实际上类似于立即执行函数有自己的一个作用域）
+- jQuery如何让外界访问内部定义的变量
+  - 通过window.jQuery.xxx进行暴露
+#### 7.1.1 通过哪个函数来返回一个jQuery实例
+```javascript
+return new myjQuery.prototype.init()
+```
+- 由于该函数需要用到jQuery内部的函数来进行初始化,所以需要有
+```javascript
+myjQuery.prototype.init.prototype = myjQuery.prototype;
+```
+### 7.2 jQuery的核心函数(init函数)
+- 返回一个类数组
+#### 7.2.1 jQuery核心函数的分类
+- 传入""(空字符串), null, undefined, NaN, 0, false  -- 返回空的jQuery对象
+- 传入字符串
+  - 代码片段
+    - 创建好的DOM元素存储到jQuery对象中返回
+    - 选择器：会将找到的所有元素存储到jQuery对象中返回
+- 传入数组
+  - 数组
+  - 伪数组
+    - 将数组中的元素一次存储到jQuery对象中返回
+- 除上述类型
+  - 将传入的数据存储到jQuery对象中返回
+#### 7.2.2 jQuery的工具函数extend如何进行构建？
+- 目的
+  - 为了让代码容易解读，从而构建一个工具函数来存储只在构建其他函数过程中用到的函数
+- 第一步：声明一个jQuery的函数extend，将传入的工具类的函数赋值给jQuery的对象
+```javascript
+ myjQuery.extend = function(obj) {
+        // 将extend传入的对象里面的函数定义到myjQuery中
+        for(let key in obj) {
+            myjQuery[key] = obj[key];
+        }
+    }
+```
+- 第二步：执行该jQuery函数，传入工具类
+  - 在后面增加工具类的函数时，会进行说明
+```javascript
+    // 工具函数的抽取--封装到extend({}),在myjQuery中同样可以调用，但是封装起来容易进行管理
+    // 没有出现指向该实例的this
+    myjQuery.extend({
+        isString: function(selector) {
+            return typeof selector === "string"
+        },
+        isHTML: function(selector) {
+            return selector.charAt(0 )=== '<' && selector.charAt(selector.length - 1) === '>' 
+            && selector.length >= 3
+        },
+        // 去除两端的空格即可
+        trim: function(str) {
+            // 1. 判断是否拥有trim方法
+            if(str.trim) {
+                return str.trim();
+            }
+            else {
+                // 若没有，则采用正则表达式进行判断
+                return str.replace(/^\s+|\s$/, "")
+            }
+        }
+    })
+```
+#### 7.2.3 传入的selector是string类型
+- 第一步：判断是不是代码片段，采取处理代码片段的方法
+  - 通过观察，得到jQuery返回的是一个伪数组，且每个节点是代码片段中的一级DOM元素
+- 判断是不是代码片段
+- 根据代码片段创建所有的元素
+```javascript
+    var temp = document.createElement("div");
+    temp.innerHTML = myjQuery.trim(selector);
+```
+- 在jQuery返回的是一级的DOM元素(实现了伪数组之间的互换)
+```javascript
+  [].push.apply(this, temp.children);
+```
+- 需要为当前的jQuery对象添加一个length属性
+- 返回this
+```javascript
+  jQuery.prototype = {
+    contructor: jQuery,
+    init: function(selector) {
+        // 1. 若为空，则返回空的对象
+        if(!selector) {
+            console.log(this)
+            return this;
+        }
+        // 对字符串的处理
+        else if(myjQuery.isString(selector)) {
+            // 1. 传入代码片段
+                // 1.1 判断是不是代码片段
+            if(myjQuery.isHTML(selector)) {
+                // 1.2 根据代码片段创建所有的元素
+                var temp = document.createElement("div");
+                temp.innerHTML = myjQuery.trim(selector);
+                // 1.3 在jQuery返回的是一级的DOM元素
+                // for(let i = 0;i < temp.children.length;i ++) {
+                //     this[i] = temp.children[i];
+                // }
+                [].push.apply(this, temp.children);
+                // 1.4 需要为当前的jQuery对象添加一个length属性
+                this.length = temp.children.length;
+                // 1.5 返回this
+                return this;
+            }
+        }
+    }
+  }
+```
+- 第二步：判断是不是选择器，执行类选择器获得节点，并且放回jQuery对象
+- 返回选择器找到的节点
+- 将该节点赋值到jQuery返回的对象
+- 需要为当前的jQuery对象添加一个length属性
+- 返回this
+```javascript
+  jQuery.prototype = {
+    contructor: jQuery,
+    init: function(selector) {
+      // .....
+      // 2. 传入选择器
+        else {
+          // 2.1 返回选择器找到的节点
+            var res = document.querySelectorAll(selector);
+            // for(let i = 0;i < res.length;i ++) {
+            //     this[i] = res[i];
+            // }
+          // 2.2 将该节点赋值到jQuery返回的对象
+            [].push.apply(this, res);
+          // 2.3 需要为当前的jQuery对象添加一个length属性
+            this.length = res.length;
+          // 2.4 返回this
+            return this;
+        }
+    }
+  }          
+```
+#### 7.2.4 传入的selector是Array或这类数组类型
+- 工具类函数的编写
+  - 判断是不是数组或者非数组
+```javascript
+  {
+    // ...
+    isArray: function(selector) {
+      // 1. 是对象类型
+      // 2. 有length属性
+      // 3. 不是window对象
+      return typeof selector === "object" && "length" in selector && selector != window
+    }
+  }
+```
+- 第一步：判断传入的是不是数组类型，都可以使用将数组转化类数组的形式，返回jQuery对象
+```javascript
+  jQuery.prototype = {
+    contructor: jQuery;
+    init: function(selector) {
+      // ...
+        else if(myjQuery.isArrayLike(selector)) {
+            // 为什么要判断是不是数组
+            // 原因是为了适应低级的浏览器
+            if(myjQuery.isArray(selector)) {
+                [].push.apply(this, selector);
+                this.length = selector.length;
+                return this;
+            }
+            else {
+                // 为了使用于低级的浏览器，先将其转化为真数组
+                let temp = [].slice.call(selector);
+                [].push.apply(this, temp);
+                this.length = temp.length;
+                return this;
+            }   
+        }
+    }
+  }
+```
+#### 7.2.5 传入其他类型
+- 第一步：将传入的数组存储到第一位上面
+```javascript
+  jQuery.prototype = {
+    contructor: jQuery;
+    init: function(selector) {
+      // ...
+      else {
+          this[0] = selector;
+          this.length = 1;
+          return this;
+      }
+    }
+  }
+```
+### 7.3 jQuery的核心函数的补充
+- 当传入的是是一个函数的类型时，则相当于监听加载完成
+- 第一步：在jQuery的工具类中添加ready的方法作为监听加载完成的方法
+```javascript
+  {
+    // ...
+    isFunction: function(selector) {
+      return typeof selector === "function";
+    }
+    ready: function(wait) {
+      if(document.readyState === "complete") {
+          wait();
+      }
+      else if(document.addEventListener) {
+          document.addEventListener("DOMContentLoaded", function() {
+              wait();
+          })
+      }
+      else {
+          document.attachEvent("onreadystatechange", function(readyState) {
+              if(readyState === "complete") {
+                  wait();
+              }
+          })
+      }
+    }
+  }
+```
+- 第二步：补充若是函数时，则调用ready方法
+```javascript
+  jQuery.prototype = {
+    contructor: jQuery;
+    init: function(selector) {
+      // ...
+      else if(myjQuery.isFunction(selector)) {
+        myjQuery.ready(selector);
+      }
+      else {
+          this[0] = selector;
+          this.length = 1;
+          return this;
+      }
+    }
+  }
+```
+#### 7.3.1 构造适用于全部浏览器的ready函数
+- 注意工具类中ready的特殊性
+  - window.onload = function() {}
+    - 该事件的触发是在所有dom元素加载完毕和相关的资源加载完毕才执行
+  - DOMContentLoaded事件
+    - 该事件是在所有dom元素加载完毕就会触发执行，但是该事件在ie8以下无法监听
+      - 使用addEventListener()
+      - 使用attachEvent()
+  - 利用documnet.readyState属性来触发
+    - readystatechange事件可以检测到documnet.readyState的改变
+```javascript
+// DOM元素加载的过程中触发的事件
+loading：document 仍在加载。
+interactive（可交互）： 文档已被解析，"正在加载"状态结束，但是诸如图像，样式表和框架之类的子资源仍在加载。
+complete（完成）： 文档和所有子资源已完成加载。表示 load 状态的事件即将被触发。
+```
+```javascript
+{
+    ready: function(wait) {
+      if(document.readyState === "complete") {
+          wait();
+      }
+      else if(document.addEventListener) {
+          document.addEventListener("DOMContentLoaded", function() {
+              wait();
+          })
+      }
+      else {
+          document.attachEvent("onreadystatechange", function(readyState) {
+              if(readyState === "complete") {
+                  wait();
+              }
+          })
+      }
+  }
+}
+```
+### 7.4 添加jQuery原型对象的属性和方法
+#### 7.4.1 jQuery.prototype的属性
+- jquery    -- 获取jQ的版本号
+- length  -- 原型实例的默认长度
+- selector  -- 实例默认的选择器取值
+- push    -- 使用数组中的push
+- sort    -- 使用数组中的sort
+- init    -- 返回对应的实例对象
+```javascript
+    myjQuery.prototype = {
+        constructor: myjQuery,
+        jquery: "myjQuery",
+        length: 0,
+        selector: "",
+        // 相当于[].push.apply(this)
+        push: [].push,
+        sort: [].sort,
+        splice: [].splice,
+        init: function(selector) {...
+        }
+    }
+```
+#### 7.4.2 jQuery.prototype的方法
+##### 7.4.2.1 toArray()
+- 返回当前jQuery实例对象的数组形式
+```javascript
+    myjQuery.prototype = {
+      // ...
+      toArray: function() {
+        return [].slice.call(this);
+      }
+    }
+```
+##### 7.4.2.2 get(index)
+- 返回该jQuery实例对象对应下标的dom对象
+  - 若不传递参数 -- 返回对应的数组形式的DOM元素
+  - 若index为正数 -- index
+  - 若index为辅助 -- length + index
+```javascript
+    myjQuery.prototype = {
+      // ...
+      get: function(index) {
+          if(arguments.length === 0) {
+              return this.toArray();
+          }
+          else {
+              if(index >= 0) {
+                  return this[index];
+              }
+              else {
+                  return this[this.length + index]
+              }
+          }
+      },
+    }
+```
+##### 7.4.2.3 eq(index), first(), last()
+- 返回一个包装好的对象
+  - 若index为空，则返回一个空的对象
+```javascript
+    myjQuery.prototype = {
+      // ...
+      eq: function(index) {
+          if(arguments.length === 0) {
+              return new myjQuery();
+          }
+          else {
+              return new myjQuery(this.get(index))
+          }
+      },
+      first: function() {
+          return this.eq(0);
+      },
+      last: function() {
+          return this.eq(-1);
+      }
+    }
+```
+##### 7.4.2.4 each()
+- 既可以遍历为数组，也可以遍历数组，可以遍历对象
+- 有工具方法和对象的方法
+###### 7.4.2.4.1 工具的方法each(obj, fn)
+- 注意1：
+  - 要先判断是不是数组（包含类数组）或者对象并做单独的处理
+- 注意2：
+  - 实现当fn返回值为false时，终止循环
+  - 实现当fn返回值为true时，继续循环
+  - 其他情况，正常循环
+  - <font>index在value之前</font>
+- 注意3：
+  - 函数中的this指向的是当前的value
+- 注意4：
+  - 遍历谁返回谁
+```javascript
+{
+  // ...
+    each: function(obj, fn) {
+        // 1. 判断是不是数组或者类数组（包括jQuery对象）
+        if(myjQuery.isArrayLike(obj)) {
+            for(let i = 0;i < obj.length;i ++) {
+                // 若传入过多的参数，则那些参数无法访问，但可以通过arguments进行访问
+                // 1.1 调用call使得原本函数中this指向window转向指向value
+                let flag = fn.call(obj[i] ,obj[i], i, obj);
+                // 1.2 实现返回true继续执行，返回false停止执行
+                if(flag === true) 
+                    continue;
+                else if(flag === false)
+                    break;
+            }
+        }
+        // 2. 若是对象
+        else {
+            for(let key in obj) {
+                flag = fn.call(obj[key] ,obj[key], key, obj);
+                if(flag === true) 
+                    continue;
+                else if(flag === false)
+                    break;
+            }
+        }
+        return obj;
+    }
+}
+```
+###### 7.4.2.4.2 jQuery实例对象的方法each(fn)
+- 即遍历自己，只需要传入fn  
+```javascript
+    myjQuery.prototype = {
+      // ...
+        each: function(fn) {
+            return myjQuery.each(this, fn);
+        }
+    }
+```
+##### 7.4.2.5 map()
+###### 7.4.2.5.1 工具类中的map(obj, fn, arg)
+- 注意1：
+  - 要先判断是不是数组（包含类数组）或者对象并做单独的处理
+- 注意2：
+  - 比each多了一位参数
+  - <font>value在index之前</font>
+- 注意3
+  - 当钩子函数没有返回时，并不需要进行添加到里面去
+    - temp != null
+- 注意4：
+  - <font color="red">返回结果是一个被修改的数组</font>
+```javascript
+{
+  // ...
+    map: function(obj, fn, arg) {
+      let arr = [];
+      if(myjQuery.isArrayLike(obj)) {
+          for(let i = 0;i < obj.length;i ++) {
+              let temp = fn(obj[i], i, arg);
+              if(temp != null)
+                  arr.push(temp)
+          }
+      }
+      else if(myjQuery.isObject(obj)){
+          for(let key in obj) {
+              let temp = fn(obj[key], key, arg);
+          // 注意：当没有返回值时，不需要添加
+              if(temp != null)
+                  arr.push(temp);
+          }
+      }
+      return arr;
+  }
+}
+```
+###### 7.4.2.5.2 jQuery实例对象的方法each(fn)
+- 返回结果为包装好的jQuery对象
+```javascript
+    myjQuery.prototype = {
+      // ...
+      map: function(fn) {
+          return new myjQuery(myjQuery.map(this, fn, this))
+      }
+    }
+```
+### 7.5 jQuery的DOM操作方法
+- 放入实例对象的extend方法中
+#### 7.5.1 jQueryELe.empty()
+- 清空dom节点一级元素的内容
+  - 注意：为了链式的调用，返回值都是本身
+```javascript
+myjQuery.prototype.extend({
+    empty: function() {
+        this.each(function(key, value) {
+            value.innerHTML = "";
+        })
+        returnt this;
+    }
+})
 ```
 
+
+#### 7.5.2 jQueryELe.remove（后面再补充）
+- 肯定需要用到递归
+- 如何确定节点被删除，导致不会重复删除？
+#### 7.5.3 jQueryELe.html([text]) 
+- 获取或设置innerHTML
+  - 获取只会返回第一个节点的innerHTML
+```javascript
+myjQuery.prototype.extend({
+    html: function(text) {
+        if(arguments.length === 0)  {
+            return this[0].innerHTML;
+        }
+        else {
+            this.each(function(key, value) {
+                value.innerHTML = text;
+            })
+        }
+        return this;
+    }
+})
+```
+#### 7.5.4 jQueryELe.text([content])
+- 获取或者设置内部的text内容
+  - 获取的是所有节点的text内容
+    - innerText
+      - 可以获取本身的文本以及其子代的文本内容
+```javascript
+myjQuery.prototype.extend({
+  text: function(content) {
+      if(arguments.length === 0) {
+          let res = "";
+          this.each(function(key, value) {
+              res += value.innerText;
+          })
+          return res;
+      }
+      else {
+          this.each(function(key, value) {
+              value.innerText = content;
+          })
+          return this;
+      }
+  }
+})
+```
+#### 7.5.5 source.appendTo(target)
+- 使用parent.appendChild(child)
+  - 注意：child不一定是新建的节点，也可以是外部的节点
+- 在jQuery中的插入，要插入到多个节点，所以需要对节点进行拷贝
+  - 使用node.cloneNode(true)对节点进行克隆
+  - 由于传入的是jQuery有可能有多个节点，所以需要以遍历的方式
+- 返回值为
+  - 添加的元素的对象,为jQuery类型
+- 里面有bug,没有检查是否具有id的属性
+  - 因为id属性只能有一个
+```javascript
+// 没有使用工具类的函数
+myjQuery.prototype.extend({
+  appendTo(selector) {
+      // 1. 统一将传入的数据转化为jQuery对象
+      let $target = $(selector);
+      let res = []
+      // 2. 遍历所有要目标的节点
+      for(let i = 0;i < this.length;i ++) {
+          // 2.1 遍历所有要插入的节点
+          for(let j = 0;j < $target.length; j ++) {
+                  // 2.1.1 若是要插入的目标是第一个,则直接插入
+              if(i === 0) {
+                  $target[i].appendChild(this[j]);
+                  res.push(this[j])
+              }
+              else {
+                    // 2.1.2 若是要插入的目标不是第一个,则进行复制后插入
+                  let sourceEle = this[j].cloneNode(true);
+                  $target[i].appendChild(sourceEle);
+                  res.push(sourceEle)
+              }
+          }
+      }
+      return $(res);
+  }
+})
+```
+```javascript
+// 使用工具类的函数
+myjQuery.prototype.extend({
+  appendTo(selector) {
+      // 1. 统一将传入的数据转化为jQuery对象
+      var $target = $(selector);
+      let res = [];
+      // 2. 遍历所有要目标的节点
+      $.each($target, function(key, value) {
+          this.each(function(k, v) {
+              if(key === 0) {
+                  value.appendChild(v);
+                  res.push(v)
+              }
+              else {
+                  let v_clone = v.cloneNode(true);
+                  value.appendChild(v_clone);
+                  res.push(v_clone);
+              }
+          })
+      })
+      return $(res)
+  }
+})
+```
+##### 7.5.5.1 接收的对象的类型，可以转化为jQuery对象
+- 字符串
+  - 放入到核心函数，从而将其转化为jQuery对象
+- jQuery对象
+  - 放入到核心函数，从而将其转化为jQuery对象
+- DOM元素
+  - 放入到核心函数，从而将其转化为jQuery对象
+#### 7.5.6 source.prependTo(target)
+- 用原生DOM将节点插入到元素内部的前面
+  - target.insertBefore(source, target.firstChild)
+    - <font color="red">注意DOM的insertBefore方法调用是谁就会插入到谁的里面</font>
+- 其他的过程类似于appendTo
+```javascript
+myjQuery.prototype.extend({
+  // ...
+    prependTo(selector) {
+        let $target = $(selector);
+        let res = [];
+        let $this = this;
+        // 注意函数中的this指向
+          // 与箭头函数相关
+        $.each($target, function(key, value) {
+            let firstChild = value.firstChild;
+            $this.each(function(k, v) {
+                if(key === 0) {
+                    value.insertBefore(v, firstChild);
+                    res.push(v);
+                }
+                else {
+                    let temp = v.cloneNode(true);
+                    value.insertBefore(temp, firstChild);
+                    res.push(temp)
+                }
+            })
+        })
+        return $(res);
+    }
+})
+```
+#### 7.5.7 target.append(source)
+- 参数和调用者与前面的不同
+- 传入的字符串不会被当成选择器来进行处理
+  - 选择器只会被当成普通的字符串
+  - 代码片段则会返回对应的DOM形式
+  - 使用value.innerHTML += source会自动将代码片段转化为DOM的类型，所以不需要其他的操作
+- 返回调用者this
+```javascript
+myjQuery.prototype.extend({
+  // ...
+  append(source) {
+      // 1. 当source为字符串时，不将其判断为选择器
+      if(myjQuery.isString(source)) {
+          this.each(function(key, value) {
+              value.innerHTML += source;
+          })
+      }
+      // 2. 其他的情况可以调用已实现的函数即可
+      else {
+          $(source).appendTo(this);
+      }
+      return this;
+  }
+})
+```
+#### 7.5.8 target.prepend(source) 
+- 与append方法类似
+```javascript
+myjQuery.prototype.extend({
+  // ...
+  prepend(source) {
+      if(myjQuery.isString(source)) {
+          this.each(function(key, value) {
+              value.innerHTML = source + value.innerHTML;
+          })
+      }
+      else {
+          $(source).prependTo(this);
+      }
+      return this;
+  }
+})
+```
+#### 7.5.9 source.insertBefore(target)
+- 将元素插入到某元素外部之前
+- 返回值同样是返回加入的元素的jQuery对象
+```javascript
+myjQuery.prototype.extend({
+  // ...
+  insertBefore(target) {
+      // 可以调用prepend,通过找到target元素的父元素即可
+      let $this = this;
+      let $target = $(target)
+      let res = [];
+      $.each($target, function(key, value) {
+          // 1. 利用指定元素的父元素来调用原生的insertBefore函数
+          let parentNode = value.parentNode;
+          $this.each(function(k, v) {
+              if(key === 0) {
+                  parentNode.insertBefore(v, value);
+                  res.push(v)
+              }
+              else {
+                  let temp = v.cloneNode(true);
+                  parentNode.insertBefore(temp, value);
+                  res.push(temp)
+              }
+          })
+      })
+      return $(res);
+  }
+})
+```
+#### 7.5.10 source.insertAfter(target)
+#### 7.5.11 target.before(source)
+#### 7.5.12 target.after(source)
+- nextSibling
+#### 7.5.13 jQueryELe.next([expr])
+- nextSibling
+#### 7.5.14 jQueryELe.prev([expr])
+- prevSibling
+#### 7.5.15 source.replaceAll(target)
+- 用source来替代target
+```javascript
+myjQuery.prototype.extend({
+  // ...
+  replaceAll(target) {
+      // 1. 将相应的元素添加到target的前面
+      let $target = $(target)
+      let res = this.insertBefore($target);
+      // 2. 删除target元素即可
+      $target.remove();
+      return res;
+  }
+})
+```
+#### 7.5.16 target.replaceWith(source)
+#### 7.5.17 jQueryELe.clone(boo)
+- 浅复制：只会复制对应的属性，但是不会复制事件
+- 深复制：两个都会赋值
+- 原生的cloneNode(true)的注意事项
+  - 无法复制自己添加的属性
+  - 克隆一个元素节点会拷贝它所有的属性以及属性值,当然也就包括了属性上绑定的事件(比如onclick="alert(1)"),但不会拷贝那些使用addEventListener()方法或者node.onclick = fn这种用JavaScript动态绑定的事件.
+  - 在使用Node.appendChild()或其他类似的方法将拷贝的节点添加到文档中之前,那个拷贝节点并不属于当前文档树的一部分,也就是说,它没有父节点.
+  - 如果deep参数设为false,则不克隆它的任何子节点.该节点所包含的所有文本也不会被克隆,因为文本本身也是一个或多个的Text节点.
+```javascript
+myjQuery.prototype.extend({
+  // ...
+  clone: function(deep) {
+      let res = [];
+      let $this = this;
+      if(deep) {
+          // 1. 深复制
+          // 还要赋值对象的触发事件，显然正好是在dom.eventsCache中，所以可以进行添加
+          this.each(function(key, dom) {
+              // 原生的cloneNode(true)不能复制事件的触发
+              var temp = dom.cloneNode(true);
+              // cloneNode(true);没有将增添的属性eventsCache复制进去
+              if(dom.eventsCache) {
+                  $.each(dom.eventsCache, function(eventName, array) {
+                      $.each(array, function(key, value) {
+                          myjQuery.addEvent(temp, eventName, value);
+                      })
+                  })
+              }
+              res.push(temp);
+          })
+      }
+      else {
+          // 2. 浅复制
+          this.each(function(key, dom) {
+              // 原生的cloneNode(true)不能复制事件的触发
+              var temp = dom.cloneNode(true);
+              res.push(temp);
+          })
+      }
+      return $(res);
+  }
+})
+```
+### 7.6 jQuery与属性操作相关的方法
+- 注意：以下的代码都没有考虑到id的特殊性
+#### 7.6.1 jQueryELe.attr(attr[, value])
+- 只传递一个参数且为字符串 -- 默认返回第0个节点对应的属性值 
+- 传递两个参数，设置所有节点对应属性的值
+- 传递一个参数且为对象，设置所有节点对应对象中的内容
+- 返回值为本身
+```javascript
+myjQuery.prototype.extend({
+    attr: function(attr, value) {
+        let $this = this;
+        // 1. 判断是否是字符串
+        if(myjQuery.isString(attr)) {
+            // 1.1 判断是一个参数或者是两个参数
+            if(arguments.length === 1) {
+                return this[0].getAttribute(attr);
+            }
+            else {
+                this.each(function(key, elem) {
+                    elem.setAttribute(attr, value);
+                })
+            }
+        }
+        // 2. 判断是不是对象
+        else if(myjQuery.isObject(attr)) {
+            // 2.1 遍历对象中所有的键值
+            $.each(attr, function(key, attr_value) {
+            // 2.2 将对应的键值设置给每一个dom节点
+                $this.each(function(k, elem) {
+                    elem.setAttribute(key, attr_value);
+                })
+            })
+        }
+        return this;
+    }
+})
+```
+#### 7.6.2 jQueryEle.prop()
+- 和上面的操纵类似
+- <font color="red">操作的是属性而不是属性节点</font>
+  - 属性不仅仅属性节点，还包括checked, disabled等属性
+  - 属性节点存储在attributes中，而属性直接存储在这个对象之中
+- 一定要理解attr，prop的区别
+```javascript
+myjQuery.prototype.extend({
+  // ...
+    prop: function(attr, value) {
+        let $this = this;
+        // 1. 判断是否是字符串
+        if(myjQuery.isString(attr)) {
+            // 1.1 判断是一个参数或者是两个参数
+            if(arguments.length === 1) {
+                return this[0][attr];
+            }
+            else {
+                this.each(function(key, elem) {
+                    elem[attr] = value;
+                })
+            }
+        }
+        // 2. 判断是不是对象
+        else if(myjQuery.isObject(attr)) {
+            // 2.1 遍历对象中所有的键值
+            $.each(attr, function(key, attr_value) {
+            // 2.2 将对应的键值设置给每一个dom节点
+                $this.each(function(k, elem) {
+                    elem[key] = attr_value;
+                })
+            })
+        }
+        return this;  
+    }
+})
+```
+#### 7.6.3 jQueryEle.css()
+- 用于获取或者设置style属性节点的值
+  - 或者称为css的值
+```javascript
+myjQuery.prototype.extend({
+  // ...
+  css: function(styleName, value) {
+      let $this = this;
+      if(myjQuery.isString(styleName)) {
+          if(arguments.length === 1) {
+              return myjQuery.getStyle(this[0], styleName);
+          }
+          else {
+              this.each(function(key, dom) {
+                  dom.style[styleName] = value;
+              })
+          }
+      }
+      else if(myjQuery.isObject(styleName)) {
+          $.each(styleName, function(key, styleValue) {
+              $this.each(function(k, dom) {
+                  dom.style[key] = styleValue;
+              })
+          })
+      }
+      return this;
+  }
+})
+```
+##### 7.6.3.1 获取css的通用方法
+- window.getComputedStyle(elem)[ attr ]
+  - 获取到指定元素的对应的样式
+  - ie8及ie8以下并不能支持
+- elem.currentStyle[ attr ]
+- 在jQuery的extend工具方法中添加对应的函数
+```javascript
+myjQuery.extend({
+  getStyle: function(dom, styleName) {
+      if(window.getComputedStyle) {
+          return window.getComputedStyle(dom)[styleName];
+      }
+      else {
+          return dom.currentStyle[styleName];
+      }
+  }
+})
+```
+##### 7.6.3.2 设置css的样式
+- 没有兼容性的问题
+```javascript
+  dom.style[styleName] = value;
+```
+#### 7.6.4 jQueryEle.val([str])
+- 用于获取或者设置value属性的值
+```javascript
+myjQuery.prototype.extend({
+  // ...
+  val: function(str) {
+      if(arguments.length === 0) {
+          // return this[0].getAttribute("value");
+          return this[0].value;
+      }
+      else {
+          this.each(function(key, dom) {
+              dom.value = str;
+          })
+      }   
+      return this;
+  }
+})
+```
+##### 7.6.4.1 如何获取value节点的值
+- 可以使用getAttribute和setAttribute来获取和设置
+- 在DOM元素中，同样有一个value的属性
+  - 很显然就是用get/set的方法来获取和修改的，和vue类似的方法
+#### 7.6.5 jQueryEle.hasClass([classValue]) 
+- 判断某个元素中是否包含对应的类
+- 不传参 -- 返回false
+- jQueryELe有多个dom时，只要有一个有对应的类， -- 返回true
+```javascript
+myjQuery.prototype.extend({
+  // ...
+  hasClass(classValue) {
+      if(arguments.length === 0) {
+          return false;
+      }
+      else {
+          let flag = false;
+          // 1. 遍历该jQuery对象
+          this.each(function(key, dom) {
+              // 1.1 获取对应dom节点的类值,并将其转化为数组
+              let classArray = dom.className.split(" ");
+              // 1.2 通过indexOf来判断是不是包含该类值
+              flag ||= Boolean(~classArray.indexOf(classValue));
+          })
+          return flag;
+      }
+  }
+})
+```
+- 可以改进
+  - 当出现true，直接返回
+  - 再在最后面返回false即可
+##### 7.6.5.2 如何获取对应的类值
+```javascript
+// 方法一
+  dom.getAttribute("class")
+// 方法二 利用className属性，实质上get/set的获取
+  dom.className
+```
+##### 7.6.5.2 如何判断是否包含对应的类
+- 方法一
+  - 将字符串形式存在的类值转化为数组，并判断对应的类有没有在数组中即可（indexOf）
+```javascript
+// 转化为数组
+    let classArray = dom.className.split(" ");
+    Boolean(~classArray.indexOf(classValue));
+```
+- 方法二
+  - 使用string的indexOf的方法
+    - 给获取到的类值字符串前后加上空格
+      - 为了使前后的类值也满足相关的性质
+    - 给想要判断的类值前后加上两个空格
+    - 使用indexOf进行判断
+```javascript
+  let classString = " " + dom.className + " ";
+  Boolean(~classString.indexOf(" " + classValue + " "));
+```
+- 方法三
+  - 使用正则表达式进行判断
+    - 方法类似于string的方法
+#### 7.6.6 jQueryEle.addClass(classValue)
+- 不传递参数，没有进行执行
+- 添加一个类名，直接加入
+- 添加多个类名，中间只要使用空格隔开即可
+- 返回值为本身
+- 不会重复添加类值，但是会对每个节点进行检查，只要不包含对应的类，就会添加进去
+```javascript
+myjQuery.prototype.extend({
+  // ...
+  addClass(classValue) {
+      let $this = this;
+      if(arguments.length === 0) {
+          return this;
+      }
+      else {
+          // 1 由于可能插入多个类，所有转化为数组来判断每个类是否存在
+          let classArray = classValue.split(" ");
+          classArray.forEach(function(value) {
+          // 2 由于hasClass只要有一个为true就会返回true，所以只能一个个使用hasClass
+              $this.each(function(key, dom) {
+                  if(!$(dom).hasClass(value)) {
+                      dom.className += " " + value;
+                  }
+              })
+          })
+      }
+      return this;
+  }
+})
+```
+#### 7.6.7 jQueryEle.removeClass(classValue)
+- 不传参：会将所有的类删除
+- 可以同时删除多个类
+- 返回本身
+```javascript
+myjQuery.prototype.extend({
+  // ...
+  removeClass(classValue) {
+      if(arguments.length === 0) {
+          this.each(function(key, dom) {
+              dom.className = "";
+          }) 
+      }
+      else {
+          let $this = this;
+          let classArray = classValue.split(" ");
+          classArray.forEach(function(value) {
+              $this.each(function(key, dom) {
+                  if($(dom).hasClass(value)) {
+                      dom.className = (" " + dom.className + " ")
+                                      .replace(" " + value + " ", " ")
+                                      .trim()
+                  }
+              })
+          })
+      }
+      return this;
+  }
+})
+```
+##### 7.6.7.1 如何删除所有的类
+- 只要将className的值设置为""即可
+##### 7.6.7.2 如何删除某一个类值
+- 方法一
+  - 转化为数组进行删除
+- 方法二
+  - 使用String#replace来进行删除
+  - 同样的用前后加空格来进行之后来调用该函数，替换为" "（空格）
+  - 最后调用trim来去除前后的空格即可
+```javascript
+   dom.className = (" " + dom.className + " ").replace(" " + className + " ", " ").trim();
+```
+#### 7.6.8 jQueryEle.toggleClass(classValue)
+- 利用前面的三个方法的配合即可以实现
+- 要注意的是同样要进行分开讨论
+```javascript
+myjQuery.prototype.extend({
+  // ...
+  toggleClass(classValue) {
+      let $this = this;
+      if(arguments.length === 0) {
+          return this;
+      }
+      else {
+          let classArray = classValue.split(" ");
+          classArray.forEach(function(value) {
+              $this.each(function(key, dom) {
+                  let $dom = $(dom)
+                  if($dom.hasClass(value)) {
+                      $dom.removeClass(value);
+                  }
+                  else {
+                      $dom.addClass(value);
+                  }
+              })
+          })
+          return this;
+      }
+  }
+})
+```
+### 7.7 jQuery与事件相关的方法
+#### 7.7.1 jQueryEle.on(evnetName, callback)
+- 注册多个相同类型的事件，后注册的不会覆盖先注册的
+- 注册多个不同的事件，后注册的不会覆盖先注册的
+##### 7.7.1.1 如何进行事件的绑定（使用于所有的浏览器）
+- dom.addEventListen(eventName, callback)
+  - 不适用于ie8以下的浏览器
+- dom.attachEvent("on" + eventName, callback)
+  - 注意：callback中的this是指向window，所以需要一点点修改的操作
+- 在低版本的ie浏览器中，后面注册的事件反而会先触发，不符合总体的规律
+  - 对于该问题，可以通过一个cache来使得回调函数的执行顺序是按照对应的结果的。
+- 在jQuery的工具类中添加
+```javascript
+myjQuery.extend({
+  // ...
+  addEvent: function(dom, eventName, callback) {
+      if(!dom.eventsCache) {
+          dom.eventsCache = {}
+      }
+      if(!dom.eventsCache[eventName]) {
+          dom.eventsCache[eventName] = [];
+          dom.eventsCache[eventName].push(callback);
+          if(dom.addEventListener) {
+              dom.addEventListener(eventName, function() {
+                  // 注意当全部被移除时，该对象为空，所以不需要进行遍历
+                  if(dom.eventsCache[eventName]) {
+                      for(let i = 0;i < dom.eventsCache[eventName].length;i ++) {
+                          // 注意将函数中的this指向对应的dom
+                        dom.eventsCache[eventName][i].call(dom);
+                      }
+                  }  
+              });
+          }
+          else {
+              dom.attachEvent("on" + eventName, function() {
+                  if(dom.eventsCache[eventName]) {
+                      for(let i = 0;i < dom.eventsCache[eventName].length;i ++) {
+                          // 注意将函数中的this指向对应的dom
+                      dom.eventsCache[eventName][i].call(dom);
+                      }
+                  }
+              })
+          }
+      }
+      else {
+          dom.eventsCache[eventName].push(callback);
+      }
+  }
+})
+```
+#### 7.7.2 jQueryEle.off([evnetName[, callback]])
+- 当不传入参数时，移除所有dom的事件
+- 当传入一个参数时，移除该事件中绑定的方法
+- 当传入两个参数时，移除一个该函数的方法
+- 由于前面的事件触发是通过dom.eventsCache来来进行触发的，所以只需要对dom.eventsCache进行操作即可
+```javascript
+myjQuery.extend({
+  // ...
+  off: function(eventName, callback) {
+      if(arguments.length === 0) {
+          this.each(function(key, dom) {
+              dom.eventsCache = {};
+          })
+      }
+      else if(arguments.length === 1) {
+          this.each(function(key, dom) {
+              dom.eventsCache[eventName] = [];
+          })
+      }
+      else {
+          this.each(function(key, dom) {
+              let index = dom.eventsCache[eventName].indexOf(callback);
+              if(~index) {
+                  dom.eventsCache[eventName].splice(index, 1);
+              }
+          })
+      }
+      return this;
+  }
+})
+```
+# 十五 内置类的属性和方法总结
+## 1 Math
+### 1.1 Math.round(x)
+- 返回一个整数（最接近）
+  - 小数部分大于0.5，取绝对值大的整数
+  - 小数部分小于0.5，取绝对值小的整数
+  - 小数部分等于0.5
+    - 正数 -- 取决定值大的
+    - 负数 -- 取绝对值小的
+```javascript
+  var result = Math.round(11.5) + Math.round(-11.5);
+  // 1
+```
+### 1.2 Math.ceil(x)
+- 返回大于或等于一个给定数字的最小整数。
+### 1.3 Math.floor(x)
+- 返回小于或等于一个给定数字的最小整数。
+### 1.2 Math.random()
+- 函数返回一个浮点,  伪随机数在范围从0到小于1
+
+## 2 Array
+### 2.1 Array内部元素的增删改 -- 会改变原数组
+- 除了该部分，其他方法都不会改变原数组原本的值
+#### 2.1.1 Array#push(...value)
+- 返回该数组的length
+- 向数组的最后一位插入value参数
+  - <font color="red">将value看成整体插入数组的前面</font>
+#### 2.1.2 Array#pop()
+- 返回从数组的最后一位删除的值
+  - 若数组为空，则返回undefined
+#### 2.1.3 Array#unshift(...value)
+- 返回该数组的length
+- 向数组的首位插入value参数
+  - <font color="red">将value看成整体插入数组的前面</font>
+#### 2.1.4 Array#shift()
+- 返回从数组的首位删除的值
+ - 若数组为空，则返回undefined
+#### 2.1.5 Array#splice(start[, deleteCount[, item1[, item2[, ...]]]])
+- 返回修改后的数组
+- 通过删除或替换现有元素或者原地添加新的元素来修改数组
+- 参数 
+  - start: 开始的坐标
+  - deleteCount: 删除内部元素的数量
+  - item[ 1-n ]: 替换的元素
+- splice的用法
+```javascript
+  // 1. 用于替换数组中的第index元素
+  // Array#splice(index, 1, replacement)
+  let arr = [1, 2, 4];
+  console.log("arr: ", arr);
+  arr.splice(1, 1, 3);
+  console.log("arr: ", arr);
+// [1, 2, 4]  [1, 3, 4]
+
+  // 2. 用于向index插入元素
+  // Array#splice(index, 0, addition)
+  let arr1 = [1, 2, 4];
+  console.log("arr1: ", arr1);
+  arr1.splice(1, 0, 3);
+  console.log("arr1: ", arr1);
+// [1, 2, 4]  [1, 5]
+
+  // 3. 删除index之后(包含index）的元素
+  // Array#splice(index, Array.lenght - index)
+  let arr2 = [1, 2, 4];
+  console.log("arr2: ", arr2);
+  arr2.splice(1, arr2.lenght - 1);
+  console.log("arr2: ", arr2);
+// [1, 2, 4]  [1]
+
+```
+#### 2.1.6 Array#sort([func(a, b)])
+- 返回按照func规则排列的数组（会改变原数组）
+  - - 没有参数，默认从小到大排列
+- 将sort按照func的规则进行排序
+- 参数
+  - func(a, b)
+    - a,b为相邻的参数
+      - 当返回值>0时，则a, b的位置需要交换
+      - 当返回值<0时，则a，b的位置不需要交换
+    - 通常用减法来表示返回值
+### 2.2 Array#slice(begin[, end])
+- 返回[begin, end)的部分数组 
+  - 当没有参数时，返回值为当前数组的复制
+  - 当只有begin，则返回从begin到数组末尾的部分数组
+- 参数
+  - begin: 截取部分的开始序列（包含）
+  - end: 截取部分的结束序列(不包含)
+```javascript
+  // 用于将类数组转化为数组
+  var arr = Array.prototype.slice.call(arrayLike);
+
+  var arr = [].slice.call(arrayLike);
+```
+### 2.3 Array#concat(value1[, value2[, ...[, valueN]]])
+- 返回将value[ 1-n ]合并到数组后面的数组
+- 参数：
+  - value[ 1-n ]: 数组或值
+```javascript
+  var arr1 = [1, 2, 3, 4];
+  var arr2 = [5, 6, 7];
+
+  var totalArray = arr1.concat(arr2);
+  // 在es6中可以用以下方法代替
+  var totalArray = [...arr1, ...arr2];
+```
+### 2.4 Array#toString()
+- 返回一个用逗号分隔的字符串
+  - <font color="red">其中，空白或者null或者undefined数组元素会被当成空位</font>
+  - 当length为0时，则返回一个空字符串
+```javascript
+  var arr = [1,,null,undefined];
+  console.log(arr.toString());
+  // 1,,,
+```
+### 2.5 Array#join([separator])
+- 返回一个用separator分隔的字符串
+  - <font color="red">其中，空白或者null或者undefined数组元素会被当成空位</font>
+  - 当length为0时，则返回一个空字符串
+### 2.4 Array的高阶函数
+- ES5以前，函数中的空白元素会被跳过
+- ES6中，函数中的空白元素会被视为undefined
+#### 2.4.1 Array#map(function callback(currentValue[, index[, array]])
+- 返回一个由callback返回值构成的函数
+ - 可以利用原本数组的元素构建一个新的数组
+- 参数
+  - callback：回调函数
+    - currentValue：当前遍历到的数组的值
+    - index：当前遍历到的数组的坐标
+    - array：调用map的数组
+#### 2.4.2 Array#forEach(callback(currentValue [, index [, array]])[, thisArg])
+- 返回值为undefined
+- 用于函数的遍历
+- 参数
+  - callback：回调函数
+    - currentValue：当前遍历到的数组的值
+    - index：当前遍历到的数组的坐标
+    - array：调用map的数组
+  - thisArg: 执行 callback 时使用的 this 值。
+#### 2.4.3 Array#filter(callback(element[, index[, array]])[, thisArg])
+- 返回一个回调函数返回为true的元素组成的数组
+- 根据callback函数返回筛选后的数组
+- 参数
+  - callback：回调函数 <font color="red">--返回值必须是布尔值</font>
+    - element: 数组中正在处理的元素。
+    - index 数组中正在处理的元素的索引值。
+    - array: some()被调用的数组。
+  - thisArg: 执行 callback 时使用的 this 值。
+#### 2.4.4 Array#some(callback(element[, index[, array]])[, thisArg])
+- 返回一个布尔值
+- 测试数组中是不是至少有1个元素通过了被提供的函数测试
+- 参数
+  - callback：回调函数 <font color="red">--返回值必须是布尔值</font>
+    - element: 数组中正在处理的元素。
+    - index 数组中正在处理的元素的索引值。
+    - array: some()被调用的数组。
+  - thisArg: 执行 callback 时使用的 this 值。
+#### 2.4.5 Array#every(callback(element[, index[, array]])[, thisArg])
+- 返回一个布尔值
+- 测试数组中是不是所有的元素通过了被提供的函数测试
+- 参数
+  - callback：回调函数 <font color="red">--返回值必须是布尔值</font>
+    - element: 数组中正在处理的元素。
+    - index 数组中正在处理的元素的索引值。
+    - array: some()被调用的数组。
+  - thisArg: 执行 callback 时使用的 this 值。
+#### 2.4.6 Array#reduce(callback(accumulator, currentValue[, index[, array]])[, initialValue])
+- 返回一个归约的值
+- 参数
+  - callback: 回调函数
+    - accumulator：累计器累计回调的返回值; 它是上一次调用回调时返回的累积值，或initialValue（见于下方）。
+    - currentValue：数组中正在处理的元素。
+    - index 数组中正在处理的当前元素的索引。 
+    - array：调用reduce()的数组
+    - initialValue可选： 作为第一次调用 callback函数时的第一个参数的值。 <font color="red">如果没有提供初始值，则将使用数组中的第一个元素,且index将从1开始。</font>
+
+## 3 Date
+### 3.1 构造Date实例
+```javascript
+  new Date();
+  new Date(value);
+  new Date(dataString)
+  new Date(year, monIndex, [, day [, hour[, minutes[, sencond[, milliseconds]]]]])
+```
+- 只能用new来构建Date实例
+- 参数
+  - 没有赋值 -- 默认为当前本地时间
+  - value
+    - <font color="red">Unix事件戳 -- 表示自1970年1月1日00:00:00 UTC（the Unix epoch）以来的毫秒数</font>
+  - dataString
+    - 表示日期的字符串
+  - year 年 0-99默认为1900，其他还是用数字表示 - 1999 monthIndex 1 - 12 其他没有什么特别的
+### 3.2 取得事件戳
+#### 3.2.1 Date.UTC(year,month[,date[,hrs[,min[,sec[,ms]]]]])
+- 返回从1970-1-1 00:00:00 UTC到指定日期的的毫秒数。
+- 参数和构造函数的含义相同
+#### 3.2.2 Date.now()
+- 返回自 1970 年 1 月 1 日 00:00:00 (UTC) 到当前时间的毫秒数。
+#### 3.2.3 Date.parse(dateString)
+- 返回方法解析一个表示某个日期的字符串，并返回从1970-1-1 00:00:00 UTC 到该日期对象（该日期对象的UTC时间）的毫秒数
+  - 如果该字符串无法识别，或者一些情况下，包含了不合法的日期数值（如：2015-02-31），则返回值为NaN
+- 参数
+  - dataString 时间字符串
+    - 格式："year-month-day hour:minute:second:milliscecond"
+### 3.2.4 查询当前时间对象的年月日时分秒
+#### 3.2.4.1 Date#get[Fullyear|Month|Date|Hours|Minutes|Seconds|Milliseconds]()
+- 根据当地时间，返回当前时间对象相应的内容的数字形式。
+#### 3.2.4.2 Date#getDay()
+- 根据本地时间，返回一个具体日期中<font color="red">一周的第几天</font>，
+  - 0 表示星期天。对于某个月中的第几天
+#### 3.2.4.3 Date#getTime()
+- 返回一个时间的格林威治时间数值
+#### 3.2.4.4 Date#get[UTCFullyear|UTCMonth|UTCDate|UTCHours|UTCMinutes|UTCSeconds|UTCMilliseconds]()
+- 根据世界时间，返回当前时间对象相应的内容的数字形式。
+#### 3.2.4.5 Date#getUTCDay()
+- 根据世界时间，返回一个具体日期中<font color="red">一周的第几天</font>，
+  - 0 表示星期天。对于某个月中的第几天
+### 3.2.5 设置当前时间对象的年月日时分秒
+#### 3.2.5.1 Date#set[Fullyear|Month|Date|Hours|Minutes|Seconds|Milliseconds](...value)
+- 根据本地时间为一个日期对象设置相应的内容
+- 参数
+  - Fullyear: ...value --> yearValue[, monthValue[, dateValue]
+  - Month: ...value --> monthValue[, dateValue]
+  - Date: ...value --> dateValue
+  - Hours: ...value --> hoursValue[, minutesValue[, secondsValue[, msValue]]]
+  - Minutes: ...value --> minutesValue[, secondsValue[, msValue]]
+  - Seconds: ...value --> secondsValue[, msValue]
+  - Millisecond: ...value --> msValue
+- 若赋值超过了限制，则会自动向前或向后
+#### 3.2.5.2 Date#set[UTCFullyear|UTCMonth|UTCDate|UTCHours|UTCMinutes|UTCSeconds|UTCMilliseconds](...value)
+- 根据全球时间设置相应的内容
+- 参数
+  - Fullyear: ...value --> yearValue[, monthValue[, dateValue]
+  - Month: ...value --> monthValue[, dateValue]
+  - Date: ...value --> dateValue
+  - Hours: ...value --> hoursValue[, minutesValue[, secondsValue[, msValue]]]
+  - Minutes: ...value --> minutesValue[, secondsValue[, msValue]]
+  - Seconds: ...value --> secondsValue[, msValue]
+  - Millisecond: ...value --> msValue
+- 若赋值超过了限制，则会自动向前或向后 
+#### 3.2.5.3 Date#setTime(millisecondValue)
+- 一个表示从1970-1-1 00:00:00 UTC计时的毫秒数为来为 Date 对象设置时间。
+### 3.2.5 与区域时差相关的方法
+- 世界时间是以哪个区域为基准？ -- UTC 0
+#### 3.2.5.1 Date#getTimezoneOffset()
+- 返回协调世界时（UTC）相对于当前时区的时间差值，单位为分钟。
+```javascript
+  var x = new Date();
+  var currentTimeZoneOffsetInHours = x.getTimezoneOffset() / 60;
+```
+### 3.2.6 转化为字符串
+#### 3.2.6.1 Date#toString()
+- 返回一个美式英语日期格式的字符串。  
+    - 覆盖了Object的toString
+    - 如果不是Date实例，则 返回"Invalid Date"。
+```javascript
+  var x = new Date();
+  myVar = x.toString(); // 把类似于下面格式的值赋给 myVar，
+  // Fri Apr 26 2019 11:46:17 GMT+0800 (中国标准时间)
+```
+#### 3.2.6.2 Date#tolocal[""|Date|Time]([locales [, options]])
+- 返回该日期对象日期部分的字符串，该字符串格式因不同语言而不同
+#### 3.2.6.2 Date#toDateString()
+- 以美式英语和人类易读的形式返回一个日期对象日期部分的字符串。
+### 3.2.7 Date.toISOString()
+- 返回一个 ISO（ISO 8601 Extended Format）格式的字符串： YYYY-MM-DDTHH:mm:ss.sssZ。时区总是UTC（协调世界时），加一个后缀“Z”标识。
+# 十六 nodejs的网络编程
+## 1 nodejs TCP连接
+- 半关闭的套接字（套接字的半关闭状态）:可以传输但不可接收或可接收但不可传输
+### 1.0 socket（套接字)的实质
+- 一个类似于管道的对象，客户端和服务器端位于两端。
+- ![socket](./img/prototypeSocket.jpg)
+- 使用的net的对象
+    - net.Server, net.Socket
+### 1.1 TCP的服务器端
+#### 1.1.1 net.createServer([options][, connectionListener(socket)])
+- 返回响应的服务器对象
+- 创建一个TCP或者IPC服务器
+```
+参数
+    options: 
+    connectionListener: 当新的TCP连接建立时触发该函数
+        - socket：一个套接字对象
+```
+#### 1.1.2 服务器端的连接事件
+##### 1.1.2.1 net.Server类的连接事件
+###### 1.1.2.1.1 listening事件
+- 在调用server.listen()绑定端口或者Domain Socket后触发
+###### 1.1.2.1.2 connection事件
+- 每个客户端的套接字连接到服务器端时触发
+###### 1.1.2.1.3 error事件
+- 当服务器端发生异常时发生该事件
+##### 1.1.2.2 net.Socket类的连接事件
+- 服务器可以同时与多个客户端保持连接。
+###### 1.1.2.2.1 data事件
+- 当一段调用write()发送数据时，<font color="red">另一端</font>会触发data事件
+- 传递的参数：data
+    - 传递的信息
+###### 1.1.2.2.2 drain事件
+- 当任意一端调用write()发送数据，<font color="red">当前这端</font>就会触发该事件
+###### 1.1.2.2.3 end事件
+- 当连接中的任意一端发送了FIN数据时，将会触发该事件
+###### 1.1.2.2.4 close事件
+- 当套接字完全关闭时，触发该事件
+###### 1.1.2.2.5 error事件
+- 当异常发生时，触发该事件
+- 参数：error
+#### 1.1.3 socket.on(eventName, callback)
+- 绑定socket事件和其回调函数
+#### 1.1.4 socket.write(data[, encoding][, callback])
+- 将数据data从套接字的当前端传递给另一端
+- 返回: &lt;boolean&gt;
+    - 如果全部数据都成功刷新到内核的缓冲则返回 true。如果全部或部分数据在用户内中排队，则返回 false。当缓冲再次空闲的时候将触发 'drain' 事件。
+- 参数
+    data &lt;string&gt; | &lt;Buffer&gt; | &lt;Uint8Array&gt;
+    encoding &lt;string&gt; 仅在数据为 string 时使用。默认值: utf8。
+    callback &lt;Function&gt;
+        - 当数据全部被写出的时候触发该函数
+
+### 1.2 TCP的客户端
+#### 1.2.1 net.createConnection(options[, connectListener])
+- 发起tcp连接并且返回，若连接成功，则返回相应的套接字对象
+#### 1.2.2 客户端的连接事件
+- 只有net.Socket类的事件
+##### 1.2.2.1 net.Socket类事件(连接事件)
+- 服务器可以同时与多个客户端保持连接。
+###### 1.2.2.1.1 data事件
+- 当一段调用write()发送数据时，<font color="red">另一端</font>会触发data事件
+- 传递的参数：data
+    - 传递的信息
+###### 1.2.2.1.2 drain事件
+- 当任意一端调用write()发送数据，<font color="red">当前这端</font>就会触发该事件
+###### 1.2.2.1.3 end事件
+- 当连接中的任意一端发送了FIN数据时，将会触发该事件
+###### 1.2.2.1.4 close事件
+- 当套接字完全关闭时，触发该事件
+###### 1.2.2.1.5 error事件
+- 当异常发生时，触发该事件
+- 参数：error
+#### 1.2.3 socket.on(eventName, callback)
+- 绑定socket事件和其回调函数
+#### 1.2.4 socket.write(data[, encoding][, callback])
+- 将数据data从套接字的当前端传递给另一端
+- 返回: &lt;boolean&gt;
+    - 如果全部数据都成功刷新到内核的缓冲则返回 true。如果全部或部分数据在用户内中排队，则返回 false。当缓冲再次空闲的时候将触发 'drain' 事件。
+- 参数
+    data &lt;string&gt; | &lt;Buffer&gt; | &lt;Uint8Array&gt;
+    encoding &lt;string&gt; 仅在数据为 string 时使用。默认值: utf8。
+    callback &lt;Function&gt;
+        - 当数据全部被写出的时候触发该函数
+
+### 1.3 net.Socket 类的具体讲解
+- 创建服务器回调事件的参数(net.createServer)
+- 创建连接服务得到的返回值(net.connect/createConnection)
+#### 1.3.1 自定义构建一个套接字对象
+```javascript
+    const socket = new net.Socket([options])
+```
+- 参数option(一个对象)
+    - fd <number> 如果指定了该参数，则使用一个给定的文件描述符包装一个已存在的 socket，否则将创建一个新的 socket。
+    - allowHalfOpen <boolean> 指示是否允许半打开的 TCP 连接。详情查看 net.createServer() 和 'end' 事件。默认值: false。
+    - readable <boolean> 当传递了 fd 时允许读取 socket，否则忽略。默认值: false。
+    - writable <boolean> 当传递了 fd 时允许写入 socket，否则忽略。默认值: false。
+#### 1.3.2 net.Socket类的事件
+##### 1.3.2.1 套接字连接及之前的事件
+###### 1.3.2.1.1 lookup事件
+- 在找到主机之后创建连接之前触发
+- 触发后传递的参数
+    - err &lt;Error&gt; | &lt;null&gt; 错误对象。查看 dns.lookup()。
+    - address &lt;string&gt; IP 地址。
+    - family &lt;string&gt; | &lt;null&gt; 地址类型。查看 dns.lookup()。
+    - host &lt;string&gt; 主机。
+###### 1.3.2.1.2 connect事件
+- 当一个 socket 连接成功建立的时候触发该事件
+###### 1.3.2.1.3 ready事件
+- 'connect' 后立即触发。
+###### 1.3.2.1.4 timeout事件
+- 当 socket 超时的时候触发。该事件只是用来通知 socket 已经闲置。用户必须手动关闭。
+##### 1.3.2.2 套接字连接后事件
+###### 1.3.2.2.1 data事件
+- 当一段调用write()发送数据时，<font color="red">另一端</font>会触发data事件
+- 传递的参数：data
+    - 传递的信息
+###### 1.3.2.2.2 drain事件
+- 当任意一端调用write()发送数据，<font color="red">当前这端</font>就会触发该事件
+###### 1.3.2.2.3 end事件
+- 当连接中的任意一端发送了FIN数据时，将会触发该事件
+###### 1.3.2.2.4 close事件
+- 当套接字完全关闭时，触发该事件
+###### 1.3.2.2.5 error事件
+- 当异常发生时，触发该事件
+- 参数：error
+
+#### 1.3.3 net.Socket类实例对象的方法和属性
+- socket实例对象的状态
+
+##### 1.3.3.0 socket.on(eventName, callback)
+- 绑定socket事件和其回调函数
+##### 1.3.3.1 socket.write(data[, encoding][, callback])
+- 将数据data从套接字的当前端传递给另一端
+- 返回: &lt;boolean&gt;
+    - 如果全部数据都成功刷新到内核的缓冲则返回 true。如果全部或部分数据在用户内中排队，则返回 false。当缓冲再次空闲的时候将触发 'drain' 事件。
+- 参数
+    data &lt;string&gt; | &lt;Buffer&gt; | &lt;Uint8Array&gt;
+    encoding &lt;string&gt; 仅在数据为 string 时使用。默认值: utf8。
+    callback &lt;Function&gt;
+        - 当数据全部被写出的时候触发该函数
+##### 1.3.3.2 与data相关的方法和属性
+###### 1.3.3.2.1 socket.bytesRead
+- 返回接收的字节数量。
+###### 1.3.3.2.2 socket.bytesWritten
+- 返回发送的字节数量。
+###### 1.3.3.2.3 socket.setEncoding([encoding])
+- 设置作为可读流的编码
+- 返回为本身
+##### 1.3.3.3 与当前socket对象状态有关的方法和属性
+###### 1.3.3.3.1 socket.connecting/pending
+- 返回&lt;boolean&gt;
+    - 如果为 true 则 socket.connect(options[, connectListener]) 被调用但还未结束。 
+    - 它将保持为真，直到 socket 连接，然后设置为 false 并触发 'connect' 事件
+- 注意
+     - socket.connect(options[, connectListener]) 的回调是 'connect' 事件的监听器。
+###### 1.3.3.3.2 socket.destroyed
+- 返回&lt;boolean&gt;
+    - 连接是否已经被销毁
+        - 一旦连接被销毁就不能再使用它传输任何数据。
+###### 1.3.3.3.3 socket.destroy([error])
+- 确保socket对象上不再有I/O活动
+###### 1.3.3.3.4 socket.end([data[, encoding]][, callback])
+- 若当前端发送调用了该函数，则向另一端发送一个FIN包，且将当前端变成半关闭状态
+    - 可以接收消息但不能发送消息
+    - 此时另一端仍然可以发送和接收消息
+##### 1.3.3.4 返回端口号和IP地址
+###### 1.3.3.4.1 socket.localAddress
+- 返回当前端的host地址(IP地址)
+###### 1.3.3.4.2 socket.localPort
+- 返回当前端的端口号
+###### 1.3.3.4.3 socket.remoteAddress
+- 返回另一端的端口号
+###### 1.3.3.4.4 socket.remotePort
+- 返回另一端的端口号
+##### 1.3.3.5 对当前socket对象的操作
+###### 1.3.3.5.1 socket.unref()
+- 将 socket 重新添加到维持 Node.js 进程的引用列表中，并恢复其默认行为。
+###### 1.3.3.5.2 socket.ref()
+- 用于将 socket 从维持 Node.js 进程的引用列表中解除。
+
+### 1.4 net.Server 类的具体讲解
+- 创建服务器的返回值(net.createServer)
+- options对象的属性
+    - port &lt;number&gt; 端口号
+    - host &lt;string&gt; 主机名
+    - path &lt;string&gt; 如果指定了 port 参数则会被忽略。查看识别 IPC 连 接的路径。。
+    - backlog &lt;number&gt; server.listen() 函数的通用参数。
+    - exclusive &lt;boolean&gt; 默认值: false。
+    - readableAll &lt;boolean&gt; 对于 IPC 服务器，使管道对所有用户都可读。默认值: false。
+    - writableAll &lt;boolean&gt; 对于 IPC 服务器，使管道对所有用户都可写。默认值: false。
+    - ipv6Only &lt;boolean&gt; 对于 TCP 服务器，将 ipv6Only 设置为 true 将会禁用双栈支持，即绑定到主机 :: 不会使 0.0.0.0 绑定。默认值: false。
+#### 1.4.1 自定义构建一个服务器对象
+```javascript
+    new net.Server([options][, connectionListener])
+```
+- 返回一个事件触发器对象
+- 参数
+    - options &lt;Object&gt; 见上 
+    - connectionListener &lt;Function&gt; 自动设置为 'connection' 事件的监听器。
+#### 1.4.2 net.Server类的事件
+##### 1.4.2.1 服务器创建之后的事件
+###### 1.4.2.1.1 connection事件
+- 当一个新的连接建立的时候触发
+###### 1.4.2.1.2 listening事件
+- 当调用server.listen()绑定服务器之后触发
+###### 1.4.2.1.3 close事件
+- 当server关闭时触发
+###### 1.4.2.1.4 error事件
+- 当错误出现时触发
+- 'close' 事件不会在这个事件触发后继续触发，除非 server.close(
+#### 1.4.3 net.Socket类实例对象的方法和属性
+##### 1.4.3.1 server.address()
+- 如果在 IP socket 上监听，则返回操作系统报告的绑定的 address、地址 family 名称、以及服务器 port（用于查找在获取操作系统分配的地址时分配的端口）：{ port: 12346, family: 'IPv4', address: '127.0.0.1' }。
+    - 在 'listening' 事件被触发之前、或在调用 server.close() 之后， server.address() 返回 null。
+##### 1.4.3.2 与当前sever对象态相关的方法和属性
+###### 1.4.3.2.1 server.listen()
+```javascript
+// 可能的参数
+server.listen(handle[, backlog][, callback])
+server.listen(options[, callback])
+server.listen(path[, backlog][, callback]) //用于 IPC 服务器。
+server.listen([port[, host[, backlog]]][, callback]) //用于 TCP 服务器。
+```
+- 异步函数，当服务器开始监听时，会触发 'listening' 事件。最后一个参数 callback 将被添加为 'listening' 事件的监听器
+- 监听时最常见的错误之一是 EADDRINUSE。 这是因为另一个服务器已正在监听请求的 port/path/handle。
+```javascript
+server.on('error', (e) => {
+  if (e.code === 'EADDRINUSE') {
+    console.log('地址正被使用，重试中...');
+    setTimeout(() => {
+      server.close();
+      server.listen(PORT, HOST);
+    }, 1000);
+  }
+});
+```
+###### 1.4.3.2.2 server.close([callback])
+- 阻止 server 接受新的连接并保持现有的连接。返回一个net.Server对象
+- 参数
+    - callback &lt;Function&gt; 当 server 被关闭时调用。
+- 注意
+    - 与close事件的区别
+        - close事件是所有的连接被阻止才会触发
+        - close操作只是阻止新的连接并保持现有的连接，而其对应的c回调函数是在close事件被触发时回调
+###### 1.4.3.2.3 server.listening
+- 表明 server 是否正在监听连接。
+##### 1.4.3.3 对当前server对象的操作
+###### 1.4.3.3.1 server.unref()
+- 将 server 重新添加到这个引用列表中，并恢复其默认行为。
+###### 1.4.3.3.2 server.ref()
+- 用于将 socket 从维持 Node.js 进程的引用列表中解除。
+##### 1.4.3.4 与server的并发连接相关
+###### 1.4.3.4.1 server.getConnections(callback)
+- 异步获取服务器的当前并发连接数。
+- 参数
+    - callback
+        - 传递参数为error或者count 
+###### 1.4.3.4.2 server.maxConnections
+- 设置当前server对象的最大并发连接
+
+### 1.5 net的其他函数
+#### 1.5.1 net.isIP(input)
+- 测试输入的字符串是否是 IP 地址。无效的字符串则返回 0，IPv4 地址则返回 4，IPv6 的地址则返回 6。
+#### 1.5.2 net.isIPv4(input)
+- 如果输入的字符串是 IPv4 地址则返回 true，否则返回 false。
+#### 1.5.3 net.isIPv4(input) 
+- 如果输入的字符串是 IPv4 地址则返回 true，否则返回 false。
+### 1.6 实现简单的TCP连接服务
+```javascript
+    // server.js文件中
+const net = require("net");
+const { Socket } = require("dgram");
+
+const tcpServer = net.createServer(socket => {
+    socket.on("data", data => {
+        // 向客户端的socket传递信息
+        console.log("客户端发送信息：", data.toString());
+    })
+
+    socket.on("end",() => {
+        console.log("tcp连接断开");
+        tcpServer.close();
+    })
+
+    socket.write("你好客户端");
+})
+// 启动tcpServer并且监听端口为3000的tcp连接
+tcpServer.listen({port: 3000}, function() {
+    console.log("tcp服务器打开成功")
+})
+
+
+// client.js文件中
+const net = require("net");
+const { clearScreenDown } = require("readline");
+
+const clientSocket = net.createConnection({
+    port: 3000
+}, () => {
+    console.log("客户端连接成功");
+    clientSocket.write("你好，服务器端");
+})
+
+clientSocket.on("data", data => {
+    console.log("服务器端发送信息：", data.toString());
+    clientSocket.end();
+})
+
+clientSocket.on("end", () =>{
+    console.log("客户端断开tcp连接")
+})
+```
+## 3 nodejs http连接
+- 为了支持所有可能的 HTTP 应用程序，Node.js 的 HTTP API 都是非常底层的。 它仅进行流处理和消息解析。 它将消息解析为消息头和消息主体，但不会解析具体的消息头或消息主体。
+### 3.1 http连接的服务器端
+- http.Server类 http.SeverResponse
+#### 3.1.1 http.createServer([options][, requestListener])
+- 返回一个sever对象
+- 参数
+    - options
+        - IncomingMessage &lt;http.IncomingMessage&gt; 指定要使用的 IncomingMessage 类。 对于扩展原始的 IncomingMessage 很有用。 默认值: IncomingMessage。
+        - ServerResponse &lt;http.ServerResponse&gt; 指定要使用的 ServerResponse 类。 对于扩展原始的 ServerResponse 很有用。 默认值: ServerResponse。
+        - insecureHTTPParser &lt;boolean&gt; 使用不安全的 HTTP 解析器，当为 true 时可以接受无效的 HTTP 请求头。 应避免使用不安全的解析器。 详见 --insecure-http-parser。 默认值: false。
+        - maxHeaderSize &lt;number&gt; 可选地重写 --max-http-header-size（用于服务器接收的请求）的值，即请求头的最大长度（以字节为单位）。 默认值: 16384（16KB）
+    - requestListener：当request事件触发
+#### 3.1.2 http服务器的连接事件
+##### 3.1.2.1 connection事件
+- 在开始http请求和相应之前，客户端与服务器端需要建立底层的TCP连接。当这个连接建立时，服务器端触发一次connection事件
+##### 3.1.2.2 request事件
+- 建立TCP连接后，http模块底层将在数据流中抽象出http请求，当请求数据发送到服务器端，并解析出http请求头后，服务器就会触发该事件
+- 传递参数：request，reponse
+##### 3.1.2.3 close事件
+- 调用server.close()方法停止接收新的连接，当已有的连接都断开时，触发该事件。
+##### 3.1.2.4 checkContinue事件
+- 某些客户在发送较大使得数据时，并不会将数据直接发送，而是先发送一个头部带有Expect: 100-continue的请求到服务器，服务器就会触发该事件。
+    - 如果没有为服务器监听这个事件，服务器就会自动相应客户端100 Continue的状态，表示接收数据的上传，如果不接受数据的较多是，相应客户端400 Bad Request拒绝客户端继续发送数据即可
+##### 3.1.2.5 connect事件
+- 当客户端发起CONNECT请求时触发，而发起CONNECT请求通常在HTTP代理时出现。
+    - 如果服务器不监听该事件，发起该请求的连接将会关闭。
+##### 3.1.2.6 upgrade
+- 当客户端要求升级连接的协议时，需要和服务器端协商，客户端会在请求头中带上Upgrade字段，服务器端会在接收到这样的请求时触发该事件
+    - 如果不监听该事件件，则发起该请求的连接将会关闭
+##### 3.1.2.7 clientError
+- 连接的客户端触发error事件时，这个错误会传递到服务器，此时触发该事件
+### 3.2 http连接的客户端
+### 3.3 http连接的代理
+### 3.4 http.Server 类
+#### 3.4.1 服务器创建之后的事件
+###### 3.4.1.1 connection事件
+- 在开始http请求和响应之前，客户端与服务器端需要建立底层的TCP连接。当这个连接建立时，服务器端触发一次connection事件
+- 传递参数：socket
+###### 3.4.1.2 request事件
+- 建立TCP连接后，http模块底层将在数据流中抽象出http请求，当请求数据发送到服务器端，并解析出http请求头后，服务器就会触发该事件
+- 传递参数：request，reponse
+###### 3.4.1.3 close事件
+- 调用server.close()方法停止接收新的连接，当已有的连接都断开时，触发该事件。
+###### 3.4.1.4 checkContinue事件
+- 某些客户在发送较大使得数据时，并不会将数据直接发送，而是先发送一个头部带有Expect: 100-continue的请求到服务器，服务器就会触发该事件。
+    - 如果没有为服务器监听这个事件，服务器就会自动相应客户端100 Continue的状态，表示接收数据的上传，如果不接受数据的较多是，相应客户端400 Bad Request拒绝客户端继续发送数据即可
+###### 3.4.1.5 connect事件
+- 当客户端发起CONNECT请求时触发，而发起CONNECT请求通常在HTTP代理时出现。
+    - 如果服务器不监听该事件，发起该请求的连接将会关闭。
+- 传递参数 request socket head(第一个数据包)
+- 触发此事件后，请求的套接字将没有 'data' 事件监听器，这意味着它需要绑定才能处理发送到该套接字上的服务器的数据。
+###### 3.4.1.6 upgrade
+- 当客户端要求升级连接的协议时，需要和服务器端协商，客户端会在请求头中带上Upgrade字段，服务器端会在接收到这样的请求时触发该事件
+    - 如果不监听该事件件，则发起该请求的连接将会关闭
+- 传递参数：request, socket, head(升级后的第一个请求包)
+###### 3.4.1.7 clientError
+- 连接的客户端触发error事件时，这个错误会传递到服务器，此时触发该事件
+- 传递参数 error，socket
+```javascript
+const http = require('http');
+
+const server = http.createServer((req, res) => {
+  res.end();
+});
+server.on('clientError', (err, socket) => {
+  socket.end('HTTP/1.1 400 Bad Request\r\n\r\n');
+});
+server.listen(8000);
+```
+#### 3.4.2 与当前sever对象状态相关的方法和属性
+##### 3.4.2.1 server.close([callback])
+- 停止服务器接收新连接。
+- 参数
+    - callback 当close事件触发时回调
+##### 3.4.2.2 server.listen()
+- 与net.Server.listen()相同
+    - callback -- 当
+##### 3.4.2.3 server.listening
+- 表明服务器是否在监听连接
+#### 3.4.3 与超时连接相关
+##### 3.4.3.1 server.maxHeadersCount
+- 限制最大传入请求头数。 如果设置为 0，则不会应用任何限制。
+##### 3.4.3.2 server.setTimeout([msecs][, callback])
+- 设置套接字的超时值，并在服务器对象上触发 'timeout' 事件，如果发生超时，则将套接字作为参数传入。如果服务器对象上有 'timeout' 事件监听器，则将使用超时的套接字作为参数调用它。
+- 参数
+    - msecs &lt;number&gt; 默认值: 120000（2 分钟）。
+    - callback &lt;Function&gt; 超时时触发
+##### 3.4.3.3 server.timeout
+- 设置套接字超时的不活动毫秒数。
+##### 3.4.3.3 server.keepAliveTimeout
+- 服务器在完成写入最后一个响应之后，在销毁套接字之前需要等待其他传入数据的非活动毫秒数。 如果服务器在保持活动超时被触发之前接收到新数据，它将重置常规非活动超时
+### 3.5 http.ServerResponse 类
+- 本质上是一个写流
+- 在服务器端作为request的回调函数中作为第2个参数
+- 在客户端作为request作为返回值
+#### 3.5.1 http.ServerResponse相关的事件
+##### 3.5.1.2 finish事件
+- 当响应头和主体的最后一段已经切换到操作系统以通过网络传输时，触发该事件。
+#### 3.5.2 与http.ServerResponse对象的headers相关的属性和方法
+##### 3.5.3.1 response.setHeader(name, value)
+- 为隐式响应头设置单个响应头的值。 如果此响应头已存在于待发送的响应头中，则其值将被替换。（没有发送）
+    - writeHead优先
+##### 3.5.3.2 response.removeHeader(name)
+- 移除排队等待中的隐式发送的响应头。
+##### 3.5.3.3 response.hasHeader(name)
+- 如果当前在传出的响应头中设置了由 name 标识的响应头，则返回 true。 响应头名称匹配不区分大小写。
+##### 3.5.3.4 response.getHeaders([name])
+- 若参数为空：返回当前传出的响应头的浅拷贝。 由于使用浅拷贝，因此可以更改数组的值而无需额外调用各种与响应头相关的 http 模块方法。 返回对象的键是响应头名称，值是各自的响应头值。 所有响应头名称都是小写的。
+- 若参数不为空，读出已排队但未发送到客户端的响应头的值。 该名称不区分大小写。 返回值的类型取决于提供给 response.setHeader() 的参数。
+##### 3.5.3.5 response.getHeaderNames()
+- 返回当前响应头组成的数组
+##### 3.5.3.1 response.writeHead(statusCode[, statusMessage][, headers])
+- 向客户端发送请求头
+- 参数
+    - statusCode    状态的数字
+    - statusMessage 状态信息
+    - headers   &lt;object&gt; 响应报文头
+##### 3.5.3.2 response.writeContinue()
+- 向客户端发送HTTP/1.1 100 Continue 消息，表示应发送请求主体。
+    - 与Server 上的 'checkContinue' 事件有关。
+#### 3.5.3 与http.ServerResponse对象的body相关的属性和方法
+##### 3.5.4.1 response.write(data[, encoding][, callback])
+##### 3.5.4.2 response.end([data[, encoding]][, callback])
+- 若没有参数或只有回调函数作为参数：此方法向服务器发出信号，表明已发送所有响应头和主体，该服务器应该视为此消息已完成。 必须在每个响应上调用此 response.end() 方法。
+- 若有参数，则相当于reponse.write(data,[ enconding])之后再调用repose.end([ callback ])
+- 参数 
+    - data
+        - 响应体的数据
+    - 
+### 3.6 http.IncomingMessage 类
+- 实质上继承了读流的属性
+- 当客户端发送请求即调用http.request时，作为回调函数中的respose参数传递
+- 在服务器端作为requst事件的第一个参数request
+#### 3.6.1 http.IncomingMessage对象的相关事件
+- 继承了可读流的事件
+##### 3.6.1.1 data事件
+- 当另一端的数据包体传输完成的时候触发
+- 传递参数：data
+##### 3.6.1.2 abort事件
+- 当请求中止时触发。
+##### 3.6.1.3 close事件
+- 表明底层连接已关闭
+##### 3.6.1.4 message.aborted
+- 如果请求已中止，则 message.aborted 属性为 true。
+##### 3.6.1.5 message.compelte
+- 如果已收到并成功解析完整的 HTTP 消息，则 message.complete 属性将为 true。
+##### 3.6.1.6 message.destory([callback])
+- 调用其对应套接字上的destroy()
+#### 3.6.2 与http.IncomingMessage对象的headers相关的属性和方法
+##### 3.6.2.1 message.headers
+- 返回请求/响应的消息头对象
+##### 3.6.2.2 message.rawHeaders
+- 返回请求/响应的消息头，以数组的形式[key, value, ...]
+##### 3.6.2.3 message.httpVersion
+- 返回另一端的http的版本
+##### 3.6.2.4 message.method
+- 返回客户端传输使用的方法
+
+#### 3.6.3 与http.IncomingMessage对象的body相关的属性和方法
+- 获取http.IncomingMessage对象的主体，应该利用可读流的data数据来获取
+    - data事件的data参数是Buffer类型
+```javascript
+// 服务器端
+    http.createServer(function(request, response) {
+        // 该函数是由request事件触发，即当服务器端接收到header的时候触发
+        request.on("data", data => console.log(data.toString()))
+    })
+// 客户端
+    http.request(opt, function(response) {
+        response.on('data', data => console.log(data.toString()))
+    })
+```
+ 
